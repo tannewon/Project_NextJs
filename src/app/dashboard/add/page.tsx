@@ -8,6 +8,8 @@ export default function AddProductPage() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
+  const [imagePreview, setImagePreview] = useState(""); // State for image preview
+  const [isUploading, setIsUploading] = useState(false); // New state for upload status
 
   const getUrlUpdateUserImg = async (file: File) => {
     const CLOUD_NAME = "dyfs9b4uj";
@@ -25,6 +27,9 @@ export default function AddProductPage() {
     try {
       const res = await fetch(api, options);
       const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error?.message || "Failed to upload image");
+      }
       return data.secure_url;
     } catch (error) {
       console.error("Error uploading to Cloudinary:", error);
@@ -36,12 +41,16 @@ export default function AddProductPage() {
     const file = e.target.files?.[0];
 
     if (file) {
+      setImagePreview(URL.createObjectURL(file)); // Set image preview
+      setIsUploading(true); // Start upload state
       try {
         const url = await getUrlUpdateUserImg(file);
-        setImage(url);  
+        setImage(url);
       } catch (error) {
         console.error("Error uploading image:", error);
         alert("Failed to upload image");
+      } finally {
+        setIsUploading(false); // End upload state
       }
     }
   };
@@ -66,7 +75,8 @@ export default function AddProductPage() {
       if (res.ok) {
         router.push("/dashboard"); // Redirect back to dashboard after adding
       } else {
-        throw new Error("Failed to add product");
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to add product");
       }
     } catch (error) {
       console.error("Error adding product:", error);
@@ -99,10 +109,19 @@ export default function AddProductPage() {
         <br />
         <label>
           Image:
-          <input type="file" onChange={handleImage} required />
+          <input 
+            type="file" 
+            onChange={handleImage} 
+            required 
+            disabled={isUploading} // Disable input while uploading
+          />
         </label>
         <br />
-        <button type="submit">Add Product</button>
+        {imagePreview && <img src={imagePreview} alt="Image preview" style={{ width: "200px", height: "200px" }} />} {/* Image preview */}
+        <br />
+        <button type="submit" disabled={isUploading || !image}> 
+          {isUploading ? "Uploading..." : "Add Product"}
+        </button>
       </form>
     </div>
   );

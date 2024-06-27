@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 async function getPost(id: string) {
   const res = await fetch(
@@ -8,6 +9,16 @@ async function getPost(id: string) {
   );
   if (!res.ok) {
     throw new Error("Fail to fetch data");
+  }
+  return res.json();
+}
+async function deletePost(id: string) {
+  const res = await fetch(
+    `https://6520d2b6906e276284c4b174.mockapi.io/product/${id}`,
+    { method: 'DELETE' }
+  );
+  if (!res.ok) {
+    throw new Error("Failed to delete data");
   }
   return res.json();
 }
@@ -33,16 +44,14 @@ export default function DashboardDetailPage({
     fetchData();
   }, [id]);
 
-  const handleEdit = () => {
-    // Logic for handling edit action
-    router.push('/dashboard/edit')
+  const handleDelete = async () => {
+    try {
+      await deletePost(id);
+      router.push('/dashboard'); // Navigate back to the dashboard page
+    } catch (error) {
+      console.error('Failed to delete post:', error);
+    }
   };
-
-  const handleDelete = () => {
-    // Logic for handling delete action
-    console.log('Delete button clicked');
-  };
-
   const handleBack = () => {
     router.push('/dashboard'); // Navigate back to dashboard page
   };
@@ -59,9 +68,11 @@ export default function DashboardDetailPage({
         style={{ width: "300px", height: "200px" }}
       />
       <br />
-      <button onClick={handleEdit} style={{ marginRight: '30px', backgroundColor: "yellow", marginTop: "20px" }}>
+      <Link href={`/dashboard/edit?id=${id}`}>
+      <button style={{ marginRight: '30px', backgroundColor: "yellow", marginTop: "20px" }}>
         Edit
       </button>
+      </Link>
       <button onClick={handleDelete} style={{ marginRight: '30px', backgroundColor: "red" }}>
         Delete
       </button>

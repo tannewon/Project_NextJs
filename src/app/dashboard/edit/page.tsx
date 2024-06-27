@@ -1,62 +1,96 @@
-// pages/dashboard/edit/[id].tsx
- "use client"
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+"use client";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
-const EditProductPage = () => {
-  const router = useRouter();
-  const { id } = router.query; // Lấy ID sản phẩm từ URL
+const fetchPost = async (id: string) => {
+  const res = await fetch(
+    `https://6520d2b6906e276284c4b174.mockapi.io/product/${id}`
+  );
+  if (!res.ok) throw new Error("Failed to fetch data");
+  return res.json();
+};
+
+const updatePost = async (id: string, data: any) => {
+  const res = await fetch(
+    `https://6520d2b6906e276284c4b174.mockapi.io/product/${id}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }
+  );
+  if (!res.ok) throw new Error("Failed to update data");
+  return res.json();
+};
+
+const uploadImage = async (file: File) => {
+  const CLOUD_NAME = "dyfs9b4uj";
+  const PRESET_NAME = "rymvqqtd";
+  const FOLDER_NAME = "NextJs";
+  const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+  const formData = new FormData();
+  formData.append("upload_preset", PRESET_NAME);
+  formData.append("folder", FOLDER_NAME);
+  formData.append("file", file);
+  const res = await fetch(api, { method: "POST", body: formData });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error?.message || "Failed to upload image");
+  return data.secure_url;
+};
+
+export default function EditProductPage() {
+  const [post, setPost] = useState<any>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+      setIsUploading(true);
+      try {
+        const url = await uploadImage(file);
+        setImage(url);
+      } catch (error) {
+        alert("Failed to upload image");
+      } finally {
+        setIsUploading(false);
+      }
+    }
+  };
 
   useEffect(() => {
-    // Fetch thông tin sản phẩm từ API khi component được render
     if (id) {
-      fetchProduct(id);
+      fetchPost(id)
+        .then((data) => {
+          setPost(data);
+          setName(data.name);
+          setDescription(data.description);
+          setImage(data.image);
+          setImagePreview(data.image);
+        })
+        .catch((error) => console.error("Failed to fetch post data:", error));
     }
   }, [id]);
 
-  const fetchProduct = async (productId: string | string[]) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const res = await fetch(`https://6520d2b6906e276284c4b174.mockapi.io/product/${productId}`);
-      if (res.ok) {
-        const data = await res.json();
-        setName(data.name);
-        setDescription(data.description);
-        setImage(data.image);
-      } else {
-        throw new Error("Failed to fetch product");
-      }
+      await updatePost(id!, { name, description, image });
+      router.push("/dashboard");
     } catch (error) {
-      console.error("Error fetching product:", error);
+      console.error("Failed to update post data:", error);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const res = await fetch(`https://6520d2b6906e276284c4b174.mockapi.io/product/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          image,
-        }),
-      });
-      if (res.ok) {
-        router.push("/dashboard"); // Redirect về dashboard sau khi chỉnh sửa thành công
-      } else {
-        throw new Error("Failed to update product");
-      }
-    } catch (error) {
-      console.error("Error updating product:", error);
-      alert("Failed to update product");
-    }
-  };
+  if (!post) return <div>Loading...</div>;
 
   return (
     <div>
@@ -82,19 +116,26 @@ const EditProductPage = () => {
         </label>
         <br />
         <label>
-          Image URL:
+          Image:
           <input
-            type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            required
+            type="file"
+            onChange={handleImageChange}
+            disabled={isUploading}
           />
         </label>
         <br />
-        <button type="submit">Update Product</button>
+        {imagePreview && (
+          <img
+            src={imagePreview}
+            alt="Image preview"
+            style={{ width: "200px", height: "200px" }}
+          />
+        )}
+        <br />
+        <button type="submit" disabled={isUploading || !image}>
+          {isUploading ? "Uploading..." : "Save"}
+        </button>
       </form>
     </div>
   );
-};
-
-export default EditProductPage;
+}
