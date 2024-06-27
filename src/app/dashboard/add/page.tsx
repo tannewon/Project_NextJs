@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export default function AddProductPage() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [price, setPrice] = useState("")
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [imagePreview, setImagePreview] = useState(""); // State for image preview
@@ -67,8 +68,10 @@ export default function AddProductPage() {
           },
           body: JSON.stringify({
             name,
+            price,
             description,
             image,
+          
           }),
         }
       );
@@ -78,6 +81,7 @@ export default function AddProductPage() {
         const errorData = await res.json();
         throw new Error(errorData.message || "Failed to add product");
       }
+   
     } catch (error) {
       console.error("Error adding product:", error);
       alert("Failed to add product");
@@ -86,41 +90,129 @@ export default function AddProductPage() {
 
   return (
     <div>
-      <h1>Add New Product</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
+      <h2 style={{ color: "orange", marginLeft: "380px" }}>Add New Product</h2>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          border: "1px solid orange",
+          borderRadius: "10px",
+          padding: "20px",
+          maxWidth: "400px",
+          margin: "0 auto",
+          marginTop: "30px",
+        }}
+      >
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Name:
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              marginBottom: "10px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
           />
         </label>
         <br />
-        <label>
+        <label style={{ marginBottom: "10px", display: "block" }}>
+          Price:
+          <input
+            type="text"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              marginBottom: "10px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
+          />
+        </label>
+        <br/>
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Description:
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              marginBottom: "10px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
           />
         </label>
         <br />
-        <label>
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Image:
-          <input 
-            type="file" 
-            onChange={handleImage} 
-            required 
+          <input
+            type="file"
+            onChange={handleImage}
+            required
             disabled={isUploading} // Disable input while uploading
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              marginBottom: "10px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
           />
         </label>
         <br />
-        {imagePreview && <img src={imagePreview} alt="Image preview" style={{ width: "200px", height: "200px" }} />} {/* Image preview */}
+        {imagePreview && (
+          <img
+            src={imagePreview}
+            alt="Image preview"
+            style={{ width: "200px", height: "200px" }}
+          />
+        )}{" "}
+        {/* Image preview */}
         <br />
-        <button type="submit" disabled={isUploading || !image}> 
+        <button
+          type="submit"
+          disabled={isUploading || !image}
+          style={{
+            backgroundColor: "orange",
+            color: "white",
+            border: "none",
+            padding: "10px 20px",
+            cursor: "pointer",
+            borderRadius: "4px",
+          }}
+        >
           {isUploading ? "Uploading..." : "Add Product"}
+        </button>
+        <button
+          onClick={() => router.back()}
+          style={{
+            backgroundColor: "grey",
+            color: "white",
+            border: "none",
+            padding: "10px 20px",
+            cursor: "pointer",
+            borderRadius: "4px",
+            marginLeft: "200px",
+          }}
+        >
+          Back
         </button>
       </form>
     </div>

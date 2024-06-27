@@ -1,7 +1,7 @@
 
 const Footer = () => {
   return (
-    <footer style={{ backgroundColor:"black",marginTop:"220px" }}>
+    <footer style={{ backgroundColor:"orange",marginTop:"220px",color:'white' }}>
       Copyright 2023 Nine Dev
     </footer>
   )

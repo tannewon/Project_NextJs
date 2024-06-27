@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "../../styles/dashboard.module.css";
 import Link from "next/link";
 
 const fetchData = async () => {
@@ -42,11 +41,11 @@ const DataComponent = () => {
     <div
       style={{
         color: "orange",
-        marginTop: "20px",
+        marginTop: "100px",
         backgroundColor: "beige",
         width: "auto",
         display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
+        gridTemplateColumns: "repeat(4, 1fr)",
         gap: "10px",
         padding:'20px'
       }}
@@ -60,7 +59,6 @@ const DataComponent = () => {
               style={{ width: "300px", height: "250px" }}
             />
             <h3>{item.name}</h3>
-            <p style={{ color:'red' }}>{item.price}$</p>
             <p>{item.description}</p>
           </div>
         </Link>
@@ -81,26 +79,11 @@ export default function DashboardPage() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          marginLeft: "200px",
+          margin:'auto'
         }}
       >
-        All List Nine Dev
+        All PRODUCT  
       </h1>
-      <Link href="/dashboard/add">
-        <button
-          style={{
-            backgroundColor: "orange",
-            color: "white",
-            border: "none",
-            padding: "10px 20px",
-            cursor: "pointer",
-            borderRadius: "4px",
-            marginLeft: "450px",
-          }}
-        >
-          ADD Product
-        </button>
-      </Link>
       <DataComponent />
     </div>
   );

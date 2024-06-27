@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const fetchPost = async (id: string) => {
   const res = await fetch(
@@ -42,6 +43,7 @@ const uploadImage = async (file: File) => {
 export default function EditProductPage() {
   const [post, setPost] = useState<any>(null);
   const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [imagePreview, setImagePreview] = useState("");
@@ -72,6 +74,7 @@ export default function EditProductPage() {
         .then((data) => {
           setPost(data);
           setName(data.name);
+          setPrice(data.price);
           setDescription(data.description);
           setImage(data.image);
           setImagePreview(data.image);
@@ -83,7 +86,7 @@ export default function EditProductPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updatePost(id!, { name, description, image });
+      await updatePost(id!, { name,price,description, image });
       router.push("/dashboard");
     } catch (error) {
       console.error("Failed to update post data:", error);
@@ -94,33 +97,89 @@ export default function EditProductPage() {
 
   return (
     <div>
-      <h1>Edit Product</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
+      <h1 style={{ color: "orange", marginLeft: "380px" }}>Edit Product</h1>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          border: "1px solid orange",
+          borderRadius: "10px",
+          padding: "20px",
+          maxWidth: "400px",
+          margin: "0 auto",
+          marginTop: "30px",
+        }}
+      >
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Name:
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              marginBottom: "10px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
           />
         </label>
         <br />
-        <label>
+        <label style={{ marginBottom: "10px", display: "block" }}>
+          Price:
+          <input
+            type="text"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              marginBottom: "10px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
+          />
+        </label>
+        <br />
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Description:
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              marginBottom: "10px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
           />
         </label>
         <br />
-        <label>
+        <label style={{ marginBottom: "10px", display: "block" }}>
           Image:
           <input
             type="file"
             onChange={handleImageChange}
             disabled={isUploading}
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              marginBottom: "10px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
           />
         </label>
         <br />
@@ -132,9 +191,35 @@ export default function EditProductPage() {
           />
         )}
         <br />
-        <button type="submit" disabled={isUploading || !image}>
+        <button
+          type="submit"
+          disabled={isUploading || !image}
+          style={{
+            backgroundColor: "orange",
+            color: "white",
+            border: "none",
+            padding: "10px 20px",
+            cursor: "pointer",
+            borderRadius: "4px",
+          }}
+        >
           {isUploading ? "Uploading..." : "Save"}
         </button>
+        <Link href={`/dashboard/${id}`}>
+          <button
+            style={{
+              backgroundColor: "grey",
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              cursor: "pointer",
+              borderRadius: "4px",
+              marginLeft: "250px",
+            }}
+          >
+            Back
+          </button>
+        </Link>
       </form>
     </div>
   );
