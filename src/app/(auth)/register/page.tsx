@@ -1,94 +1,271 @@
-import React from "react";
+"use client";
+import { useState, ChangeEvent, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { USER_API_URL } from "@/lib/util";
+
+// Register component (đã được chỉnh sửa để có thêm trường role)
 const Register = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    role: "user", // Mặc định là user, có thể thay đổi thành "admin"
+  });
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const router = useRouter();
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  };
+
+  const handleLoginRedirect = () => {
+    router.push("/login");
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newErrors: { [key: string]: string } = {};
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    if (!formData.name) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    }
+
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = "Confirm password is required";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      try {
+        const response = await axios.post(USER_API_URL, {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role, // Đưa role vào payload của request
+        });
+        localStorage.setItem("user", JSON.stringify(response.data));
+        router.push("/login");
+        alert("Registration successful");
+      } catch (error) {
+        console.error("Registration failed", error);
+      }
+    }
+  };
+
   return (
-    <main className="" style={{ marginLeft: "500px" }}>
-      <div className="container mt-5">
-        <div className="card p-4">
-          <div className="mb-3 row">
-            <label htmlFor="inputName" className="col-sm-2 col-form-label">
-              Name
-            </label>
-            <div className="col-sm-10">
+    <main style={{ justifyContent: "center" }}>
+      <div className="container">
+        <div
+          className="card "
+          style={{
+            border: "1px solid orange",
+            borderRadius: "10px",
+            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+            width: "600px",
+            margin: "auto",
+          }}
+        >
+          <form onSubmit={handleSubmit} style={{ padding: "40px" }}>
+            <h2 style={{ textAlign: "center", color: "orange" }}>Register</h2>
+            <div className="mb-3">
+              <label htmlFor="inputName" className="form-label">
+                Name
+              </label>
               <input
+                name="name"
                 type="text"
-                placeholder='Enter name' 
-                className="form-control"
+                placeholder="Enter name"
+                className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 id="inputName"
+                value={formData.name}
+                onChange={handleChange}
                 style={{
-                  width: "50%",
+                  width: "500px",
                   height: "40px",
-                  border: "1px solid #ccc",
-                  borderRadius: "10px",
+                  border: errors.name ? "1px solid red" : "1px solid #ccc",
+                  borderRadius: "5px",
+                  padding: "0 10px",
                   marginTop: "20px",
                 }}
               />
+              {errors.name && (
+                <div className="invalid-feedback" style={{ color: "red" }}>
+                  {errors.name}
+                </div>
+              )}
             </div>
-          </div>
-          <div className="mb-3 row" style={{ marginTop: "20px" }}>
-            <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
-              Email
-            </label>
-            <div className="col-sm-10">
+            <div className="mb-3" style={{ marginTop: "20px" }}>
+              <label htmlFor="staticEmail" className="form-label">
+                Email
+              </label>
               <input
-                placeholder='Enter email' 
-                type='email' 
-                className="form-control"
+                name="email"
+                placeholder="Enter email"
+                type="email"
+                className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                value={formData.email}
+                onChange={handleChange}
                 style={{
-                  width: "50%",
+                  width: "500px",
                   height: "40px",
-                  border: "1px solid #ccc",
-                  borderRadius: "10px",
+                  border: errors.email ? "1px solid red" : "1px solid #ccc",
+                  borderRadius: "5px",
+                  padding: "0 10px",
                   marginTop: "20px",
                 }}
               />
+              {errors.email && (
+                <div className="invalid-feedback" style={{ color: "red" }}>
+                  {errors.email}
+                </div>
+              )}
             </div>
-          </div>
-          <div className="mb-3 row" style={{ marginTop: "20px" }}>
-            <label htmlFor="inputPassword" className="col-sm-2 col-form-label">
-              Password
-            </label>
-            <div className="col-sm-10">
+            <div className="mb-3" style={{ marginTop: "20px" }}>
+              <label htmlFor="inputPassword" className="form-label">
+                Password
+              </label>
               <input
+                name="password"
                 type="password"
-                placeholder='Enter password' 
-                className="form-control"
+                placeholder="Enter password"
+                className={`form-control ${
+                  errors.password ? "is-invalid" : ""
+                }`}
                 id="inputPassword"
+                value={formData.password}
+                onChange={handleChange}
                 style={{
-                  width: "50%",
+                  width: "500px",
                   height: "40px",
-                  border: "1px solid #ccc",
-                  borderRadius: "10px",
+                  border: errors.password ? "1px solid red" : "1px solid #ccc",
+                  borderRadius: "5px",
+                  padding: "0 10px",
                   marginTop: "20px",
                 }}
               />
+              {errors.password && (
+                <div className="invalid-feedback" style={{ color: "red" }}>
+                  {errors.password}
+                </div>
+              )}
             </div>
-          </div>
-          <div className="mb-3 row" style={{ marginTop: "20px" }}>
-            <label
-              htmlFor="inputConfirmPassword"
-              className="col-sm-2 col-form-label"
-            >
-              Confirm Password
-            </label>
-            <div className="col-sm-10">
+            <div className="mb-3" style={{ marginTop: "20px" }}>
+              <label htmlFor="inputConfirmPassword" className="form-label">
+                Confirm Password
+              </label>
               <input
+                name="confirmPassword"
                 type="password"
-                placeholder='Enter ConfirmPassword' 
-                className="form-control"
+                placeholder="Enter confirm password"
+                className={`form-control ${
+                  errors.confirmPassword ? "is-invalid" : ""
+                }`}
                 id="inputConfirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
                 style={{
-                  width: "50%",
+                  width: "500px",
                   height: "40px",
-                  border: "1px solid #ccc",
-                  borderRadius: "10px",
+                  border: errors.confirmPassword
+                    ? "1px solid red"
+                    : "1px solid #ccc",
+                  borderRadius: "5px",
+                  padding: "0 10px",
                   marginTop: "20px",
                 }}
               />
+              {errors.confirmPassword && (
+                <div className="invalid-feedback" style={{ color: "red" }}>
+                  {errors.confirmPassword}
+                </div>
+              )}
             </div>
-          </div>
+            <div className="mb-3" style={{ marginTop: "20px" }}>
+              <label htmlFor="inputRole" className="form-label">
+                Role
+              </label>
+              <select
+                name="role"
+                className="form-select"
+                value={formData.role}
+                onChange={handleChange}
+                style={{
+                  width: "520px",
+                  height: "40px",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  padding: "0 10px",
+                  marginTop: "10px",
+                }}
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              className="btn btn-primary mt-3"
+              style={{
+                backgroundColor: "#FF8C00",
+                color: "white",
+                border: "none",
+                padding: "10px 20px",
+                cursor: "pointer",
+                borderRadius: "5px",
+                marginTop: "40px",
+                width: "520px",
+                height: "40px",
+                fontSize: "16px",
+                fontWeight: "bold",
+              }}
+            >
+              Register
+            </button>
+            <div style={{ marginTop: "20px", textAlign: "center" }}>
+              <p>
+                Already have an account?
+                <button
+                  type="button"
+                  onClick={handleLoginRedirect}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "blue",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    fontSize: "16px",
+                  }}
+                >
+                  Login
+                </button>{" "}
+              </p>
+            </div>
+          </form>
         </div>
       </div>
     </main>
   );
 };
+
 export default Register;
+

@@ -1,26 +1,29 @@
+// pages/dashboard/index.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "../../styles/dashboard.module.css";
 import Link from "next/link";
+import { Product } from "@/type/types";
+import { PRODUCT_API_URL } from "@/lib/util";
+import withAuth from "../withAuth";
+
 
 const fetchData = async () => {
-  const res = await fetch(
-    "https://6520d2b6906e276284c4b174.mockapi.io/product"
-  );
+  const res = await fetch(PRODUCT_API_URL);
   if (!res.ok) {
     throw new Error("Fail to fetch data");
   }
   return res.json();
 };
+
 const DataComponent = () => {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
-  console.log(data);
+
   useEffect(() => {
     fetchData()
-      .then((data) => {
+      .then((data: Product[]) => {
         setData(data);
         setLoading(false);
       })
@@ -41,27 +44,70 @@ const DataComponent = () => {
   return (
     <div
       style={{
-        color: "orange",
         marginTop: "20px",
         backgroundColor: "beige",
-        width: "auto",
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
         gap: "10px",
-        padding:'20px'
+        padding: "20px",
       }}
     >
       {data.map((item) => (
         <Link href={`/dashboard/${item.id}`} key={item.id}>
-          <div className="">
+          <div
+            style={{
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              backgroundColor: "#fff",
+              overflow: "hidden",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+              transition: "transform 0.2s",
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+            }}
+          >
             <img
               src={item.image}
               alt={item.name}
-              style={{ width: "300px", height: "250px" }}
+              style={{
+                width: "100%",
+                height: "200px",
+                objectFit: "cover",
+              }}
             />
-            <h3>{item.name}</h3>
-            <p style={{ color:'red' }}>{item.price}$</p>
-            <p>{item.description}</p>
+            <div
+              style={{
+                padding: "16px",
+                backgroundColor: "#f0f0f0",
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: "1.2em",
+                  margin: "0 0 10px",
+                  color: "#333",
+                }}
+              >
+                {item.name}
+              </h3>
+              <p
+                style={{
+                  fontSize: "1.1em",
+                  color: "#e67e22",
+                }}
+              >
+                {item.price}$
+              </p>
+              <p
+                style={{
+                  color: "#666",
+                  marginBottom: "10px",
+                }}
+              >
+                {item.description}
+              </p>
+            </div>
           </div>
         </Link>
       ))}
@@ -69,7 +115,7 @@ const DataComponent = () => {
   );
 };
 
-export default function DashboardPage() {
+const DashboardPage = () => {
   return (
     <div>
       <h1
@@ -104,4 +150,6 @@ export default function DashboardPage() {
       <DataComponent />
     </div>
   );
-}
+};
+
+export default withAuth(DashboardPage, ["admin"]);

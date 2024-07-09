@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { PRODUCT_API_URL } from "@/lib/util";
 
 const fetchPost = async (id: string) => {
   const res = await fetch(
-    `https://6520d2b6906e276284c4b174.mockapi.io/product/${id}`
+    `${PRODUCT_API_URL}/${id}`
   );
   if (!res.ok) throw new Error("Failed to fetch data");
   return res.json();
@@ -14,7 +15,7 @@ const fetchPost = async (id: string) => {
 
 const updatePost = async (id: string, data: any) => {
   const res = await fetch(
-    `https://6520d2b6906e276284c4b174.mockapi.io/product/${id}`,
+    `${PRODUCT_API_URL}/${id}`,
     {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -86,7 +87,7 @@ export default function EditProductPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updatePost(id!, { name,price,description, image });
+      await updatePost(id!, { name, price, description, image });
       router.push("/dashboard");
     } catch (error) {
       console.error("Failed to update post data:", error);

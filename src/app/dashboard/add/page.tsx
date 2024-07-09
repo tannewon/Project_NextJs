@@ -2,6 +2,7 @@
 // pages/dashboard/add/page.tsx
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { PRODUCT_API_URL } from "@/lib/util";
 
 export default function AddProductPage() {
   const router = useRouter();
@@ -60,7 +61,7 @@ export default function AddProductPage() {
     e.preventDefault();
     try {
       const res = await fetch(
-        "https://6520d2b6906e276284c4b174.mockapi.io/product",
+        PRODUCT_API_URL,
         {
           method: "POST",
           headers: {

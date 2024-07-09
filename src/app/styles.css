@@ -1,0 +1,12 @@
+:root {
+    --background-color: orange;
+    --text-color: white;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: black;
+      --text-color: gray;
+    }
+  }
+  
