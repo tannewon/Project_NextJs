@@ -4,14 +4,13 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { USER_API_URL } from "@/lib/util";
 
-// Register component (đã được chỉnh sửa để có thêm trường role)
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    role: "user", // Mặc định là user, có thể thay đổi thành "admin"
+    role: "user",
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -61,7 +60,7 @@ const Register = () => {
           name: formData.name,
           email: formData.email,
           password: formData.password,
-          role: formData.role, // Đưa role vào payload của request
+          role: formData.role,
         });
         localStorage.setItem("user", JSON.stringify(response.data));
         router.push("/login");
@@ -81,7 +80,8 @@ const Register = () => {
             border: "1px solid orange",
             borderRadius: "10px",
             boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-            width: "600px",
+            width: "100%",
+            maxWidth: "600px",
             margin: "auto",
           }}
         >
@@ -100,7 +100,7 @@ const Register = () => {
                 value={formData.name}
                 onChange={handleChange}
                 style={{
-                  width: "500px",
+                  width: "96%",
                   height: "40px",
                   border: errors.name ? "1px solid red" : "1px solid #ccc",
                   borderRadius: "5px",
@@ -126,7 +126,7 @@ const Register = () => {
                 value={formData.email}
                 onChange={handleChange}
                 style={{
-                  width: "500px",
+                  width: "96%",
                   height: "40px",
                   border: errors.email ? "1px solid red" : "1px solid #ccc",
                   borderRadius: "5px",
@@ -148,14 +148,12 @@ const Register = () => {
                 name="password"
                 type="password"
                 placeholder="Enter password"
-                className={`form-control ${
-                  errors.password ? "is-invalid" : ""
-                }`}
+                className={`form-control ${errors.password ? "is-invalid" : ""}`}
                 id="inputPassword"
                 value={formData.password}
                 onChange={handleChange}
                 style={{
-                  width: "500px",
+                  width: "96%",
                   height: "40px",
                   border: errors.password ? "1px solid red" : "1px solid #ccc",
                   borderRadius: "5px",
@@ -184,7 +182,7 @@ const Register = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 style={{
-                  width: "500px",
+                  width: "96%",
                   height: "40px",
                   border: errors.confirmPassword
                     ? "1px solid red"
@@ -210,7 +208,7 @@ const Register = () => {
                 value={formData.role}
                 onChange={handleChange}
                 style={{
-                  width: "520px",
+                  width: "100%",
                   height: "40px",
                   border: "1px solid #ccc",
                   borderRadius: "5px",
@@ -233,7 +231,7 @@ const Register = () => {
                 cursor: "pointer",
                 borderRadius: "5px",
                 marginTop: "40px",
-                width: "520px",
+                width: "100%",
                 height: "40px",
                 fontSize: "16px",
                 fontWeight: "bold",
@@ -263,9 +261,30 @@ const Register = () => {
           </form>
         </div>
       </div>
+      <style jsx>{`
+        @media (max-width: 600px) {
+          .card {
+            padding: 20px !important;
+          }
+          .form-control,
+          .form-select,
+          .btn {
+            width: 100% !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .card {
+            padding: 10px !important;
+          }
+          .form-control,
+          .form-select,
+          .btn {
+            width: 100% !important;
+          }
+        }
+      `}</style>
     </main>
   );
 };
 
 export default Register;
-

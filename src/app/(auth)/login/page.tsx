@@ -11,12 +11,12 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
       alert("Please enter both email and password.");
@@ -25,7 +25,7 @@ const Login = () => {
     try {
       const response = await axios.get(USER_API_URL);
       const user = response.data.find(
-        (user:any) =>
+        (user: any) =>
           user.email === formData.email && user.password === formData.password
       );
       if (user) {
@@ -77,7 +77,7 @@ const Login = () => {
                   value={formData.email}
                   onChange={handleChange}
                   style={{
-                    width: "500px",
+                    width: "96%",
                     height: "40px",
                     border: "1px solid #ccc",
                     borderRadius: "5px",
@@ -101,7 +101,7 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   style={{
-                    width: "500px",
+                    width: "96%",
                     height: "40px",
                     border: "1px solid #ccc",
                     borderRadius: "5px",
@@ -112,10 +112,10 @@ const Login = () => {
                 <span
                   onClick={togglePasswordVisibility}
                   style={{
-                    marginTop: "10px",
                     position: "absolute",
                     top: "50%",
                     right: "10px",
+                    marginTop:'10px',
                     transform: "translateY(-50%)",
                     cursor: "pointer",
                   }}
@@ -153,8 +153,7 @@ const Login = () => {
                 padding: "10px 20px",
                 cursor: "pointer",
                 borderRadius: "5px",
-                marginTop: "30px",
-                width: "520px",
+                width: "100%",
                 height: "40px",
                 fontSize: "16px",
                 fontWeight: "bold",
@@ -165,6 +164,24 @@ const Login = () => {
           </form>
         </div>
       </div>
+      <style jsx>{`
+        @media (max-width: 600px) {
+          .card {
+            padding: 20px !important;
+          }
+          .form-control {
+            width: 100% !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .card {
+            padding: 10px !important;
+          }
+          .form-control {
+            width: 100% !important;
+          }
+        }
+      `}</style>
     </main>
   );
 };

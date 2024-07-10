@@ -1,4 +1,3 @@
-// Home.tsx
 "use client";
 import { AiFillAccountBook } from "react-icons/ai";
 import Link from "next/link";
@@ -7,10 +6,11 @@ import Image from "next/image";
 import home from "../../public/home2.jpg";
 import anh1 from "../../public/anh1.jpg";
 import anh2 from "../../public/anh2.jpg";
-
 import React, { useEffect, useState } from "react";
 import { Product } from "@/type/types";
 import { PRODUCT_API_URL } from "@/lib/util";
+import { FcLike } from "react-icons/fc";
+import { useRouter } from "next/navigation";
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -24,11 +24,11 @@ const DataComponent = () => {
   const [data, setData] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     fetchData()
       .then((data) => {
-        // Assuming API returns an array of products
         setData(data);
         setLoading(false);
       })
@@ -38,72 +38,49 @@ const DataComponent = () => {
       });
   }, []);
 
+  const handleAddToFavorites = (item: Product) => {
+    const savedProductIds = JSON.parse(localStorage.getItem("productIds") || "[]");
+    const savedProducts: Product[] = JSON.parse(localStorage.getItem("products") || "[]");
+
+    if (!savedProductIds.includes(item.id)) {
+      savedProductIds.push(item.id);
+      savedProducts.push(item);
+      localStorage.setItem("productIds", JSON.stringify(savedProductIds));
+      localStorage.setItem("products", JSON.stringify(savedProducts));
+      alert("Added to favorites!");
+      router.push("/product/favorite");
+    }
+  };
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <div> </div>;
   }
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
+  
   return (
-    <div
-      style={{
-        marginTop: "100px",
-        backgroundColor: "#f5f5f5",
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
-        gap: "20px",
-        padding: "20px",
-      }}
-    >
+    <div className={styles.gridContainer}>
       {data.map((item) => (
-        <div
-          key={item.id}
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            backgroundColor: "#fff",
-            overflow: "hidden",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-            transition: "transform 0.2s",
-          }}
-        >
+        <div key={item.id} className={styles.card}>
           <img
             src={item.image}
             alt={item.name}
-            style={{ width: "100%", height: "200px", objectFit: "cover" }}
+            className={styles.cardImage}
           />
-          <div style={{ padding: "16px" }}>
-            <h3
-              style={{
-                fontSize: "1.2em",
-                margin: "0 0 10px",
-                color: "#333",
-              }}
-            >
-              {item.name}
-            </h3>
-            <p style={{ fontSize: "1.1em", color: "#e67e22" }}>{item.price}$</p>
-            <p style={{ color: "#666", marginBottom: "10px" }}>
-              {item.description}
+          <div className={styles.cardContent}>
+            <h3 className={styles.cardTitle}>{item.name}</h3>
+            <p style={{ fontSize: "1.1em", color: "#e67e22" }}>
+              {item.price}$ 
+              <FcLike 
+                style={{ width:'35px',height:'35px',marginLeft:'200px',cursor: 'pointer' }}
+                onClick={() => handleAddToFavorites(item)}
+              />
             </p>
+            <p className={styles.cardDescription}>{item.description}</p>
             <Link href={`/product/${item.id}`}>
-              <button
-                style={{
-                  backgroundColor: "#e67e22",
-                  color: "#fff",
-                  padding: "10px 20px",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  textAlign: "center",
-                  display: "block",
-                  width: "100%",
-                }}
-              >
-                Detail
-              </button>
+              <button className={styles.cardButton}>Detail</button>
             </Link>
           </div>
         </div>
@@ -118,47 +95,62 @@ export default function Home() {
       <div>
         <Image
           src={home}
-          alt="Description of the image"
-          style={{ width: "100%", height: "auto", marginBottom: "50px" }}
+          alt="Home"
+          className={styles.homeImage}
         />
       </div>
       <div className={styles.container}>
-        <h1 style={{ marginLeft:'370px',color:'orange',fontSize: "50px" }}>Sports Shoes</h1>
-        <div className="container text-center">
-          <div className="row"style={{ display:'flex', gap:'30px' }}>
-            <div className="col">
-              <Image
-                src={anh1}
-                alt="Description of the image"
-                style={{ width: "100%", height: "auto", marginBottom: "50px" }}
-              />
-            </div>
-            <div className="col"> <Image
-                src={anh2}
-                alt="Description of the image"
-                style={{ width: "100%", height: "auto", marginBottom: "50px" }}
-              /></div>
-          </div>
+        <h1 className={styles.title}>Sports Shoes</h1>
+        <div className={styles.imageGrid}>
+          <Image
+            src={anh1}
+            alt="Product 1"
+            className={styles.productImage}
+          />
+          <Image
+            src={anh2}
+            alt="Product 2"
+            className={styles.productImage}
+          />
         </div>
       </div>
       <div>
-        <h1
-          style={{
-            color: "#fff",
-            backgroundColor: "#e67e22",
-            width: "fit-content",
-            padding: "20px 40px",
-            margin: "50px auto",
-            borderRadius: "8px",
-            textAlign: "center",
-          }}
-        >
-          <Link href="/product" style={{ color: "white" }}>
-            <div>All Product</div>
+        <h1 className={styles.allProductTitle}>
+          <Link href="/product">
+            <div style={{ color:'white' }}>All Product</div>
           </Link>
         </h1>
         <DataComponent />
       </div>
+      <style jsx>{`
+        @media (max-width: 1200px) {
+          .${styles.gridContainer} {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+        @media (max-width: 900px) {
+          .${styles.gridContainer} {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (max-width: 600px) {
+          .${styles.gridContainer} {
+            grid-template-columns: 1fr;
+          }
+          .${styles.title} {
+            margin-left: 0;
+            text-align: center;
+          }
+          .${styles.imageGrid} {
+            flex-direction: column;
+            gap: 20px;
+          }
+          .${styles.allProductTitle} {
+            padding: 10px 20px;
+            margin: 30px auto;
+          }
+        }
+      `}</style>
     </div>
   );
 }

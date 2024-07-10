@@ -1,4 +1,3 @@
-// pages/dashboard/index.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -6,7 +5,6 @@ import Link from "next/link";
 import { Product } from "@/type/types";
 import { PRODUCT_API_URL } from "@/lib/util";
 import withAuth from "../withAuth";
-
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -45,16 +43,14 @@ const DataComponent = () => {
     <div
       style={{
         marginTop: "20px",
-        backgroundColor: "beige",
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
         gap: "10px",
-        padding: "20px",
       }}
     >
       {data.map((item) => (
-        <Link href={`/dashboard/${item.id}`} key={item.id}>
-          <div
+        <Link href={`/dashboard/${item.id}`} key={item.id} legacyBehavior>
+          <a
             style={{
               border: "1px solid #ddd",
               borderRadius: "8px",
@@ -108,7 +104,7 @@ const DataComponent = () => {
                 {item.description}
               </p>
             </div>
-          </div>
+          </a>
         </Link>
       ))}
     </div>
@@ -117,37 +113,63 @@ const DataComponent = () => {
 
 const DashboardPage = () => {
   return (
-    <div>
-      <h1
+    <div style={{ display: "flex", height: "100%" }}>
+      <aside
         style={{
-          color: "orange",
-          backgroundColor: "green",
-          width: "600px",
-          height: "100px",
+          width: "200px",
+          backgroundColor: "#333",
+          color: "#fff",
+          padding: "20px",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginLeft: "200px",
+          flexDirection: "column",
+          justifyContent: "space-between",
         }}
       >
-        All List Nine Dev
-      </h1>
-      <Link href="/dashboard/add">
-        <button
-          style={{
-            backgroundColor: "orange",
-            color: "white",
-            border: "none",
-            padding: "10px 20px",
-            cursor: "pointer",
-            borderRadius: "4px",
-            marginLeft: "450px",
-          }}
-        >
-          ADD Product
-        </button>
-      </Link>
-      <DataComponent />
+        <div>
+          <h2 style={{ color: "#fff" }}>Dashboard</h2>
+          <nav>
+            <ul style={{ padding: 0 }}>
+              <li style={{ marginTop: "20px" }}>
+                <Link href="/dashboard" legacyBehavior>
+                  <a style={{ color: "#fff", textDecoration: "none" }}>
+                    Product
+                  </a>
+                </Link>
+              </li>
+              <li style={{ marginTop: "20px" }}>
+                <Link href="/dashboard" legacyBehavior>
+                  <a style={{ color: "#fff", textDecoration: "none" }}>
+                    User
+                  </a>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <Link href="/logout" legacyBehavior>
+          <a style={{ color: "#fff", textDecoration: "none" }}>Logout</a>
+        </Link>
+      </aside>
+      <main style={{ flex: 1, padding: "20px" }}>
+        <h1 style={{ marginLeft: "200px", color: "orange" }}>All List Nine Dev</h1>
+        <Link href="/dashboard/add" legacyBehavior>
+          <a
+            style={{
+              backgroundColor: "orange",
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              cursor: "pointer",
+              borderRadius: "4px",
+              marginBottom: "20px",
+              display: "inline-block",
+            }}
+          >
+            ADD Product
+          </a>
+        </Link>
+        <DataComponent />
+      </main>
     </div>
   );
 };

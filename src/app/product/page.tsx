@@ -1,10 +1,12 @@
-// DashboardPage.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Product } from "@/type/types";
 import { PRODUCT_API_URL } from "@/lib/util";
+import { FcLike } from "react-icons/fc";
+import { AiOutlineHeart } from "react-icons/ai";
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -18,11 +20,11 @@ const DataComponent = () => {
   const [data, setData] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     fetchData()
       .then((data) => {
-        // Assuming API returns an array of products
         setData(data);
         setLoading(false);
       })
@@ -31,6 +33,20 @@ const DataComponent = () => {
         setLoading(false);
       });
   }, []);
+
+  const handleAddToFavorites = (item: Product) => {
+    const savedProductIds = JSON.parse(localStorage.getItem("productIds") || "[]");
+    const savedProducts: Product[] = JSON.parse(localStorage.getItem("products") || "[]");
+
+    if (!savedProductIds.includes(item.id)) {
+      savedProductIds.push(item.id);
+      savedProducts.push(item);
+      localStorage.setItem("productIds", JSON.stringify(savedProductIds));
+      localStorage.setItem("products", JSON.stringify(savedProducts));
+      alert("Added to favorites!");
+      router.push("/product/favorite");
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -79,7 +95,11 @@ const DataComponent = () => {
               {item.name}
             </h3>
             <p style={{ fontSize: "1.1em", color: "#e67e22" }}>
-              {item.price}$
+              {item.price}$ 
+              <FcLike 
+                style={{ width:'35px',height:'35px',marginLeft:'200px',cursor: 'pointer' }}
+                onClick={() => handleAddToFavorites(item)} 
+              />
             </p>
             <p style={{ color: "#666", marginBottom: "10px" }}>
               {item.description}
@@ -104,6 +124,29 @@ const DataComponent = () => {
           </div>
         </div>
       ))}
+      <style jsx>{`
+        @media (max-width: 1200px) {
+          div[style*='grid-template-columns: repeat(4, 1fr)'] {
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+        }
+
+        @media (max-width: 900px) {
+          div[style*='grid-template-columns: repeat(4, 1fr)'] {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+
+        @media (max-width: 600px) {
+          div[style*='grid-template-columns: repeat(4, 1fr)'] {
+            grid-template-columns: 1fr !important;
+          }
+          h1 {
+            padding: 10px 20px !important;
+            margin: 30px auto !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

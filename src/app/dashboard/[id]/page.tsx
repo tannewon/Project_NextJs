@@ -56,7 +56,7 @@ export default function DashboardDetailPage({
   };
 
   if (!post) {
-    return <div>Loading...</div>;
+    return <div> </div>;
   }
 
   return (
@@ -64,7 +64,7 @@ export default function DashboardDetailPage({
       <img
         src={post.image}
         alt={post.name}
-        style={{ width: "500px", height: "400px" }}
+        style={{ width: "70%", height: "600px" }}
       />
       <br />
       <div
