@@ -92,7 +92,7 @@ const CartPage: React.FC = () => {
         {showCart && (
           <>
             {cartItems.length === 0 ? (
-              <p>Your cart is empty.</p>
+              <p></p>
             ) : (
               <table
                 style={{

@@ -105,7 +105,7 @@ const DataComponent = () => {
             <p style={{ fontSize: "1.1em", color: "#e67e22" }}>
               {item.price}$ 
               <FcLike 
-                style={{ width:'35px',height:'35px',marginLeft:'200px',cursor: 'pointer' }}
+                style={{ width:'30px',height:'30px',marginLeft:'160px',cursor: 'pointer' }}
                 onClick={() => handleAddToFavorites(item)} 
               />
             </p>
@@ -162,12 +162,11 @@ const DataComponent = () => {
 export default function DashboardPage() {
   return (
     <div>
-      <div>
-      <Image
+      <div> 
+        <Image
           src={home}
           alt="Home"
           style={{ width:'100%',height:'auto' }}
-
         />
       </div>
       <h1
@@ -183,7 +182,6 @@ export default function DashboardPage() {
       >
         All PRODUCTS
       </h1>
-      
       <DataComponent />
     </div>
   );

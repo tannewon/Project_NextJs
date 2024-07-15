@@ -66,7 +66,7 @@ const Navbar = () => {
         {isLoggedIn ? (
           <>
             <CartPage />
-            <Link href="/product/favorite" style={{ color: 'white', fontWeight: "bold", marginLeft: "20px" }}>Favorite<FcLike style={{ width:'20px',height:'20px'}} /></Link>
+            <Link href="/product/favorite" style={{ color: 'white', fontWeight: "bold", marginLeft: "20px" }}><FcLike style={{ width:'30px',height:'30px'}} /></Link>
             <Link href="/profile" style={{ color: 'white', fontWeight: "bold", marginLeft: "30px" }}>Profile</Link>
             <a onClick={handleLogout} style={{ cursor: 'pointer', color: 'white', fontWeight: "bold", marginLeft: "20px" }}>Logout</a>
           </>

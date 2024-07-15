@@ -3,6 +3,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { USER_API_URL } from "@/lib/util";
+import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -14,12 +15,22 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleLoginRedirect = () => {
@@ -81,7 +92,7 @@ const Register = () => {
             borderRadius: "10px",
             boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
             width: "100%",
-            maxWidth: "600px",
+            maxWidth: "500px",
             margin: "auto",
           }}
         >
@@ -140,13 +151,13 @@ const Register = () => {
                 </div>
               )}
             </div>
-            <div className="mb-3" style={{ marginTop: "20px" }}>
+            <div className="mb-3" style={{ marginTop: "20px", position: "relative" }}>
               <label htmlFor="inputPassword" className="form-label">
                 Password
               </label>
               <input
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter password"
                 className={`form-control ${errors.password ? "is-invalid" : ""}`}
                 id="inputPassword"
@@ -161,65 +172,63 @@ const Register = () => {
                   marginTop: "20px",
                 }}
               />
+              <span
+                onClick={togglePasswordVisibility}
+                style={{
+                  position: "absolute",
+                  top: "77%",
+                  right: "10px",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </span>
               {errors.password && (
                 <div className="invalid-feedback" style={{ color: "red" }}>
                   {errors.password}
                 </div>
               )}
             </div>
-            <div className="mb-3" style={{ marginTop: "20px" }}>
+            <div className="mb-3" style={{ marginTop: "20px", position: "relative" }}>
               <label htmlFor="inputConfirmPassword" className="form-label">
                 Confirm Password
               </label>
               <input
                 name="confirmPassword"
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 placeholder="Enter confirm password"
-                className={`form-control ${
-                  errors.confirmPassword ? "is-invalid" : ""
-                }`}
+                className={`form-control ${errors.confirmPassword ? "is-invalid" : ""}`}
                 id="inputConfirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 style={{
                   width: "96%",
                   height: "40px",
-                  border: errors.confirmPassword
-                    ? "1px solid red"
-                    : "1px solid #ccc",
+                  border: errors.confirmPassword ? "1px solid red" : "1px solid #ccc",
                   borderRadius: "5px",
                   padding: "0 10px",
                   marginTop: "20px",
                 }}
               />
+              <span
+                onClick={toggleConfirmPasswordVisibility}
+                style={{
+                  position: "absolute",
+                  top: "77%",
+                  right: "10px",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
+              >
+                {showConfirmPassword ? <EyeOff /> : <Eye />}
+              </span>
               {errors.confirmPassword && (
                 <div className="invalid-feedback" style={{ color: "red" }}>
                   {errors.confirmPassword}
                 </div>
               )}
             </div>
-            {/* <div className="mb-3" style={{ marginTop: "20px" }}>
-              <label htmlFor="inputRole" className="form-label">
-                Role
-              </label>
-              <select
-                name="role"
-                className="form-select"
-                value={formData.role}
-                onChange={handleChange}
-                style={{
-                  width: "100%",
-                  height: "40px",
-                  border: "1px solid #ccc",
-                  borderRadius: "5px",
-                  padding: "0 10px",
-                  marginTop: "10px",
-                }}
-              >
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div> */}
             <button
               type="submit"
               className="btn btn-primary mt-3"
