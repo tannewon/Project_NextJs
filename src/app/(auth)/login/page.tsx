@@ -8,36 +8,50 @@ import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
-      alert("Please enter both email and password.");
+    const newErrors = { email: "", password: "" };
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    }
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    }
+    if (newErrors.email || newErrors.password) {
+      setErrors(newErrors);
       return;
     }
+
     try {
       const response = await axios.get(USER_API_URL);
-      const user = response.data.find(
-        (user: any) =>
-          user.email === formData.email && user.password === formData.password
-      );
+      const user = response.data.find((user: any) => user.email === formData.email);
       if (user) {
-        Cookies.set("user", JSON.stringify(user), { expires: 7 });
-        router.push("/");
-        alert("Login successful");
+        if (user.password === formData.password) {
+          Cookies.set("user", JSON.stringify(user), { expires: 7 });
+          router.push("/");
+        } else {
+          setErrors((prevErrors) => ({ ...prevErrors, password: "Incorrect password" }));
+        }
       } else {
-        alert("Invalid email or password");
+        setErrors((prevErrors) => ({ ...prevErrors, email: "Email not found" }));
       }
     } catch (error) {
       console.error("Login failed", error);
-      alert("Login failed. Please try again later.");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: "Login failed. Please try again later.",
+        password: "Login failed. Please try again later.",
+      }));
     }
   };
 
@@ -73,7 +87,7 @@ const Login = () => {
                   name="email"
                   placeholder="Enter email"
                   type="email"
-                  className="form-control"
+                  className={`form-control ${errors.email ? "is-invalid" : ""}`}
                   value={formData.email}
                   onChange={handleChange}
                   style={{
@@ -85,6 +99,9 @@ const Login = () => {
                     padding: "0 10px",
                   }}
                 />
+                {errors.email && (
+                  <div className="invalid-feedback">{errors.email}</div>
+                )}
               </div>
             </div>
             <div className="mb-3 row" style={{ marginTop: "20px" }}>
@@ -96,7 +113,9 @@ const Login = () => {
                   name="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter password"
-                  className="form-control"
+                  className={`form-control ${
+                    errors.password ? "is-invalid" : ""
+                  }`}
                   id="inputPassword"
                   value={formData.password}
                   onChange={handleChange}
@@ -115,13 +134,16 @@ const Login = () => {
                     position: "absolute",
                     top: "50%",
                     right: "10px",
-                    marginTop:'10px',
+                    marginTop: "10px",
                     transform: "translateY(-50%)",
                     cursor: "pointer",
                   }}
                 >
                   {showPassword ? <EyeOff /> : <Eye />}
                 </span>
+                {errors.password && (
+                  <div className="invalid-feedback">{errors.password}</div>
+                )}
               </div>
             </div>
             <div style={{ textAlign: "center" }}>
@@ -137,6 +159,7 @@ const Login = () => {
                     color: "blue",
                     textDecoration: "underline",
                     cursor: "pointer",
+                    marginTop:'20px'
                   }}
                 >
                   Register
@@ -157,6 +180,8 @@ const Login = () => {
                 height: "40px",
                 fontSize: "16px",
                 fontWeight: "bold",
+                marginTop:'20px'
+
               }}
             >
               Login
@@ -180,6 +205,14 @@ const Login = () => {
           .form-control {
             width: 100% !important;
           }
+        }
+        .is-invalid {
+          border-color: red !important;
+        }
+        .invalid-feedback {
+          color: red;
+          font-size: 0.875rem;
+          margin-top: 0.25rem;
         }
       `}</style>
     </main>

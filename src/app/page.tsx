@@ -53,13 +53,13 @@ const DataComponent = () => {
   };
 
   if (loading) {
-    return <div> </div>;
+    return <div>Loading...</div>;
   }
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-  
+
   return (
     <div className={styles.gridContainer}>
       {data.map((item) => (
@@ -73,8 +73,8 @@ const DataComponent = () => {
             <h3 className={styles.cardTitle}>{item.name}</h3>
             <p style={{ fontSize: "1.1em", color: "#e67e22" }}>
               {item.price}$ 
-              <FcLike 
-                style={{ width:'35px',height:'35px',marginLeft:'200px',cursor: 'pointer' }}
+              <FcLike
+                style={{ width: '35px', height: '35px', marginLeft: '200px', cursor: 'pointer' }}
                 onClick={() => handleAddToFavorites(item)}
               />
             </p>
@@ -92,7 +92,7 @@ const DataComponent = () => {
 export default function Home() {
   return (
     <div>
-      <div>
+      <div> 
         <Image
           src={home}
           alt="Home"
@@ -117,7 +117,7 @@ export default function Home() {
       <div>
         <h1 className={styles.allProductTitle}>
           <Link href="/product">
-            <div style={{ color:'white' }}>All Product</div>
+            <div style={{ color: 'white' }}>All Product</div>
           </Link>
         </h1>
         <DataComponent />

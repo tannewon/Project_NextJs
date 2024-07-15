@@ -5,6 +5,7 @@ import Footer from "@/component/Footer";
 import { ThemeProvider } from "@/component/ThemeProvider";
 import { ModeToggle } from "@/component/ModeToggle";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -20,15 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider>
           <Navbar />
           {children}
-          <Footer />  
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

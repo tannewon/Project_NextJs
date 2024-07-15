@@ -1,24 +1,31 @@
-"use client"
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
-import { ModeToggle } from "./ModeToggle";
 import { FcLike } from "react-icons/fc";
+import { CartPage } from "./cartShopping";
+import { ModeToggle } from "./ModeToggle";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
 
   useEffect(() => {
-    const userCookie = Cookies.get('user');
-    if (userCookie) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
+    const checkLoginStatus = () => {
+      const userCookie = Cookies.get('user');
+      setIsLoggedIn(!!userCookie);
+    };
+
+    checkLoginStatus();
+
+    // Listen for cookie changes
+    const intervalId = setInterval(checkLoginStatus, 1000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleLogout = () => {
@@ -27,27 +34,40 @@ const Navbar = () => {
     router.push('/login');
   };
 
+  const handleSearch = (e:any) => {
+    e.preventDefault();
+    if (searchQuery.trim() !== '') {
+      router.push(`/product?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   return (
-    <nav style={{display:'flex', backgroundColor: "orange", color: 'white', height: '130px', justifyContent: 'space-between', padding: '0 20px' }}>
+    <nav style={{ display: 'flex', backgroundColor: "orange", color: 'white', height: '130px', justifyContent: 'space-between', padding: '0 20px' }}>
       <div style={{ flex: '0 0 auto' }}>
-        <Image src="/ninedev.png" alt="logo nine dev" width={100} height={70} />
+        <Image src="/ninedev.png" alt="nine dev logo" width={100} height={70} />
       </div>
-      <div style={{ display: 'flex', alignItems: 'center',marginRight:'100px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', marginRight: '100px' }}>
         <Link href="/" style={{ color: 'white', fontWeight: "bold", marginLeft: "70px" }}>Home</Link>
         <Link href="/product" style={{ color: 'white', fontWeight: "bold", marginLeft: "70px" }}>Product</Link>
-        <Link href="/about" style={{ color: 'white', fontWeight: "bold", marginLeft: "70px" }}>About</Link>
         <Link href="/dashboard" style={{ color: 'white', fontWeight: "bold", marginLeft: "70px" }}>Management</Link>
-        <form style={{ display: 'flex', alignItems: 'center',marginLeft: "50px" }}>
-          <input type="text" name="search" placeholder="Search products" style={{ width: '200px', height: '30px' }} />
+        <form style={{ display: 'flex', alignItems: 'center', marginLeft: "50px" }} onSubmit={handleSearch}>
+          <input 
+            type="text" 
+            name="search" 
+            placeholder="Search products" 
+            style={{ width: '200px', height: '30px' }} 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           <button type="submit" style={{ width: '35px', height: '35px', marginLeft: '5px' }}><FaSearch /></button>
         </form>
         <ModeToggle />
-  
-
+        
         {isLoggedIn ? (
           <>
-            <Link href="/product/favorite" style={{ color: 'white', fontWeight: "bold", marginLeft: "20px" }}><FcLike style={{ width:'20px',height:'20px'}} /></Link>
-            <Link href="/profile" style={{ color: 'white', fontWeight: "bold", marginLeft: "20px" }}>Profile</Link>
+            <CartPage />
+            <Link href="/product/favorite" style={{ color: 'white', fontWeight: "bold", marginLeft: "20px" }}>Favorite<FcLike style={{ width:'20px',height:'20px'}} /></Link>
+            <Link href="/profile" style={{ color: 'white', fontWeight: "bold", marginLeft: "30px" }}>Profile</Link>
             <a onClick={handleLogout} style={{ cursor: 'pointer', color: 'white', fontWeight: "bold", marginLeft: "20px" }}>Logout</a>
           </>
         ) : (
@@ -58,9 +78,6 @@ const Navbar = () => {
         )}
       </div>
 
-      
-
-      {/* Media Queries for Responsive Design */}
       <style jsx>{`
         @media only screen and (max-width: 320px) {
           nav {

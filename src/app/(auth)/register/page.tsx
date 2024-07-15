@@ -198,7 +198,7 @@ const Register = () => {
                 </div>
               )}
             </div>
-            <div className="mb-3" style={{ marginTop: "20px" }}>
+            {/* <div className="mb-3" style={{ marginTop: "20px" }}>
               <label htmlFor="inputRole" className="form-label">
                 Role
               </label>
@@ -219,7 +219,7 @@ const Register = () => {
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
               </select>
-            </div>
+            </div> */}
             <button
               type="submit"
               className="btn btn-primary mt-3"

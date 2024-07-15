@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Product } from "@/type/types";
 import { PRODUCT_API_URL } from "@/lib/util";
 import { FcLike } from "react-icons/fc";
-import { AiOutlineHeart } from "react-icons/ai";
+import home from '../../../public/home2.jpg'
+import Image from "next/image";
+
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -21,18 +23,23 @@ const DataComponent = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
 
   useEffect(() => {
     fetchData()
       .then((data) => {
-        setData(data);
+        const filteredData = data.filter((item: Product) => 
+          item.name. toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setData(filteredData);
         setLoading(false);
       })
       .catch((error) => {
         setError(error);
         setLoading(false);
       });
-  }, []);
+  }, [searchQuery]);
 
   const handleAddToFavorites = (item: Product) => {
     const savedProductIds = JSON.parse(localStorage.getItem("productIds") || "[]");
@@ -67,6 +74,7 @@ const DataComponent = () => {
         padding: "20px",
       }}
     >
+      
       {data.map((item) => (
         <div
           key={item.id}
@@ -154,6 +162,14 @@ const DataComponent = () => {
 export default function DashboardPage() {
   return (
     <div>
+      <div>
+      <Image
+          src={home}
+          alt="Home"
+          style={{ width:'100%',height:'auto' }}
+
+        />
+      </div>
       <h1
         style={{
           color: "#fff",
@@ -167,6 +183,7 @@ export default function DashboardPage() {
       >
         All PRODUCTS
       </h1>
+      
       <DataComponent />
     </div>
   );
