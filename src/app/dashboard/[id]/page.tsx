@@ -56,71 +56,73 @@ export default function DashboardDetailPage({
   };
 
   if (!post) {
-    return <div> </div>;
+    return <div>Loading...</div>;
   }
 
   return (
-    <div style={{ marginLeft: "250px" }}>
-      <img
-        src={post.image}
-        alt={post.name}
-        style={{ width: "70%", height: "600px" }}
-      />
-      <br />
-      <div
+    <div>
+      <button
+        onClick={handleBack}
         style={{
-          backgroundColor: "Orange",
-          width: "480px",
-          height: "250px",
-          padding: '10px'
+          backgroundColor: "gray",
+          border: "none",
+          padding: "10px 20px",
+          cursor: "pointer",
+          borderRadius: "4px",
         }}
       >
-        <Link href={`/dashboard/edit?id=${id}`}>
-          <button
-            style={{
-              marginRight: "30px",
-              backgroundColor: "yellow",
-              marginTop: "20px",
-              border: "none",
-              padding: "10px 20px",
-              cursor: "pointer",
-              borderRadius: "4px",
-            }}
-          >
-            Edit
-          </button>
-        </Link>
-        <button
-          onClick={handleDelete}
-          style={{
-            marginRight: "30px",
-            backgroundColor: "red",
-            marginTop: "20px",
-            border: "none",
-            padding: "10px 20px",
-            cursor: "pointer",
-            borderRadius: "4px",
-          }}
-        >
-          Delete
-        </button>
-        <button
-          onClick={handleBack}
-          style={{
-            backgroundColor: "gray",
-            marginTop: "20px",
-            marginLeft: '200px',
-            border: "none",
-            padding: "10px 20px",
-            cursor: "pointer",
-            borderRadius: "4px",
-          }}
-        >
-          Back
-        </button>
-        <h1>{post.name}</h1>
-        <p style={{ color: 'red' }}>{post.price}$</p>
-        <p>{post.description}</p>
+        Back
+      </button>
+      <br />
+      <div style={{ marginTop: "20px" }}>
+        <div style={{ display: "flex", fontWeight: "bold", marginBottom: "10px" }}>
+          <div style={{ flex: "1" }}>Image</div>
+          <div style={{ flex: "2" }}>Name</div>
+          <div style={{ flex: "1" }}>Price</div>
+          <div style={{ flex: "4" }}>Description</div>
+          <div style={{ flex: "2" }}>Actions</div>
+        </div>
+        <hr></hr>
+        <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+          <div style={{ flex: "1" }}>
+            <img
+              src={post.image}
+              alt={post.name}
+              style={{ width: "100px", height: "auto", objectFit: "contain" }}
+            />
+          </div>
+          <div style={{ flex: "2" }}>{post.name}</div>
+          <div style={{ flex: "1", color: "red" }}>{post.price}$</div>
+          <div style={{ flex: "4" }}>{post.description}</div>
+          <div style={{  justifyContent: "space-between", marginRight:'100px' }}>
+            <Link href={`/dashboard/edit?id=${id}`}>
+              <button
+                style={{
+                  backgroundColor: "yellow",
+                  border: "none",
+                  padding: "10px 20px",
+                  cursor: "pointer",
+                  borderRadius: "4px",
+                  marginRight:'20px'
+                }}
+              >
+                Edit
+              </button>
+            </Link>
+            <button
+              onClick={handleDelete}
+              style={{
+                backgroundColor: "red",
+                border: "none",
+                padding: "10px 20px",
+                cursor: "pointer",
+                borderRadius: "4px",
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

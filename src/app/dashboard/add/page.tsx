@@ -91,7 +91,7 @@ export default function AddProductPage() {
 
   return (
     <div>
-      <h2 style={{ color: "orange", marginLeft: "380px" }}>Add New Product</h2>
+      <h2 style={{ color: "orange", marginLeft: "500px" }}>Add New Product</h2>
       <form
         onSubmit={handleSubmit}
         style={{

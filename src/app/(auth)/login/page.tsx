@@ -21,13 +21,17 @@ const Login = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const newErrors = { email: "", password: "" };
+    let hasErrors = false;
+
     if (!formData.email) {
       newErrors.email = "Email is required";
+      hasErrors = true;
     }
     if (!formData.password) {
       newErrors.password = "Password is required";
+      hasErrors = true;
     }
-    if (newErrors.email || newErrors.password) {
+    if (hasErrors) {
       setErrors(newErrors);
       return;
     }
@@ -40,18 +44,17 @@ const Login = () => {
           Cookies.set("user", JSON.stringify(user), { expires: 7 });
           router.push("/");
         } else {
-          setErrors((prevErrors) => ({ ...prevErrors, password: "Incorrect password" }));
+          setErrors({ email: "", password: "Incorrect password" });
         }
       } else {
-        setErrors((prevErrors) => ({ ...prevErrors, email: "Email not found" }));
+        setErrors({ email: "Email not found", password: "" });
       }
     } catch (error) {
       console.error("Login failed", error);
-      setErrors((prevErrors) => ({
-        ...prevErrors,
+      setErrors({
         email: "Login failed. Please try again later.",
         password: "Login failed. Please try again later.",
-      }));
+      });
     }
   };
 
@@ -76,10 +79,10 @@ const Login = () => {
             margin: "auto",
           }}
         >
-          <form onSubmit={handleSubmit} style={{ padding: "40px" }}>
-            <h2 style={{ textAlign: "center", color: "orange" }}>Login</h2>
+          <form onSubmit={handleSubmit} style={{ padding: "40px",backgroundColor:'#EEC900',borderRadius:'10px' }}>
+            <h2 style={{ textAlign: "center", color: "black" }}>Login</h2>
             <div className="mb-3 row">
-              <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
+              <label htmlFor="staticEmail" className="col-sm-2 col-form-label" style={{ color:'white',fontWeight: "bold" }}>
                 Email
               </label>
               <div className="col-sm-10">
@@ -105,7 +108,7 @@ const Login = () => {
               </div>
             </div>
             <div className="mb-3 row" style={{ marginTop: "20px" }}>
-              <label htmlFor="inputPassword" className="col-sm-2 col-form-label">
+              <label htmlFor="inputPassword" className="col-sm-2 col-form-label" style={{ color:'white',fontWeight: "bold" }}>
                 Password
               </label>
               <div className="col-sm-10" style={{ position: "relative" }}>
@@ -146,7 +149,27 @@ const Login = () => {
                 )}
               </div>
             </div>
-            <div style={{ textAlign: "center" }}>
+            <button
+              type="submit"
+              className="btn btn-primary mt-3"
+              style={{
+                backgroundColor: "#FF8C00",
+                color: "white",
+                border: "none",
+                padding: "10px 20px",
+                cursor: "pointer",
+                borderRadius: "5px",
+                width: "100%",
+                height: "40px",
+                fontSize: "16px",
+                fontWeight: "bold",
+                marginTop:'40px'
+
+              }}
+            >
+              Login
+            </button>
+            <div style={{ textAlign: "center",color:'white' }}>
               <p>
                 Don’t have an account?
                 <button
@@ -163,29 +186,9 @@ const Login = () => {
                   }}
                 >
                   Register
-                </button>
+                 </button>
               </p>
             </div>
-            <button
-              type="submit"
-              className="btn btn-primary mt-3"
-              style={{
-                backgroundColor: "#FF8C00",
-                color: "white",
-                border: "none",
-                padding: "10px 20px",
-                cursor: "pointer",
-                borderRadius: "5px",
-                width: "100%",
-                height: "40px",
-                fontSize: "16px",
-                fontWeight: "bold",
-                marginTop:'20px'
-
-              }}
-            >
-              Login
-            </button>
           </form>
         </div>
       </div>

@@ -98,7 +98,7 @@ export default function EditProductPage() {
 
   return (
     <div>
-      <h1 style={{ color: "orange", marginLeft: "380px" }}>Edit Product</h1>
+      <h2 style={{ color: "orange", marginLeft: "520px" }}>Edit Product</h2>
       <form
         onSubmit={handleSubmit}
         style={{

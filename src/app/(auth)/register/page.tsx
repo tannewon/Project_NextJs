@@ -96,10 +96,10 @@ const Register = () => {
             margin: "auto",
           }}
         >
-          <form onSubmit={handleSubmit} style={{ padding: "40px" }}>
-            <h2 style={{ textAlign: "center", color: "orange" }}>Register</h2>
+          <form onSubmit={handleSubmit} style={{ padding: "40px" ,backgroundColor:'#EEC900',borderRadius:'10px'}}>
+            <h2 style={{ textAlign: "center", color: "black" }}>Register</h2>
             <div className="mb-3">
-              <label htmlFor="inputName" className="form-label">
+              <label htmlFor="inputName" className="form-label" style={{ color:'white',fontWeight: "bold" }} >
                 Name
               </label>
               <input
@@ -126,7 +126,7 @@ const Register = () => {
               )}
             </div>
             <div className="mb-3" style={{ marginTop: "20px" }}>
-              <label htmlFor="staticEmail" className="form-label">
+              <label htmlFor="staticEmail" className="form-label" style={{ color:'white',fontWeight: "bold" }}>
                 Email
               </label>
               <input
@@ -152,7 +152,7 @@ const Register = () => {
               )}
             </div>
             <div className="mb-3" style={{ marginTop: "20px", position: "relative" }}>
-              <label htmlFor="inputPassword" className="form-label">
+              <label htmlFor="inputPassword" className="form-label" style={{ color:'white',fontWeight: "bold" }}>
                 Password
               </label>
               <input
@@ -171,16 +171,18 @@ const Register = () => {
                   padding: "0 10px",
                   marginTop: "20px",
                 }}
+                
               />
               <span
                 onClick={togglePasswordVisibility}
                 style={{
-                  position: "absolute",
+                  position:'absolute',
                   top: "77%",
                   right: "10px",
                   transform: "translateY(-50%)",
                   cursor: "pointer",
                 }}
+                
               >
                 {showPassword ? <EyeOff /> : <Eye />}
               </span>
@@ -191,7 +193,7 @@ const Register = () => {
               )}
             </div>
             <div className="mb-3" style={{ marginTop: "20px", position: "relative" }}>
-              <label htmlFor="inputConfirmPassword" className="form-label">
+              <label htmlFor="inputConfirmPassword" className="form-label" style={{ color:'white',fontWeight: "bold" }}>
                 Confirm Password
               </label>
               <input
@@ -224,7 +226,7 @@ const Register = () => {
                 {showConfirmPassword ? <EyeOff /> : <Eye />}
               </span>
               {errors.confirmPassword && (
-                <div className="invalid-feedback" style={{ color: "red" }}>
+               <div className="invalid-feedback" style={{ color: "red" }}>
                   {errors.confirmPassword}
                 </div>
               )}
@@ -248,7 +250,7 @@ const Register = () => {
             >
               Register
             </button>
-            <div style={{ marginTop: "20px", textAlign: "center" }}>
+            <div style={{ marginTop: "20px", textAlign: "center",color:'white' }}>
               <p>
                 Already have an account?
                 <button
