@@ -96,7 +96,7 @@ const Register = () => {
             margin: "auto",
           }}
         >
-          <form onSubmit={handleSubmit} style={{ padding: "40px" ,backgroundColor:'#EEC900',borderRadius:'10px'}}>
+          <form onSubmit={handleSubmit} style={{ padding: "40px" ,backgroundColor:'#FF6633',borderRadius:'10px'}}>
             <h2 style={{ textAlign: "center", color: "black" }}>Register</h2>
             <div className="mb-3">
               <label htmlFor="inputName" className="form-label" style={{ color:'white',fontWeight: "bold" }} >

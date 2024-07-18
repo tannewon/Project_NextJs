@@ -37,6 +37,13 @@ export default function DashboardDetailPage({
   }, [id]);
 
   const handleAddToCart = () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      // Redirect to login page if not authenticated
+      router.push("/login");
+      return;
+    }
+
     if (post) {
       const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
       const existingItem = cartItems.find((item: any) => item.id === post.id);
@@ -53,12 +60,25 @@ export default function DashboardDetailPage({
     }
   };
 
+  const handleAddToFavorites = () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      // Redirect to login page if not authenticated
+      router.push("/login");
+      return;
+    }
+
+    // Handle adding to favorites here
+    // Example: Redirect or API call to add to favorites
+    router.push(`/product/favorite?id=${id}`);
+  };
+
   const handleBack = () => {
     router.push("/product");
   };
 
   if (!post) {
-    return <div></div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -70,23 +90,22 @@ export default function DashboardDetailPage({
           style={{ width: "550px", height: "400px", objectFit: "cover", borderRadius: "8px" }}
         />
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
-          <Link href={`/product/favorite?id=${id}`}>
-            <button
-              style={{
-                backgroundColor: "red",
-                border: "none",
-                padding: "10px 20px",
-                cursor: "pointer",
-                borderRadius: "4px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-              }}
-            >
-              <AiOutlineHeart style={{ width: "20px", height: "20px" }} />
-            </button>
-          </Link>
+          <button
+            onClick={handleAddToFavorites}
+            style={{
+              backgroundColor: "red",
+              border: "none",
+              padding: "10px 20px",
+              cursor: "pointer",
+              borderRadius: "4px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#fff",
+            }}
+          >
+            <AiOutlineHeart style={{ width: "20px", height: "20px" }} />
+          </button>
           <button
             onClick={handleAddToCart}
             style={{

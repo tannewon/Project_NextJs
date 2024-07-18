@@ -52,7 +52,7 @@ export default function DashboardDetailPage({
   };
 
   const handleBack = () => {
-    router.push("/dashboard"); // Navigate back to the dashboard page
+    router.push("/dashboard/product"); // Navigate back to the dashboard page
   };
 
   if (!post) {

@@ -68,13 +68,14 @@ const DataComponent = () => {
             src={item.image}
             alt={item.name}
             className={styles.cardImage}
+            style={{ width: "100%", height: "280px", objectFit: "cover" }}
           />
           <div className={styles.cardContent}>
             <h3 className={styles.cardTitle}>{item.name}</h3>
             <p style={{ fontSize: "1.1em", color: "#e67e22" }}>
               {item.price}$ 
               <FcLike
-                style={{ width: '30px', height: '30px', marginLeft: '160px', cursor: 'pointer' }}
+                style={{ width: '30px', height: '30px', marginLeft: '200px', cursor: 'pointer' }}
                 onClick={() => handleAddToFavorites(item)}
               />
             </p>

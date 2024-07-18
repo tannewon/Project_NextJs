@@ -79,7 +79,7 @@ const Login = () => {
             margin: "auto",
           }}
         >
-          <form onSubmit={handleSubmit} style={{ padding: "40px",backgroundColor:'#EEC900',borderRadius:'10px' }}>
+          <form onSubmit={handleSubmit} style={{ padding: "40px",backgroundColor:'#FF6633',borderRadius:'10px' }}>
             <h2 style={{ textAlign: "center", color: "black" }}>Login</h2>
             <div className="mb-3 row">
               <label htmlFor="staticEmail" className="col-sm-2 col-form-label" style={{ color:'white',fontWeight: "bold" }}>

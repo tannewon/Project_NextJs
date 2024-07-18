@@ -76,32 +76,32 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div>
-      <h1>Favorite Products</h1>
-      <table>
+    <div style={{ justifyContent: "center", alignItems: "center", flexDirection: "column", display: "flex", padding: "20px" }}>
+      <h1 style={{ color: "orange" }}>Favorite Products</h1>
+      <table style={{ borderCollapse: "collapse", width: "100%", maxWidth: "800px" }}>
         <thead>
           <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Action</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Image</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Name</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Description</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Price</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Action</th>
           </tr>
         </thead>
         <tbody>
           {products.map((product) => (
             <tr key={product.id}>
-              <td>
+              <td style={{ padding: "10px" }}>
                 <img
                   src={product.image}
                   alt={product.name}
                   style={{ width: "100px", height: "100px" }}
                 />
               </td>
-              <td>{product.name}</td>
-              <td>{product.description}</td>
-              <td>{product.price}$</td>
-              <td>
+              <td style={{ padding: "10px" }}>{product.name}</td>
+              <td style={{ padding: "10px" }}>{product.description}</td>
+              <td style={{ padding: "10px" }}>{product.price}$</td>
+              <td style={{ padding: "10px" }}>
                 <button
                   onClick={() => handleRemoveFavorite(product.id)}
                   style={{

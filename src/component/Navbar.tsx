@@ -10,7 +10,6 @@ import { CartPage } from "./cartShopping";
 import { ModeToggle } from "./ModeToggle";
 import logo from "../../public/ninedev.png";
 
-
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,9 +23,7 @@ const Navbar = () => {
 
     checkLoginStatus();
 
-    // Listen for cookie changes
     const intervalId = setInterval(checkLoginStatus, 1000);
-
     return () => clearInterval(intervalId);
   }, []);
 
@@ -44,57 +41,75 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ display: 'flex', backgroundColor: "orange", color: 'white',width:'100%', height: 'auto', justifyContent: 'space-between', padding: '0 20px' }}>
+    <nav style={{ display: 'flex', backgroundColor: "orange", color: 'white', width:'100%', height: 'auto', justifyContent: 'space-between', padding: '0 20px' }}>
       <div >
         <Image src={logo} 
         alt="Home"
-        style={{ width:'100%',height:'80px',padding:'10px',borderRadius:'20px' }}
+        style={{ width:'100%', height:'80px', padding:'10px', borderRadius:'20px' }}
         />
       </div>
       <div className="navLinks" style={{ display: 'flex', alignItems: 'center', marginRight: '100px' }}>
-        <Link href="/" style={{ color: 'white', fontWeight: "bold", marginLeft: "80px" }}>Home</Link>
-        <Link href="/product" style={{ color: 'white', fontWeight: "bold", marginLeft: "80px" }}>Product</Link>
-        <Link href="/dashboard" style={{ color: 'white', fontWeight: "bold", marginLeft: "80px" }}>Management</Link>
+        <Link href="/" passHref>
+          <p className="navLink" style={{ color: 'white', fontWeight: "bold", marginLeft: "80px" }}>Home</p>
+        </Link>
+        <Link href="/product" passHref>
+          <p className="navLink" style={{ color: 'white', fontWeight: "bold", marginLeft: "80px" }}>Product</p>
+        </Link>
+        <Link href="/dashboard" passHref>
+          <p className="navLink" style={{ color: 'white', fontWeight: "bold", marginLeft: "80px" }}>Management</p>
+        </Link>
         <form className="searchForm" style={{ display: 'flex', alignItems: 'center', marginLeft: "80px" }} onSubmit={handleSearch}>
           <input 
             type="text" 
             name="search" 
             placeholder="Search products" 
-            style={{ width: '250px', height: '33px', border: 'none',borderRadius:'15px' }} 
+            style={{ width: '250px', height: '33px', border: 'none', borderRadius:'15px' }} 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button type="submit" style={{ width: '35px', height: '35px', marginLeft: '5px', border: 'none',borderRadius:'15px' }}><FaSearch /></button>
+          <button type="submit" className="searchButton" style={{ width: '35px', height: '35px', marginLeft: '5px', border: 'none', borderRadius:'15px' }}><FaSearch /></button>
         </form>
-        
         
         {isLoggedIn ? (
           <>
             <CartPage />
-            <Link href="/product/favorite" style={{ color: 'white', fontWeight: "bold", marginLeft: "50px" }}><FcLike style={{ width: '30px', height: '30px' }} /></Link>
-            <Link href="/profile" style={{ color: 'white', fontWeight: "bold", marginLeft: "50px" }}>Profile</Link>
-            <a onClick={handleLogout} style={{ cursor: 'pointer', color: 'white', fontWeight: "bold", marginLeft: "50px" }}>Logout</a>
+            <Link href="/product/favorite" passHref>
+              <p className="navLink" style={{ color: 'white', fontWeight: "bold", marginLeft: "30px" }}><FcLike style={{ width: '30px', height: '30px' }} /></p>
+            </Link>
+            <Link href="/profile" passHref>
+              <p className="navLink" style={{ color: 'white', fontWeight: "bold", marginLeft: "30px" }}>Profile</p>
+            </Link>
+            <span onClick={handleLogout} className="navLink" style={{ cursor: 'pointer', color: 'white', fontWeight: "bold", marginLeft: "30px" }}>Logout</span>
           </>
         ) : (
           <>
-            <Link href="/login" style={{ color: 'white', fontWeight: 'bold', marginLeft: '50px', textDecoration: 'none', padding: '5px 10px', borderRadius: '15px', backgroundColor: '#CD6839' }}>Login</Link>
-             <Link href="/register" style={{ color: 'white', fontWeight: 'bold', marginLeft: '50px', textDecoration: 'none', padding: '5px 10px', borderRadius: '15px', backgroundColor: '#CD6839' }}>Register</Link>
-
+            <Link href="/login" passHref>
+              <p className="navLink" style={{ color: 'white', fontWeight: 'bold', marginLeft: '50px', textDecoration: 'none', padding: '5px 10px', borderRadius: '15px', backgroundColor: '#FF6633', border:'1px solid' }}>Login</p>
+            </Link>
+            <Link href="/register" passHref>
+              <p className="navLink" style={{ color: 'white', fontWeight: 'bold', marginLeft: '50px', textDecoration: 'none', padding: '5px 10px', borderRadius: '15px', backgroundColor: '#FF6633', border:'1px solid' }}>Register</p>
+            </Link>
           </>
         )}
         <ModeToggle/>
       </div>
-      
 
       <style jsx>{`
         nav {
           padding: 0 20px;
         }
-        .navLinks > * {
-          transition: color 0.3s;
+        .navLink {
+          transition: color 0.3s, background-color 0.3s;
         }
-        .navLinks > *:hover {
-          color: red;
+        .navLink:hover {
+          color: red !important;
+          color: #FF6633;
+        }
+        .searchButton {
+          transition: background-color 0.3s;
+        }
+        .searchButton:hover {
+          background-color: rgba(255, 0, 0, 0.2);
         }
         @media only screen and (max-width: 320px) {
           nav {
