@@ -56,7 +56,7 @@ export default function DashboardDetailPage({
   };
 
   if (!post) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   return (

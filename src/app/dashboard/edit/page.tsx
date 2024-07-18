@@ -94,7 +94,7 @@ export default function EditProductPage() {
     }
   };
 
-  if (!post) return <div>Loading...</div>;
+  if (!post) return <div></div>;
 
   return (
     <div>
