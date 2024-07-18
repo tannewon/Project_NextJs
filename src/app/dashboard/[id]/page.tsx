@@ -94,6 +94,7 @@ export default function DashboardDetailPage({
           <div style={{ flex: "2" }}>{post.name}</div>
           <div style={{ flex: "1", color: "red" }}>{post.price}$</div>
           <div style={{ flex: "4" }}>{post.description}</div>
+          {/* <div style={{ flex: "4" }}>{post.category}</div> */}
           <div style={{  justifyContent: "space-between", marginRight:'100px' }}>
             <Link href={`/dashboard/edit?id=${id}`}>
               <button

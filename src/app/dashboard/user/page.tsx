@@ -4,7 +4,8 @@ import { USER_API_URL } from "@/lib/util";
 import { FormData } from "@/type/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import { MdDeleteForever } from "react-icons/md";
+import { MdOutlineModeEdit } from "react-icons/md";
 const UserPage = () => {
   const [users, setUsers] = useState<FormData[]>([]);
   const router = useRouter();
@@ -120,7 +121,7 @@ const UserPage = () => {
                   cursor: "pointer",
                 }}
               >
-                Edit
+                <MdOutlineModeEdit style={{width:'25px',height:'25px'}}/>
             </Link>
             <button
               style={{
@@ -134,7 +135,7 @@ const UserPage = () => {
               }}
               onClick={() => deleteUser(user.id)}
             >
-              Delete
+              <MdDeleteForever style={{width:'20px',height:'20px'}}/>
             </button>
           </div>
         </div>

@@ -77,7 +77,7 @@ export default function AddProductPage() {
         }
       );
       if (res.ok) {
-        router.push("/dashboard"); // Redirect back to dashboard after adding
+        router.push("/dashboard/product"); // Redirect back to dashboard after adding
       } else {
         const errorData = await res.json();
         throw new Error(errorData.message || "Failed to add product");
@@ -91,7 +91,7 @@ export default function AddProductPage() {
 
   return (
     <div>
-      <h2 style={{ color: "orange", marginLeft: "500px" }}>Add New Product</h2>
+      <h2 style={{ color: "orange", marginLeft: "480px" }}>Add New Product</h2>
       <form
         onSubmit={handleSubmit}
         style={{

@@ -34,6 +34,30 @@ const lineChartOptions: ApexOptions = {
   },
   responsive: [
     {
+      breakpoint: 320,
+      options: {
+        chart: {
+          height: 240,
+        },
+      },
+    },
+    {
+      breakpoint: 480,
+      options: {
+        chart: {
+          height: 280,
+        },
+      },
+    },
+    {
+      breakpoint: 768,
+      options: {
+        chart: {
+          height: 300,
+        },
+      },
+    },
+    {
       breakpoint: 1024,
       options: {
         chart: {
@@ -46,6 +70,14 @@ const lineChartOptions: ApexOptions = {
       options: {
         chart: {
           height: 350,
+        },
+      },
+    },
+    {
+      breakpoint: 1920,
+      options: {
+        chart: {
+          height: 400,
         },
       },
     },
@@ -85,7 +117,18 @@ const lineChartOptions: ApexOptions = {
   xaxis: {
     type: "category",
     categories: [
-      "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
     ],
     axisBorder: {
       show: false,
@@ -130,6 +173,30 @@ const barChartOptions: ApexOptions = {
   },
   responsive: [
     {
+      breakpoint: 320,
+      options: {
+        chart: {
+          height: 240,
+        },
+      },
+    },
+    {
+      breakpoint: 480,
+      options: {
+        chart: {
+          height: 280,
+        },
+      },
+    },
+    {
+      breakpoint: 768,
+      options: {
+        chart: {
+          height: 300,
+        },
+      },
+    },
+    {
       breakpoint: 1024,
       options: {
         chart: {
@@ -142,6 +209,14 @@ const barChartOptions: ApexOptions = {
       options: {
         chart: {
           height: 350,
+        },
+      },
+    },
+    {
+      breakpoint: 1920,
+      options: {
+        chart: {
+          height: 400,
         },
       },
     },
@@ -168,7 +243,18 @@ const barChartOptions: ApexOptions = {
   xaxis: {
     type: "category",
     categories: [
-      "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
     ],
     axisBorder: {
       show: false,
@@ -220,7 +306,6 @@ const ChartComponent: React.FC = () => {
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
-
       <div>
         <div id="chartOne" className="-ml-5">
           <h2 className="text-xl font-bold mb-4">Line Chart</h2>

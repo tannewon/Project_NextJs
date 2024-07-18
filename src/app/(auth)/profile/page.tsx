@@ -56,6 +56,24 @@ const Profile = () => {
           >
             Profile
           </h2>
+          {user.avatar && (
+            <div
+              style={{
+                marginBottom: "20px",
+              }}
+            >
+              <img
+                src={user.avatar}
+                alt="Avatar"
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+          )}
           <div
             style={{
               marginBottom: "15px",

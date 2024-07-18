@@ -70,20 +70,18 @@ const DataComponent = () => {
             backgroundColor: "grey",
             color: "white",
             border: "none",
-            padding: "10px 20px",
+            padding: "10px 15px",
             cursor: "pointer",
             borderRadius: "4px",
-            display: "inline-block",
-            textDecoration: "none",
           }}
         >
-          BACK
+          Back
         </div>
       </div>
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: "repeat(4, 1fr)",
           gap: "30px",
           marginTop: '50px',
         }}
@@ -110,13 +108,14 @@ const DataComponent = () => {
                   alt={item.name}
                   style={{
                     width: "100%",
-                    height: "300px",
+                    height: "200px",
                     objectFit: "cover",
                   }}
                 />
                 <div
                   style={{
-                    padding: "16px",
+                    padding: "10px",
+                    width: "100%",
                     backgroundColor: "#f0f0f0",
                   }}
                 >
@@ -155,6 +154,37 @@ const DataComponent = () => {
           </div>
         )}
       </div>
+      <style jsx>{`
+        @media (max-width: 1200px) {
+          div[style*="grid-template-columns"] {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+
+        @media (max-width: 992px) {
+          div[style*="grid-template-columns"] {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 768px) {
+          div[style*="grid-template-columns"] {
+            grid-template-columns: 1fr;
+          }
+
+          div[style*="justify-content: space-between"] {
+            flex-direction: column;
+            align-items: center;
+          }
+
+          div[style*="background-color: orange"],
+          div[style*="background-color: grey"] {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+          }
+        }
+      `}</style>
     </div>
   );
 };

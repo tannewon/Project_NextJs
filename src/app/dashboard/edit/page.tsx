@@ -6,22 +6,17 @@ import Link from "next/link";
 import { PRODUCT_API_URL } from "@/lib/util";
 
 const fetchPost = async (id: string) => {
-  const res = await fetch(
-    `${PRODUCT_API_URL}/${id}`
-  );
+  const res = await fetch(`${PRODUCT_API_URL}/${id}`);
   if (!res.ok) throw new Error("Failed to fetch data");
   return res.json();
 };
 
 const updatePost = async (id: string, data: any) => {
-  const res = await fetch(
-    `${PRODUCT_API_URL}/${id}`,
-    {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    }
-  );
+  const res = await fetch(`${PRODUCT_API_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
   if (!res.ok) throw new Error("Failed to update data");
   return res.json();
 };
@@ -88,7 +83,7 @@ export default function EditProductPage() {
     e.preventDefault();
     try {
       await updatePost(id!, { name, price, description, image });
-      router.push("/dashboard");
+      router.push("/dashboard/product");
     } catch (error) {
       console.error("Failed to update post data:", error);
     }
@@ -98,7 +93,7 @@ export default function EditProductPage() {
 
   return (
     <div>
-      <h2 style={{ color: "orange", marginLeft: "520px" }}>Edit Product</h2>
+      <h2 style={{ color: "orange", textAlign: "center" }}>Edit Product</h2>
       <form
         onSubmit={handleSubmit}
         style={{
@@ -202,6 +197,8 @@ export default function EditProductPage() {
             padding: "10px 20px",
             cursor: "pointer",
             borderRadius: "4px",
+            width: "100%",
+            boxSizing: "border-box",
           }}
         >
           {isUploading ? "Uploading..." : "Save"}
@@ -215,13 +212,40 @@ export default function EditProductPage() {
               padding: "10px 20px",
               cursor: "pointer",
               borderRadius: "4px",
-              marginLeft: "250px",
+              width: "100%",
+              boxSizing: "border-box",
+              marginTop: "10px",
             }}
           >
             Back
           </button>
         </Link>
       </form>
+      <style jsx>{`
+        @media (max-width: 768px) {
+          form {
+            width: 100%;
+            padding: 15px;
+          }
+          
+          button {
+            width: 100%;
+          }
+
+          h2 {
+            font-size: 1.5em;
+          }
+
+          label {
+            font-size: 1em;
+          }
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      `}</style>
     </div>
   );
 }
