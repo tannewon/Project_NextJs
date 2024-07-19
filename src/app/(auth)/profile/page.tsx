@@ -1,24 +1,34 @@
-// Profile.tsx
-
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { USER_API_URL } from "@/lib/util";
+import axios from "axios";
 
 const Profile = () => {
-  const [user, setUser] = useState<any>(null); // State để lưu thông tin user
+  const [user, setUser] = useState<any>(null);
   const router = useRouter();
 
   useEffect(() => {
-    // Hàm này sẽ chạy khi component được mount
-    const userData = localStorage.getItem("user") || Cookies.get(USER_API_URL); // Lấy thông tin user từ local storage hoặc cookie
-    if (userData) {
-      setUser(JSON.parse(userData)); // Parse dữ liệu user từ string JSON và lưu vào state
-    } else {
-      // Nếu không có thông tin user, redirect về trang login
-      router.push("/login");
-    }
+    const fetchUserData = async () => {
+      let userData = localStorage.getItem("user") || Cookies.get(USER_API_URL);
+      if (userData) {
+        setUser(JSON.parse(userData));
+      } else {
+        // If no user data in localStorage or cookies, fetch from API
+        try {
+          const response = await axios.get('/api/user'); // Adjust the endpoint as necessary
+          setUser(response.data);
+          localStorage.setItem("user", JSON.stringify(response.data));
+          Cookies.set(USER_API_URL, JSON.stringify(response.data));
+        } catch (error) {
+          console.error("Failed to fetch user data", error);
+          router.push("/login");
+        }
+      }
+    };
+
+    fetchUserData();
   }, [router]);
 
   if (!user) {
@@ -96,7 +106,6 @@ const Profile = () => {
             </strong>{" "}
             {user.email}
           </div>
-          {/* Additional user information can be added here */}
         </div>
       </div>
     </main>

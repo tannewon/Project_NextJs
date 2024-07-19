@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import { USER_API_URL } from "@/lib/util";
 import { FormData } from "@/type/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { MdDeleteForever } from "react-icons/md";
-import { MdOutlineModeEdit } from "react-icons/md";
+import { MdDeleteForever, MdOutlineModeEdit } from "react-icons/md";
+
 const UserPage = () => {
   const [users, setUsers] = useState<FormData[]>([]);
   const router = useRouter();
@@ -46,21 +46,21 @@ const UserPage = () => {
     <div style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
       <h1 style={{ color: "orange" }}>User List</h1>
       <div
-          onClick={() => router.push("/dashboard")}
-          style={{
-            backgroundColor: "grey",
-            color: "white",
-            border: "none",
-            padding: "5px 10px",
-            cursor: "pointer",
-            borderRadius: "4px",
-            display: "inline-block",
-            width:'50px',
-            marginLeft:'900px'
-          }}
-        >
-          BACK
-        </div>
+        onClick={() => router.push("/dashboard")}
+        style={{
+          backgroundColor: "grey",
+          color: "white",
+          border: "none",
+          padding: "5px 10px",
+          cursor: "pointer",
+          borderRadius: "4px",
+          display: "inline-block",
+          width: "50px",
+          marginLeft: "900px",
+        }}
+      >
+        BACK
+      </div>
       <div
         style={{
           display: "grid",
@@ -77,7 +77,7 @@ const UserPage = () => {
         <div style={{ fontWeight: "bold", padding: "10px" }}>Avatar</div>
         <div style={{ fontWeight: "bold", padding: "10px" }}>Actions</div>
       </div>
-     
+
       {users.map((user) => (
         <div
           key={user.id}
@@ -101,13 +101,14 @@ const UserPage = () => {
               style={{
                 width: "100px",
                 height: "auto",
-                borderRadius: "50px",
+                borderRadius: "50%",
+                
               }}
             />
           </div>
           <div style={{ display: "flex", gap: "10px" }}>
-            <Link href={`/dashboard/user/${user.id}`} passHref
-          
+            <Link href={`/dashboard/user/edit/?id=${user.id}`} passHref>
+              <div
                 style={{
                   width: "50px",
                   height: "40px",
@@ -121,7 +122,8 @@ const UserPage = () => {
                   cursor: "pointer",
                 }}
               >
-                <MdOutlineModeEdit style={{width:'25px',height:'25px'}}/>
+                <MdOutlineModeEdit style={{ width: "25px", height: "25px" }} />
+              </div>
             </Link>
             <button
               style={{
@@ -131,11 +133,11 @@ const UserPage = () => {
                 borderRadius: "5px",
                 color: "#fff",
                 cursor: "pointer",
-                border:'none'
+                border: "none",
               }}
               onClick={() => deleteUser(user.id)}
             >
-              <MdDeleteForever style={{width:'20px',height:'20px'}}/>
+              <MdDeleteForever style={{ width: "20px", height: "20px" }} />
             </button>
           </div>
         </div>

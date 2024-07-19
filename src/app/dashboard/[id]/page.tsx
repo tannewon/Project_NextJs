@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { PRODUCT_API_URL } from "@/lib/util";
+import { MdDeleteForever } from "react-icons/md";
+import { MdOutlineModeEdit } from "react-icons/md";
 
 async function getPost(id: string) {
   const res = await fetch(`${PRODUCT_API_URL}/${id}`);
@@ -80,7 +82,7 @@ export default function DashboardDetailPage({
           <div style={{ flex: "2" }}>Name</div>
           <div style={{ flex: "1" }}>Price</div>
           <div style={{ flex: "4" }}>Description</div>
-          <div style={{ flex: "2" }}>Actions</div>
+          <div style={{ flex: "1.8" }}>Actions</div>
         </div>
         <hr></hr>
         <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
@@ -101,13 +103,13 @@ export default function DashboardDetailPage({
                 style={{
                   backgroundColor: "yellow",
                   border: "none",
-                  padding: "10px 20px",
+                  padding: "10px 15px",
                   cursor: "pointer",
                   borderRadius: "4px",
                   marginRight:'20px'
                 }}
               >
-                Edit
+                <MdOutlineModeEdit style={{width:'20px',height:'20px'}}/>
               </button>
             </Link>
             <button
@@ -115,12 +117,12 @@ export default function DashboardDetailPage({
               style={{
                 backgroundColor: "red",
                 border: "none",
-                padding: "10px 20px",
+                padding: "10px 15px",
                 cursor: "pointer",
                 borderRadius: "4px",
               }}
             >
-              Delete
+              <MdDeleteForever style={{width:'20px',height:'20px'}}/>
             </button>
           </div>
         </div>

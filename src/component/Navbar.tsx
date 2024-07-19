@@ -28,6 +28,7 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
+    localStorage.removeItem("user");
     Cookies.remove('user');
     setIsLoggedIn(false);
     router.push('/login');
@@ -87,7 +88,7 @@ const Navbar = () => {
               <p className="navLink" style={{ color: 'white', fontWeight: 'bold', marginLeft: '50px', textDecoration: 'none', padding: '5px 10px', borderRadius: '15px', backgroundColor: '#FF6633', border:'1px solid' }}>Login</p>
             </Link>
             <Link href="/register" passHref>
-              <p className="navLink" style={{ color: 'white', fontWeight: 'bold', marginLeft: '50px', textDecoration: 'none', padding: '5px 10px', borderRadius: '15px', backgroundColor: '#FF6633', border:'1px solid' }}>Register</p>
+              <p className="navLink" style={{ color: 'white', fontWeight: 'bold', marginLeft: '20px', textDecoration: 'none', padding: '5px 10px', borderRadius: '15px', backgroundColor: '#FF6633', border:'1px solid' }}>Register</p>
             </Link>
           </>
         )}

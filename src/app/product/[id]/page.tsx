@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { AiOutlineHeart } from "react-icons/ai";
 import { PRODUCT_API_URL } from "@/lib/util";
@@ -10,7 +9,7 @@ import { PRODUCT_API_URL } from "@/lib/util";
 async function getPost(id: string) {
   const res = await fetch(`${PRODUCT_API_URL}/${id}`);
   if (!res.ok) {
-    throw new Error("Fail to fetch data");
+    throw new Error("Failed to fetch data");
   }
   return res.json();
 }
@@ -37,13 +36,6 @@ export default function DashboardDetailPage({
   }, [id]);
 
   const handleAddToCart = () => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      // Redirect to login page if not authenticated
-      router.push("/login");
-      return;
-    }
-
     if (post) {
       const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
       const existingItem = cartItems.find((item: any) => item.id === post.id);
@@ -55,22 +47,24 @@ export default function DashboardDetailPage({
       }
 
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
-      alert("Đã thêm vào giỏ hàng!");
+      alert("Added to cart!");
       router.push("/product");
     }
   };
 
   const handleAddToFavorites = () => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      // Redirect to login page if not authenticated
-      router.push("/login");
-      return;
-    }
+    if (post) {
+      const favoriteItems = JSON.parse(localStorage.getItem("favoriteItems") || "[]");
+      const existingItem = favoriteItems.find((item: any) => item.id === post.id);
 
-    // Handle adding to favorites here
-    // Example: Redirect or API call to add to favorites
-    router.push(`/product/favorite?id=${id}`);
+      if (!existingItem) {
+        favoriteItems.push(post);
+        localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems));
+      }
+
+      alert("Added to favorites!");
+      router.push(`/product/favorite?id=${id}`);
+    }
   };
 
   const handleBack = () => {

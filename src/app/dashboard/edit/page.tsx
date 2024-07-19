@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { PRODUCT_API_URL } from "@/lib/util";
 
+
 const fetchPost = async (id: string) => {
   const res = await fetch(`${PRODUCT_API_URL}/${id}`);
   if (!res.ok) throw new Error("Failed to fetch data");
@@ -197,7 +198,7 @@ export default function EditProductPage() {
             padding: "10px 20px",
             cursor: "pointer",
             borderRadius: "4px",
-            width: "100%",
+            width: "20%",
             boxSizing: "border-box",
           }}
         >
@@ -212,9 +213,10 @@ export default function EditProductPage() {
               padding: "10px 20px",
               cursor: "pointer",
               borderRadius: "4px",
-              width: "100%",
+              width: "20%",
               boxSizing: "border-box",
               marginTop: "10px",
+              marginLeft:'240px'
             }}
           >
             Back

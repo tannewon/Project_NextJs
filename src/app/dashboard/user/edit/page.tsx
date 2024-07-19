@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { USER_API_URL } from "@/lib/util";
-import type { FormData } from "@/type/types"; // Use type-only import
-import Link from "next/link";
 
 const fetchUser = async (id: string) => {
   const res = await fetch(`${USER_API_URL}/${id}`);
@@ -11,7 +9,7 @@ const fetchUser = async (id: string) => {
   return res.json();
 };
 
-const updateUser = async (id: string, data: FormData) => {
+const updateUser = async (id: string, data: any) => {
   const res = await fetch(`${USER_API_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -36,8 +34,8 @@ const uploadImage = async (file: File) => {
   return data.secure_url;
 };
 
-export default function EditUserPage() {
-  const [user, setUser] = useState<FormData | null>(null);
+const EditUserPage = () => {
+  const [user, setUser] = useState<any>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -46,6 +44,9 @@ export default function EditUserPage() {
   const [role, setRole] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null); // State for error messages
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for toggling confirm password visibility
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -59,7 +60,7 @@ export default function EditUserPage() {
         const url = await uploadImage(file);
         setAvatar(url);
       } catch (error) {
-        alert("Failed to upload avatar");
+        setError("Failed to upload avatar");
       } finally {
         setIsUploading(false);
       }
@@ -79,25 +80,32 @@ export default function EditUserPage() {
           setConfirmPassword(data.confirmPassword || "");
           setRole(data.role || "");
         })
-        .catch((error) => console.error("Failed to fetch user data:", error));
+        .catch((error) => setError("Failed to fetch user data"));
     }
   }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
     try {
-      await updateUser(id as string, { id: id as string, name, email, avatar, password, confirmPassword, role });
+      await updateUser(id!, { id, name, email, avatar, password, role });
       router.push("/dashboard/user");
     } catch (error) {
-      console.error("Failed to update user data:", error);
+      setError("Failed to update user data");
     }
   };
 
-  if (!user) return <div>Loading...</div>;
+  if (!user) return <div> </div>;
 
   return (
     <div>
-      <h2 style={{ color: "orange", marginLeft: "520px" }}>Edit User</h2>
+      <h2 style={{ color: "orange", textAlign: "center" }}>Edit User</h2>
+      {error && (
+        <div style={{ color: "red", textAlign: "center" }}>{error}</div>
+      )}
       <form
         onSubmit={handleSubmit}
         style={{
@@ -106,7 +114,9 @@ export default function EditUserPage() {
           padding: "20px",
           maxWidth: "400px",
           margin: "0 auto",
-          marginTop: "30px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "15px",
         }}
       >
         <label style={{ marginBottom: "10px", display: "block" }}>
@@ -127,7 +137,6 @@ export default function EditUserPage() {
             }}
           />
         </label>
-        <br />
         <label style={{ marginBottom: "10px", display: "block" }}>
           Email:
           <input
@@ -146,75 +155,77 @@ export default function EditUserPage() {
             }}
           />
         </label>
-        <br />
-        <label style={{ marginBottom: "10px", display: "block" }}>
-          Avatar:
-          <input
-            type="file"
-            onChange={handleAvatarChange}
-            disabled={isUploading}
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-              marginBottom: "10px",
-              border: "1px solid orange",
-              borderRadius: "4px",
-              boxSizing: "border-box",
-            }}
-          />
-        </label>
-        <br />
-        {avatarPreview && (
-          <img
-            src={avatarPreview}
-            alt="Avatar preview"
-            style={{ width: "200px", height: "200px" }}
-          />
-        )}
-        <br />
         <label style={{ marginBottom: "10px", display: "block" }}>
           Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-              marginBottom: "10px",
-              border: "1px solid orange",
-              borderRadius: "4px",
-              boxSizing: "border-box",
-            }}
-          />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "8px",
+                marginTop: "5px",
+                marginBottom: "10px",
+                border: "1px solid orange",
+                borderRadius: "4px",
+                boxSizing: "border-box",
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                marginLeft: "-35px",
+              }}
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </button>
+          </div>
         </label>
-        <br />
         <label style={{ marginBottom: "10px", display: "block" }}>
           Confirm Password:
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-              marginBottom: "10px",
-              border: "1px solid orange",
-              borderRadius: "4px",
-              boxSizing: "border-box",
-            }}
-          />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "8px",
+                marginTop: "5px",
+                marginBottom: "10px",
+                border: "1px solid orange",
+                borderRadius: "4px",
+                boxSizing: "border-box",
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                marginLeft: "-35px",
+              }}
+            >
+              {showConfirmPassword ? "🙈" : "👁️"}
+            </button>
+          </div>
         </label>
-        <br />
         <label style={{ marginBottom: "10px", display: "block" }}>
           Role:
           <input
             type="text"
             value={role}
             onChange={(e) => setRole(e.target.value)}
+            required
             style={{
               width: "100%",
               padding: "8px",
@@ -226,38 +237,102 @@ export default function EditUserPage() {
             }}
           />
         </label>
-        <br />
-        <button
-          type="submit"
-          disabled={isUploading}
-          style={{
-            backgroundColor: "orange",
-            color: "white",
-            border: "none",
-            padding: "10px 20px",
-            cursor: "pointer",
-            borderRadius: "4px",
-          }}
-        >
-          {isUploading ? "Uploading..." : "Save"}
-        </button>
-        <Link href={`/user`}>
-          <button
-            type="button"
+        <label style={{ marginBottom: "10px", display: "block" }}>
+          Avatar:
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
             style={{
-              backgroundColor: "grey",
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              marginBottom: "10px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
+          />
+          {avatarPreview && (
+            <img
+              src={avatarPreview}
+              alt="Avatar Preview"
+              style={{
+                width: "50px",
+                height: "50px",
+                borderRadius: "50%",
+                marginTop: "10px",
+              }}
+            />
+          )}
+        </label>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "orange",
               color: "white",
               border: "none",
               padding: "10px 20px",
               cursor: "pointer",
               borderRadius: "4px",
-              marginLeft: "10px",
+              width: "20%",
+              boxSizing: "border-box",
+              fontSize: "15px",
+            }}
+          >
+            Update
+          </button>
+          <div
+            onClick={() => router.push("/dashboard/user")}
+            style={{
+              backgroundColor: "gray",
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              cursor: "pointer",
+              borderRadius: "4px",
+              width: "20%",
+              boxSizing: "border-box",
+              textAlign: "center",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginLeft: "230px",
+              fontSize: "15px",
             }}
           >
             Back
-          </button>
-        </Link>
+          </div>
+        </div>
       </form>
+      <style jsx>{`
+        @media (max-width: 768px) {
+          form {
+            width: 100%;
+            padding: 15px;
+          }
+
+          button {
+            width: 100%;
+          }
+
+          h2 {
+            font-size: 1.5em;
+          }
+
+          label {
+            font-size: 1em;
+          }
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      `}</style>
     </div>
   );
-}
+};
+
+export default EditUserPage;

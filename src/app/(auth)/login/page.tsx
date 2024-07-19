@@ -12,13 +12,13 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newErrors = { email: "", password: "" };
     let hasErrors = false;
@@ -38,10 +38,13 @@ const Login = () => {
 
     try {
       const response = await axios.get(USER_API_URL);
-      const user = response.data.find((user: any) => user.email === formData.email);
+      const users = response.data;
+      const user = users.find((user: any) => user.email === formData.email);
+
       if (user) {
         if (user.password === formData.password) {
           Cookies.set("user", JSON.stringify(user), { expires: 7 });
+          localStorage.setItem("user", JSON.stringify(user));
           router.push("/");
         } else {
           setErrors({ email: "", password: "Incorrect password" });
@@ -79,10 +82,10 @@ const Login = () => {
             margin: "auto",
           }}
         >
-          <form onSubmit={handleSubmit} style={{ padding: "40px",backgroundColor:'#FF6633',borderRadius:'10px' }}>
+          <form onSubmit={handleSubmit} style={{ padding: "40px", backgroundColor: '#FF6633', borderRadius: '10px' }}>
             <h2 style={{ textAlign: "center", color: "black" }}>Login</h2>
             <div className="mb-3 row">
-              <label htmlFor="staticEmail" className="col-sm-2 col-form-label" style={{ color:'white',fontWeight: "bold" }}>
+              <label htmlFor="staticEmail" className="col-sm-2 col-form-label" style={{ color: 'white', fontWeight: "bold" }}>
                 Email
               </label>
               <div className="col-sm-10">
@@ -108,7 +111,7 @@ const Login = () => {
               </div>
             </div>
             <div className="mb-3 row" style={{ marginTop: "20px" }}>
-              <label htmlFor="inputPassword" className="col-sm-2 col-form-label" style={{ color:'white',fontWeight: "bold" }}>
+              <label htmlFor="inputPassword" className="col-sm-2 col-form-label" style={{ color: 'white', fontWeight: "bold" }}>
                 Password
               </label>
               <div className="col-sm-10" style={{ position: "relative" }}>
@@ -116,9 +119,7 @@ const Login = () => {
                   name="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter password"
-                  className={`form-control ${
-                    errors.password ? "is-invalid" : ""
-                  }`}
+                  className={`form-control ${errors.password ? "is-invalid" : ""}`}
                   id="inputPassword"
                   value={formData.password}
                   onChange={handleChange}
@@ -163,13 +164,12 @@ const Login = () => {
                 height: "40px",
                 fontSize: "16px",
                 fontWeight: "bold",
-                marginTop:'40px'
-
+                marginTop: '40px'
               }}
             >
               Login
             </button>
-            <div style={{ textAlign: "center",color:'white' }}>
+            <div style={{ textAlign: "center", color: 'white' }}>
               <p>
                 Don’t have an account?
                 <button
@@ -182,11 +182,11 @@ const Login = () => {
                     color: "blue",
                     textDecoration: "underline",
                     cursor: "pointer",
-                    marginTop:'20px'
+                    marginTop: '20px'
                   }}
                 >
                   Register
-                 </button>
+                </button>
               </p>
             </div>
           </form>
