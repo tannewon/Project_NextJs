@@ -76,7 +76,7 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div style={{ justifyContent: "center", alignItems: "center", flexDirection: "column", display: "flex", padding: "20px" }}>
+    <div style={{ justifyContent: "center", alignItems: "center", flexDirection: "column", display: "flex", padding: "20px",marginTop:'150px' }}>
       <h1 style={{ color: "orange" }}>Favorite Products</h1>
       <table style={{ borderCollapse: "collapse", width: "100%", maxWidth: "800px" }}>
         <thead>

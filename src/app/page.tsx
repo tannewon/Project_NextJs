@@ -10,6 +10,7 @@ import { Product } from "@/type/types";
 import { PRODUCT_API_URL } from "@/lib/util";
 import { FcLike } from "react-icons/fc";
 import { useRouter } from "next/navigation";
+import { IoStar } from "react-icons/io5";
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -38,8 +39,12 @@ const DataComponent = () => {
   }, []);
 
   const handleAddToFavorites = (item: Product) => {
-    const savedProductIds = JSON.parse(localStorage.getItem("productIds") || "[]");
-    const savedProducts: Product[] = JSON.parse(localStorage.getItem("products") || "[]");
+    const savedProductIds = JSON.parse(
+      localStorage.getItem("productIds") || "[]"
+    );
+    const savedProducts: Product[] = JSON.parse(
+      localStorage.getItem("products") || "[]"
+    );
 
     if (!savedProductIds.includes(item.id)) {
       savedProductIds.push(item.id);
@@ -60,28 +65,63 @@ const DataComponent = () => {
   }
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', padding: '20px', backgroundColor: '#f5f5f5', marginTop: '100px' }}>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(4, 1fr)",
+        gap: "20px",
+        padding: "20px",
+        backgroundColor: "#f5f5f5",
+        marginTop: "100px",
+      }}
+    >
       {data.map((item) => (
-        <div key={item.id} style={{ border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#fff', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', transition: 'transform 0.2s' }}>
-          <img
-            src={item.image}
-            alt={item.name}
-            style={{ width: '100%', height: '200px', objectFit: 'cover' }}
-          />
-          <div style={{ padding: '16px' }}>
-            <h3 style={{ fontSize: '1.2em', margin: '0 0 10px', color: '#333' }}>{item.name}</h3>
-            <p style={{ fontSize: '1.1em', color: '#e67e22' }}>
-              {item.price}$ 
-              <FcLike
-                style={{ width: '30px', height: '30px', marginLeft: '200px', cursor: 'pointer' }}
-                onClick={() => handleAddToFavorites(item)}
-              />
-            </p>
-            <p style={{ color: '#666', marginBottom: '10px' }}>{item.description}</p>
-            <Link href={`/product/${item.id}`}>
-              <button style={{ backgroundColor: '#e67e22', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '4px', cursor: 'pointer', textAlign: 'center', display: 'block', width: '100%' }}>Detail</button>
-            </Link>
-          </div>
+        <div
+          key={item.id}
+          style={{
+            border: "1px solid #ddd",
+            borderRadius: "8px",
+            backgroundColor: "#fff",
+            overflow: "hidden",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+            transition: "transform 0.2s",
+          }}
+        >
+          <Link href={`/product/${item.id}`}>
+            <img
+              src={item.image}
+              alt={item.name}
+              style={{ width: "100%", height: "200px", objectFit: "cover" }}
+            />
+
+            <div style={{ padding: "16px" }}>
+              <h3
+                style={{ fontSize: "1.2em", margin: "0 0 10px", color: "#333" }}
+              >
+                {item.name}
+              </h3>
+              <p style={{ fontSize: "1.1em", color: "red" }}>
+                {item.price}$
+                <FcLike
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    marginLeft: "200px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => handleAddToFavorites(item)}
+                />
+              </p>
+              <div>
+                {[...Array(5)].map((_, index) => (
+                  <IoStar key={index} style={{ margin: "0 2px" ,color:'#FF9900'}} />
+                ))}
+              </div>
+              <p style={{ color: "#666", marginBottom: "10px" }}>
+                {item.description}
+              </p>
+            </div>
+          </Link>
         </div>
       ))}
     </div>
@@ -91,32 +131,51 @@ const DataComponent = () => {
 export default function Home() {
   return (
     <div>
-      <div> 
+      <div>
         <Image
           src={home}
           alt="Home"
-          style={{ width: '100%', height: 'auto', marginBottom: '50px' }}
+          style={{ width: "100%", height: "auto", marginBottom: "50px" }}
         />
       </div>
-      <div style={{ textAlign: 'center', padding: '20px' }}>
-        <h1 style={{ color: 'orange', fontSize: '50px', marginBottom: '30px' }}>Sports Shoes</h1>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', marginBottom: '50px' }}>
+      <div style={{ textAlign: "center", padding: "20px" }}>
+        <h1 style={{ color: "orange", fontSize: "50px", marginBottom: "30px" }}>
+          Sports Shoes
+        </h1>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "30px",
+            marginBottom: "50px",
+          }}
+        >
           <Image
             src={anh1}
             alt="Product 1"
-            style={{ width: '80%', height: 'auto' }}
+            style={{ width: "80%", height: "auto" }}
           />
           <Image
             src={anh2}
             alt="Product 2"
-            style={{ width: '80%', height: 'auto' }}
+            style={{ width: "80%", height: "auto" }}
           />
         </div>
       </div>
       <div>
-        <h1 style={{ color: '#fff', backgroundColor: '#e67e22', width: 'fit-content', padding: '20px 40px', margin: '50px auto', borderRadius: '8px', textAlign: 'center' }}>
+        <h1
+          style={{
+            color: "#fff",
+            backgroundColor: "#e67e22",
+            width: "fit-content",
+            padding: "20px 40px",
+            margin: "50px auto",
+            borderRadius: "8px",
+            textAlign: "center",
+          }}
+        >
           <Link href="/product">
-            <div style={{ color: 'white' }}>All Product</div>
+            <div style={{ color: "white" }}>All Product</div>
           </Link>
         </h1>
         <DataComponent />

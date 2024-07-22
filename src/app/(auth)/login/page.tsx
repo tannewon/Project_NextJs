@@ -45,7 +45,11 @@ const Login = () => {
         if (user.password === formData.password) {
           Cookies.set("user", JSON.stringify(user), { expires: 7 });
           localStorage.setItem("user", JSON.stringify(user));
-          router.push("/");
+          if (user.role === "admin") {
+            router.push("/dashboard");
+          } else {
+            router.push("/");
+          }
         } else {
           setErrors({ email: "", password: "Incorrect password" });
         }
@@ -70,7 +74,7 @@ const Login = () => {
   };
 
   return (
-    <main style={{ justifyItems: "center" }}>
+    <main style={{ justifyItems: "center", marginTop: '150px' }}>
       <div className="container mt-5">
         <div
           className="card p-4"

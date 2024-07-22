@@ -83,7 +83,7 @@ const Register = () => {
   };
 
   return (
-    <main style={{ justifyContent: "center" }}>
+    <main style={{ justifyContent: "center",marginTop:'150px' }}>
       <div className="container">
         <div
           className="card "

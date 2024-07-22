@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { USER_API_URL } from "@/lib/util";
 import { FormData } from "@/type/types";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdDeleteForever, MdOutlineModeEdit } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
 
 const UserPage = () => {
   const [users, setUsers] = useState<FormData[]>([]);
@@ -46,22 +48,6 @@ const UserPage = () => {
     <div style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
       <h1 style={{ color: "orange" }}>User List</h1>
       <div
-        onClick={() => router.push("/dashboard")}
-        style={{
-          backgroundColor: "grey",
-          color: "white",
-          border: "none",
-          padding: "5px 10px",
-          cursor: "pointer",
-          borderRadius: "4px",
-          display: "inline-block",
-          width: "50px",
-          marginLeft: "900px",
-        }}
-      >
-        BACK
-      </div>
-      <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
@@ -95,49 +81,35 @@ const UserPage = () => {
           <div>{user.name}</div>
           <div>{user.email}</div>
           <div>
-            <img
+            <Image
               src={user.avatar}
               alt={user.name}
+              width={100} // Set appropriate width
+              height={100}
               style={{
-                width: "100px",
-                height: "auto",
                 borderRadius: "50%",
-                
               }}
             />
           </div>
           <div style={{ display: "flex", gap: "10px" }}>
             <Link href={`/dashboard/user/edit/?id=${user.id}`} passHref>
-              <div
+              <CiEdit
                 style={{
-                  width: "50px",
-                  height: "40px",
-                  backgroundColor: "yellow",
-                  borderRadius: "5px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  color: "#000",
-                  textDecoration: "none",
-                  cursor: "pointer",
+                  width: "30px",
+                  height: "30px",
+                  color: "orange",
                 }}
-              >
-                <MdOutlineModeEdit style={{ width: "25px", height: "25px" }} />
-              </div>
+              />
             </Link>
             <button
               style={{
-                width: "50px",
-                height: "40px",
-                backgroundColor: "red",
-                borderRadius: "5px",
-                color: "#fff",
-                cursor: "pointer",
+                color: "red",
                 border: "none",
+                cursor: "pointer",
               }}
               onClick={() => deleteUser(user.id)}
             >
-              <MdDeleteForever style={{ width: "20px", height: "20px" }} />
+              <MdDeleteForever style={{ width: "30px", height: "30px" }} />
             </button>
           </div>
         </div>

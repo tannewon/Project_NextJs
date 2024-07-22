@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { PRODUCT_API_URL } from "@/lib/util";
 import { MdDeleteForever } from "react-icons/md";
-import { MdOutlineModeEdit } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+import { IoMdArrowBack } from "react-icons/io";
 
 async function getPost(id: string) {
   const res = await fetch(`${PRODUCT_API_URL}/${id}`);
@@ -66,63 +67,77 @@ export default function DashboardDetailPage({
       <button
         onClick={handleBack}
         style={{
-          backgroundColor: "gray",
+          backgroundColor: "white",
           border: "none",
-          padding: "10px 20px",
+          width: "50px",
+          height: "50px",
           cursor: "pointer",
-          borderRadius: "4px",
+          borderRadius: "50%",
+          boxSizing: "border-box",
         }}
       >
-        Back
+        <IoMdArrowBack style={{ width: "20px", height: "20px" }} />
       </button>
       <br />
       <div style={{ marginTop: "20px" }}>
-        <div style={{ display: "flex", fontWeight: "bold", marginBottom: "10px" }}>
+        <div
+          style={{ display: "flex", fontWeight: "bold", marginBottom: "10px" }}
+        >
           <div style={{ flex: "1" }}>Image</div>
           <div style={{ flex: "2" }}>Name</div>
           <div style={{ flex: "1" }}>Price</div>
           <div style={{ flex: "4" }}>Description</div>
-          <div style={{ flex: "1.8" }}>Actions</div>
+          <div style={{ flex: "1.5" }}>Actions</div>
         </div>
         <hr></hr>
-        <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "10px",
+          }}
+        >
           <div style={{ flex: "1" }}>
             <img
               src={post.image}
               alt={post.name}
-              style={{ width: "100px", height: "auto", objectFit: "contain" }}
+              style={{
+                width: "100px",
+                height: "auto",
+                objectFit: "contain",
+                borderRadius: "10px",
+              }}
             />
           </div>
           <div style={{ flex: "2" }}>{post.name}</div>
           <div style={{ flex: "1", color: "red" }}>{post.price}$</div>
           <div style={{ flex: "4" }}>{post.description}</div>
           {/* <div style={{ flex: "4" }}>{post.category}</div> */}
-          <div style={{  justifyContent: "space-between", marginRight:'100px' }}>
+          <div
+            style={{ justifyContent: "space-between", marginRight: "100px" }}
+          >
             <Link href={`/dashboard/edit?id=${id}`}>
-              <button
+              <CiEdit
                 style={{
-                  backgroundColor: "yellow",
-                  border: "none",
-                  padding: "10px 15px",
-                  cursor: "pointer",
-                  borderRadius: "4px",
-                  marginRight:'20px'
+                  width: "30px",
+                  height: "30px",
+                  color: "orange",
+                  marginLeft: "50px",
                 }}
-              >
-                <MdOutlineModeEdit style={{width:'20px',height:'20px'}}/>
-              </button>
+              />
             </Link>
             <button
               onClick={handleDelete}
               style={{
-                backgroundColor: "red",
+                color: "red",
                 border: "none",
-                padding: "10px 15px",
+
                 cursor: "pointer",
-                borderRadius: "4px",
               }}
             >
-              <MdDeleteForever style={{width:'20px',height:'20px'}}/>
+              <MdDeleteForever
+                style={{ width: "30px", height: "30px", marginLeft: "10px" }}
+              />
             </button>
           </div>
         </div>

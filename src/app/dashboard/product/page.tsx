@@ -64,19 +64,6 @@ const DataComponent = () => {
             ADD Product
           </div>
         </Link>
-        <div
-          onClick={() => router.push("/dashboard")}
-          style={{
-            backgroundColor: "grey",
-            color: "white",
-            border: "none",
-            padding: "10px 15px",
-            cursor: "pointer",
-            borderRadius: "4px",
-          }}
-        >
-          Back
-        </div>
       </div>
       <div
         style={{

@@ -76,7 +76,7 @@ export default function DashboardDetailPage({
   }
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", padding: "50px" }}>
+    <div style={{ display: "flex", justifyContent: "center", padding: "50px",marginTop:'100px' }}>
       <div style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "20px", backgroundColor: "#fff" }}>
         <img
           src={post.image}

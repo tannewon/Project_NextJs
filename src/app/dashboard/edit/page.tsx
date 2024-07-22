@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { PRODUCT_API_URL } from "@/lib/util";
-
+import { IoMdArrowBack } from "react-icons/io";
 
 const fetchPost = async (id: string) => {
   const res = await fetch(`${PRODUCT_API_URL}/${id}`);
@@ -94,6 +94,22 @@ export default function EditProductPage() {
 
   return (
     <div>
+      <Link href={`/dashboard/${id}`}>
+        <button
+          style={{
+            backgroundColor: "white",
+            border: "none",
+            width: "50px",
+            height: "50px",
+            cursor: "pointer",
+            borderRadius: "50%",
+            boxSizing: "border-box",
+
+          }}
+        >
+          <IoMdArrowBack style={{ width:'20px',height:'20px' }} />
+        </button>
+      </Link>
       <h2 style={{ color: "orange", textAlign: "center" }}>Edit Product</h2>
       <form
         onSubmit={handleSubmit}
@@ -103,10 +119,10 @@ export default function EditProductPage() {
           padding: "20px",
           maxWidth: "400px",
           margin: "0 auto",
-          marginTop: "30px",
+          marginTop: "20px",
         }}
       >
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{ display: "block" }}>
           Name:
           <input
             type="text"
@@ -117,7 +133,6 @@ export default function EditProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -125,7 +140,7 @@ export default function EditProductPage() {
           />
         </label>
         <br />
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{  display: "block" }}>
           Price:
           <input
             type="text"
@@ -136,7 +151,6 @@ export default function EditProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -144,7 +158,7 @@ export default function EditProductPage() {
           />
         </label>
         <br />
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{  display: "block" }}>
           Description:
           <textarea
             value={description}
@@ -154,7 +168,6 @@ export default function EditProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -172,7 +185,6 @@ export default function EditProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -184,7 +196,7 @@ export default function EditProductPage() {
           <img
             src={imagePreview}
             alt="Image preview"
-            style={{ width: "200px", height: "200px" }}
+            style={{ width: "100px", height: "100px",borderRadius:'10px' }}
           />
         )}
         <br />
@@ -195,6 +207,8 @@ export default function EditProductPage() {
             backgroundColor: "orange",
             color: "white",
             border: "none",
+            marginLeft:'160px',
+            marginTop:'20px',
             padding: "10px 20px",
             cursor: "pointer",
             borderRadius: "4px",
@@ -204,24 +218,6 @@ export default function EditProductPage() {
         >
           {isUploading ? "Uploading..." : "Save"}
         </button>
-        <Link href={`/dashboard/${id}`}>
-          <button
-            style={{
-              backgroundColor: "grey",
-              color: "white",
-              border: "none",
-              padding: "10px 20px",
-              cursor: "pointer",
-              borderRadius: "4px",
-              width: "20%",
-              boxSizing: "border-box",
-              marginTop: "10px",
-              marginLeft:'240px'
-            }}
-          >
-            Back
-          </button>
-        </Link>
       </form>
       <style jsx>{`
         @media (max-width: 768px) {
@@ -229,7 +225,7 @@ export default function EditProductPage() {
             width: 100%;
             padding: 15px;
           }
-          
+
           button {
             width: 100%;
           }

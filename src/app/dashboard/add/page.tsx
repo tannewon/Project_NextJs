@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PRODUCT_API_URL } from "@/lib/util";
+import { IoMdArrowBack } from "react-icons/io";
 
 export default function AddProductPage() {
   const router = useRouter();
@@ -91,6 +92,21 @@ export default function AddProductPage() {
 
   return (
     <div>
+      <button
+      onClick={() => router.back()}
+          style={{
+            backgroundColor: "white",
+            border: "none",
+            width: "50px",
+            height: "50px",
+            cursor: "pointer",
+            borderRadius: "50%",
+            boxSizing: "border-box",
+
+          }}
+        >
+          <IoMdArrowBack style={{ width:'20px',height:'20px' }} />
+        </button>
       <h2 style={{ color: "orange", marginLeft: "480px" }}>Add New Product</h2>
       <form
         onSubmit={handleSubmit}
@@ -103,7 +119,7 @@ export default function AddProductPage() {
           marginTop: "30px",
         }}
       >
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{  display: "block" }}>
           Name:
           <input
             type="text"
@@ -114,7 +130,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
+              
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -122,7 +138,7 @@ export default function AddProductPage() {
           />
         </label>
         <br />
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{  display: "block" }}>
           Price:
           <input
             type="text"
@@ -133,7 +149,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
+              
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -141,7 +157,7 @@ export default function AddProductPage() {
           />
         </label>
         <br/>
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{  display: "block" }}>
           Description:
           <textarea
             value={description}
@@ -151,7 +167,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
+              
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -159,7 +175,7 @@ export default function AddProductPage() {
           />
         </label>
         <br />
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{  display: "block" }}>
           Image:
           <input
             type="file"
@@ -170,7 +186,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
+              
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -197,23 +213,10 @@ export default function AddProductPage() {
             padding: "10px 20px",
             cursor: "pointer",
             borderRadius: "4px",
+            marginLeft:'160px'
           }}
         >
-          {isUploading ? "Uploading..." : "Add Product"}
-        </button>
-        <button
-          onClick={() => router.back()}
-          style={{
-            backgroundColor: "grey",
-            color: "white",
-            border: "none",
-            padding: "10px 20px",
-            cursor: "pointer",
-            borderRadius: "4px",
-            marginLeft: "200px",
-          }}
-        >
-          Back
+          {isUploading ? "Uploading..." : "Save"}
         </button>
       </form>
     </div>

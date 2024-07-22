@@ -8,6 +8,7 @@ import { PRODUCT_API_URL } from "@/lib/util";
 import { FcLike } from "react-icons/fc";
 import home from '../../../public/home2.jpg'
 import Image from "next/image";
+import { IoStar } from "react-icons/io5";
 
 
 const fetchData = async () => {
@@ -74,7 +75,6 @@ const DataComponent = () => {
         padding: "20px",
       }}
     >
-      
       {data.map((item) => (
         <div
           key={item.id}
@@ -87,6 +87,7 @@ const DataComponent = () => {
             transition: "transform 0.2s",
           }}
         >
+          <Link href={`/product/${item.id}`}>
           <img
             src={item.image}
             alt={item.name}
@@ -102,36 +103,27 @@ const DataComponent = () => {
             >
               {item.name}
             </h3>
-            <p style={{ fontSize: "1.1em", color: "#e67e22" }}>
+            <p style={{ fontSize: "1.1em", color: "red" }}>
               {item.price}$ 
               <FcLike 
                 style={{ width:'30px',height:'30px',marginLeft:'200px',cursor: 'pointer' }}
                 onClick={() => handleAddToFavorites(item)} 
               />
             </p>
+            <div>
+                {[...Array(5)].map((_, index) => (
+                  <IoStar key={index} style={{ margin: "0 2px" ,color:'#FF9900'}} />
+                ))}
+              </div>
             <p style={{ color: "#666", marginBottom: "10px" }}>
               {item.description}
             </p>
-            <Link href={`/product/${item.id}`}>
-              <button
-                style={{
-                  backgroundColor: "#e67e22",
-                  color: "#fff",
-                  padding: "10px 20px",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  textAlign: "center",
-                  display: "block",
-                  width: "100%",
-                }}
-              >
-                Detail
-              </button>
-            </Link>
+
+
           </div>
+          </Link>
         </div>
-      ))}
+        ))}
       <style jsx>{`
         @media (max-width: 1200px) {
           div[style*='grid-template-columns: repeat(4, 1fr)'] {

@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { USER_API_URL } from "@/lib/util";
+import { IoMdArrowBack } from "react-icons/io";
+import Image from "next/image";
 
 const fetchUser = async (id: string) => {
   const res = await fetch(`${USER_API_URL}/${id}`);
@@ -102,6 +104,20 @@ const EditUserPage = () => {
 
   return (
     <div>
+      <button
+        onClick={() => router.push("/dashboard/user")}
+        style={{
+          backgroundColor: "white",
+          border: "none",
+          width: "50px",
+          height: "50px",
+          cursor: "pointer",
+          borderRadius: "50%",
+          boxSizing: "border-box",
+        }}
+      >
+        <IoMdArrowBack style={{ width: "20px", height: "20px" }} />
+      </button>
       <h2 style={{ color: "orange", textAlign: "center" }}>Edit User</h2>
       {error && (
         <div style={{ color: "red", textAlign: "center" }}>{error}</div>
@@ -119,7 +135,7 @@ const EditUserPage = () => {
           gap: "15px",
         }}
       >
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{ display: "block" }}>
           Name:
           <input
             type="text"
@@ -130,14 +146,13 @@ const EditUserPage = () => {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
             }}
           />
         </label>
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{ display: "block" }}>
           Email:
           <input
             type="email"
@@ -148,14 +163,13 @@ const EditUserPage = () => {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
             }}
           />
         </label>
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{ display: "block" }}>
           Password:
           <div style={{ display: "flex", alignItems: "center" }}>
             <input
@@ -167,7 +181,6 @@ const EditUserPage = () => {
                 width: "100%",
                 padding: "8px",
                 marginTop: "5px",
-                marginBottom: "10px",
                 border: "1px solid orange",
                 borderRadius: "4px",
                 boxSizing: "border-box",
@@ -187,7 +200,7 @@ const EditUserPage = () => {
             </button>
           </div>
         </label>
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{ display: "block" }}>
           Confirm Password:
           <div style={{ display: "flex", alignItems: "center" }}>
             <input
@@ -199,7 +212,6 @@ const EditUserPage = () => {
                 width: "100%",
                 padding: "8px",
                 marginTop: "5px",
-                marginBottom: "10px",
                 border: "1px solid orange",
                 borderRadius: "4px",
                 boxSizing: "border-box",
@@ -219,7 +231,7 @@ const EditUserPage = () => {
             </button>
           </div>
         </label>
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{ display: "block" }}>
           Role:
           <input
             type="text"
@@ -230,14 +242,13 @@ const EditUserPage = () => {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
             }}
           />
         </label>
-        <label style={{ marginBottom: "10px", display: "block" }}>
+        <label style={{ display: "block" }}>
           Avatar:
           <input
             type="file"
@@ -247,26 +258,25 @@ const EditUserPage = () => {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              marginBottom: "10px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
             }}
           />
           {avatarPreview && (
-            <img
+            <Image
               src={avatarPreview}
               alt="Avatar Preview"
+              width={100} // Set appropriate width
+              height={100}
               style={{
-                width: "50px",
-                height: "50px",
                 borderRadius: "50%",
                 marginTop: "10px",
               }}
             />
           )}
         </label>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div>
           <button
             type="submit"
             style={{
@@ -279,31 +289,11 @@ const EditUserPage = () => {
               width: "20%",
               boxSizing: "border-box",
               fontSize: "15px",
+              marginLeft: "160px",
             }}
           >
             Update
           </button>
-          <div
-            onClick={() => router.push("/dashboard/user")}
-            style={{
-              backgroundColor: "gray",
-              color: "white",
-              border: "none",
-              padding: "10px 20px",
-              cursor: "pointer",
-              borderRadius: "4px",
-              width: "20%",
-              boxSizing: "border-box",
-              textAlign: "center",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginLeft: "230px",
-              fontSize: "15px",
-            }}
-          >
-            Back
-          </div>
         </div>
       </form>
       <style jsx>{`
