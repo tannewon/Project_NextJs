@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Product } from "@/type/types";
 import { PRODUCT_API_URL } from "@/lib/util";
+import { FaCirclePlus } from "react-icons/fa6";
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -46,22 +47,15 @@ const DataComponent = () => {
   }
 
   return (
-    <div style={{ marginTop: "20px" }}>
+    <div>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
         <Link href="/dashboard/add">
-          <div
-            style={{
-              backgroundColor: "orange",
-              color: "white",
-              border: "none",
-              padding: "10px 20px",
-              cursor: "pointer",
-              borderRadius: "4px",
-              display: "inline-block",
-              textDecoration: "none",
-            }}
-          >
-            ADD Product
+          <div>
+            <FaCirclePlus style={{
+              color: "#0099FF",
+              width:'40px',
+              height:'40px'
+            }} />
           </div>
         </Link>
       </div>

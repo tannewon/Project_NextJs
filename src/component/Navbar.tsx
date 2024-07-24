@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
-import { FcLike } from "react-icons/fc";
 import { CartPage } from "./cartShopping";
 import { ModeToggle } from "./ModeToggle";
 import logo from "../../public/ninedev.png";
@@ -13,32 +12,65 @@ import logo from "../../public/ninedev.png";
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const checkLoginStatus = () => {
       const userCookie = Cookies.get("user");
-      setIsLoggedIn(!!userCookie);
+      if (userCookie) {
+        try {
+          const user = JSON.parse(userCookie);
+          setIsLoggedIn(true);
+          setIsAdmin(user.role === 'admin');
+          setUserAvatar(user.role === 'admin' 
+            ? 'https://example.com/admin-avatar.jpg' // Replace with actual admin avatar URL
+            : user.avatar || 'https://res.cloudinary.com/dyfs9b4uj/image/upload/v1721632594/bo791ggfbtugthfb48pn.jpg' // Use user.avatar if available
+          );
+        } catch (error) {
+          console.error("Error parsing user cookie:", error);
+          setIsLoggedIn(false);
+          setIsAdmin(false);
+          setUserAvatar(null);
+        }
+      } else {
+        setIsLoggedIn(false);
+        setUserAvatar(null);
+        setIsAdmin(false);
+      }
     };
 
     checkLoginStatus();
-
     const intervalId = setInterval(checkLoginStatus, 1000);
     return () => clearInterval(intervalId);
   }, []);
 
   const handleLogout = () => {
+    // Clear user data
     localStorage.removeItem("user");
+    localStorage.removeItem("productIds");
+    localStorage.removeItem("products");
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("cartItems");
+    
     Cookies.remove("user");
     setIsLoggedIn(false);
+    setUserAvatar(null);
+    setIsAdmin(false);
     router.push("/login");
   };
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim() !== "") {
       router.push(`/product?search=${encodeURIComponent(searchQuery)}`);
     }
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
   };
 
   return (
@@ -54,7 +86,7 @@ const Navbar = () => {
         backgroundColor: "orange",
         color: "white",
         width: "100%",
-        height: "auto",
+        height: "90px",
         justifyContent: "space-between",
         padding: "0 20px",
       }}
@@ -63,11 +95,13 @@ const Navbar = () => {
         <Image
           src={logo}
           alt="Home"
+          width={100}
+          height={70}
           style={{
             width: "100%",
-            height: "80px",
+            height: "70px",
             padding: "10px",
-            borderRadius: "20px"
+            borderRadius: "20px",
           }}
         />
       </div>
@@ -86,7 +120,6 @@ const Navbar = () => {
               marginLeft: "80px",
             }}
           >
-            {" "}
             Home
           </p>
         </Link>
@@ -104,20 +137,20 @@ const Navbar = () => {
             Product
           </p>
         </Link>
-        <Link href="/dashboard" passHref>
-          <p
-            className="navLink"
-            style={{
-              color: "white",
-              fontWeight: "bold",
-              fontFamily: "Roboto",
-              fontSize: "18px",
-              marginLeft: "80px",
-            }}
-          >
-            Management
-          </p>
-        </Link>
+          <Link href="/dashboard" passHref>
+            <p
+              className="navLink"
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                fontFamily: "Roboto",
+                fontSize: "18px",
+                marginLeft: "80px",
+              }}
+            >
+              Management
+            </p>
+          </Link>
         <form
           className="searchForm"
           style={{
@@ -125,7 +158,8 @@ const Navbar = () => {
             alignItems: "center",
             fontFamily: "Roboto",
             fontSize: "18px",
-            marginLeft: "50px",
+            marginLeft: "100px",
+            marginRight: '50px'
           }}
           onSubmit={handleSearch}
         >
@@ -169,46 +203,46 @@ const Navbar = () => {
         {isLoggedIn ? (
           <>
             <CartPage />
-            <Link href="/product/favorite" passHref>
-              <p
-                className="navLink"
+            <div style={{ position: 'relative' }}>
+              <Image
+                src={userAvatar || '/default-avatar.png'}
+                alt="Avatar"
+                width={50}
+                height={50}
                 style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  marginLeft: "30px",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                  marginLeft: "50px",
                 }}
-              >
-                <FcLike style={{ width: "30px", height: "30px" }} />
-              </p>
-            </Link>
-            <Link href="/profile" passHref>
-              <p
-                className="navLink"
-                style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  fontFamily: "Roboto",
-                  fontSize: "18px",
-                  marginLeft: "30px",
-                }}
-              >
-                Profile
-              </p>
-            </Link>
-            <span
-              onClick={handleLogout}
-              className="navLink"
-              style={{
-                cursor: "pointer",
-                fontFamily: "Roboto",
-                fontSize: "18px",
-                color: "white",
-                fontWeight: "bold",
-                marginLeft: "30px",
-              }}
-            >
-              Logout
-            </span>
+                onClick={toggleDropdown}
+              />
+              {showDropdown && (
+                <div style={{
+                  position: "absolute",
+                  top: "50px",
+                  left: 20,
+                  backgroundColor: "#ffff",
+                  color: "black",
+                  borderRadius: "5px",
+                  padding: "10px",
+                  zIndex: 1000,
+                }}>
+                  <Link href="/profile">
+                    <p className="navLink" style={{ padding: "0px 16px", cursor: "pointer", margin: 0, fontWeight: 'bold' }}>Profile</p>
+                  </Link>
+                  <Link href="/product/favorite">
+                    <p className="navLink" style={{ padding: "0px 16px", cursor: "pointer", margin: 0, fontWeight: 'bold' }}>Favorite</p>
+                  </Link>
+                  <p
+                    onClick={handleLogout}
+                    style={{ padding: "15px 16px", cursor: "pointer", margin: 0, fontWeight: 'bold' }}
+                  >
+                    Logout
+                  </p>
+                </div>
+              )}
+            </div>
+            <ModeToggle />
           </>
         ) : (
           <>
@@ -252,7 +286,6 @@ const Navbar = () => {
             </Link>
           </>
         )}
-        <ModeToggle />
       </div>
 
       <style jsx>{`
@@ -276,35 +309,9 @@ const Navbar = () => {
           nav {
             padding: 0 10px;
           }
-          .navLinks > * {
-            margin-left: 10px;
-          }
           .searchForm {
-            margin-left: 10px;
-          }
-        }
-        @media only screen and (min-width: 321px) and (max-width: 375px) {
-          .navLinks > * {
-            margin-left: 15px;
-          }
-          .searchForm {
-            margin-left: 15px;
-          }
-        }
-        @media only screen and (min-width: 376px) and (max-width: 414px) {
-          .navLinks > * {
-            margin-left: 18px;
-          }
-          .searchForm {
-            margin-left: 18px;
-          }
-        }
-        @media only screen and (min-width: 415px) and (max-width: 1080px) {
-          .navLinks > * {
-            margin-left: 20px;
-          }
-          .searchForm {
-            margin-left: 20px;
+            flex-direction: column;
+            align-items: flex-start;
           }
         }
       `}</style>

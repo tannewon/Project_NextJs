@@ -207,7 +207,7 @@ export default function EditProductPage() {
             backgroundColor: "orange",
             color: "white",
             border: "none",
-            marginLeft:'160px',
+            marginLeft:'310px',
             marginTop:'20px',
             padding: "10px 20px",
             cursor: "pointer",

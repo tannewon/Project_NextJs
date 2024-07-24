@@ -147,7 +147,7 @@ const Login = () => {
                     cursor: "pointer",
                   }}
                 >
-                  {showPassword ? <EyeOff /> : <Eye />}
+                  {showPassword ?  <Eye />  : <EyeOff />}
                 </span>
                 {errors.password && (
                   <div className="invalid-feedback">{errors.password}</div>

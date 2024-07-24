@@ -38,6 +38,10 @@ const CartPage: React.FC = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
+  const getTotalPrice = () => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+  };
+
   const addToCart = (item: CartItem) => {
     const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
     if (existingItem) {
@@ -55,6 +59,16 @@ const CartPage: React.FC = () => {
     }
   };
 
+  const handleQuantityChange = (id: string, delta: number) => {
+    const updatedCartItems = cartItems.map(item => 
+      item.id === id 
+        ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+        : item
+    );
+    setCartItems(updatedCartItems);
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+  };
+
   const handleBuyNow = () => {
     alert("Buy Now button clicked! Implement purchase logic here.");
     // Add your purchase logic here
@@ -62,8 +76,8 @@ const CartPage: React.FC = () => {
 
   return (
     <CartContext.Provider value={{ addToCart }}>
-      <FaShoppingCart
-        style={{ marginLeft: "20px", width:'25px', height:'25px' }}
+      <FaShoppingCart 
+        style={{ marginLeft: "20px", width: '25px', height: '25px' }}
         onClick={handleToggleCart}
       />
       {getTotalItems() > 0 && (
@@ -83,10 +97,11 @@ const CartPage: React.FC = () => {
       <div
         style={{
           position: "fixed",
-          top: "130px",
-          right: "100px",
+          top: "100px",
+          right: "10px",
           background: "white",
           color: "black",
+          height:'100%'
         }}
       >
         {showCart && (
@@ -120,8 +135,12 @@ const CartPage: React.FC = () => {
                       style={{ borderBottom: "1px solid #ddd" }}
                     >
                       <td style={{ padding: "10px" }}>{item.name}</td>
-                      <td style={{ padding: "10px" }}>{item.quantity}</td>
-                      <td style={{ padding: "10px" }}>{item.price}$</td>
+                      <td style={{ padding: "10px" }}>
+                        <button onClick={() => handleQuantityChange(item.id, -1)}>-</button>
+                        <span style={{ margin: "0 10px" }}>{item.quantity}</span>
+                        <button onClick={() => handleQuantityChange(item.id, 1)}>+</button>
+                      </td>
+                      <td style={{ padding: "10px" }}>{(item.price * item.quantity).toFixed(2)}$</td>
                       <td style={{ padding: "10px" }}>
                         <button
                           onClick={() => handleDeleteItem(item.id)}
@@ -143,27 +162,30 @@ const CartPage: React.FC = () => {
               </table>
             )}
             {cartItems.length > 0 && (
-              <button
-                onClick={handleBuyNow}
-                style={{
-                  marginTop: "20px",
-                  marginLeft: "130px",
-                  backgroundColor: "#3498db",
-                  color: "#fff",
-                  border: "none",
-                  padding: "10px 20px",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  justifyItems: "center",
-                }}
-              >
-                Buy Now
-              </button>
+              <>
+                <p>Total Price: ${getTotalPrice()}</p>
+                <button
+                  onClick={handleBuyNow}
+                  style={{
+                    marginTop: "20px",
+                    marginLeft: "130px",
+                    backgroundColor: "#3498db",
+                    color: "#fff",
+                    border: "none",
+                    padding: "10px 20px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    justifyItems: "center",
+                  }}
+                >
+                  checkout
+                </button>
+              </>
             )}
           </>
         )}
       </div>
-    </CartContext.Provider>
+      </CartContext.Provider>
   );
 };
 

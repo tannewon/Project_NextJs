@@ -78,15 +78,16 @@ const Register = () => {
         alert("Registration successful");
       } catch (error) {
         console.error("Registration failed", error);
+        alert("Registration failed");
       }
     }
   };
 
   return (
-    <main style={{ justifyContent: "center",marginTop:'150px' }}>
+    <main style={{ justifyContent: "center", marginTop: '150px' }}>
       <div className="container">
         <div
-          className="card "
+          className="card"
           style={{
             border: "1px solid orange",
             borderRadius: "10px",
@@ -96,118 +97,101 @@ const Register = () => {
             margin: "auto",
           }}
         >
-          <form onSubmit={handleSubmit} style={{ padding: "40px" ,backgroundColor:'#FF6633',borderRadius:'10px'}}>
+          <form onSubmit={handleSubmit} style={{ padding: "40px", backgroundColor: '#FF6633', borderRadius: '10px' }}>
             <h2 style={{ textAlign: "center", color: "black" }}>Register</h2>
             <div className="mb-3">
-              <label htmlFor="inputName" className="form-label" style={{ color:'white',fontWeight: "bold" }} >
+              <label htmlFor="inputName" className="form-label" style={{ color: 'white', fontWeight: "bold" }}>
                 Name
               </label>
               <input
                 name="name"
                 type="text"
                 placeholder="Enter name"
-                className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                className="form-control"
                 id="inputName"
                 value={formData.name}
                 onChange={handleChange}
                 style={{
                   width: "96%",
                   height: "40px",
-                  border: errors.name ? "1px solid red" : "1px solid #ccc",
+                  border: "1px solid #ccc",
                   borderRadius: "5px",
                   padding: "0 10px",
                   marginTop: "20px",
                 }}
               />
-              {errors.name && (
-                <div className="invalid-feedback" style={{ color: "red" }}>
-                  {errors.name}
-                </div>
-              )}
             </div>
             <div className="mb-3" style={{ marginTop: "20px" }}>
-              <label htmlFor="staticEmail" className="form-label" style={{ color:'white',fontWeight: "bold" }}>
+              <label htmlFor="staticEmail" className="form-label" style={{ color: 'white', fontWeight: "bold" }}>
                 Email
               </label>
               <input
                 name="email"
                 placeholder="Enter email"
                 type="email"
-                className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                className="form-control"
                 value={formData.email}
                 onChange={handleChange}
                 style={{
                   width: "96%",
                   height: "40px",
-                  border: errors.email ? "1px solid red" : "1px solid #ccc",
+                  border: "1px solid #ccc",
                   borderRadius: "5px",
                   padding: "0 10px",
                   marginTop: "20px",
                 }}
               />
-              {errors.email && (
-                <div className="invalid-feedback" style={{ color: "red" }}>
-                  {errors.email}
-                </div>
-              )}
             </div>
             <div className="mb-3" style={{ marginTop: "20px", position: "relative" }}>
-              <label htmlFor="inputPassword" className="form-label" style={{ color:'white',fontWeight: "bold" }}>
+              <label htmlFor="inputPassword" className="form-label" style={{ color: 'white', fontWeight: "bold" }}>
                 Password
               </label>
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter password"
-                className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                className="form-control"
                 id="inputPassword"
                 value={formData.password}
                 onChange={handleChange}
                 style={{
                   width: "96%",
                   height: "40px",
-                  border: errors.password ? "1px solid red" : "1px solid #ccc",
+                  border: "1px solid #ccc",
                   borderRadius: "5px",
                   padding: "0 10px",
                   marginTop: "20px",
                 }}
-                
               />
               <span
                 onClick={togglePasswordVisibility}
                 style={{
-                  position:'absolute',
+                  position: 'absolute',
                   top: "77%",
                   right: "10px",
                   transform: "translateY(-50%)",
                   cursor: "pointer",
                 }}
-                
               >
-                {showPassword ? <EyeOff /> : <Eye />}
+                {showPassword ? <Eye />  : <EyeOff />}
               </span>
-              {errors.password && (
-                <div className="invalid-feedback" style={{ color: "red" }}>
-                  {errors.password}
-                </div>
-              )}
             </div>
             <div className="mb-3" style={{ marginTop: "20px", position: "relative" }}>
-              <label htmlFor="inputConfirmPassword" className="form-label" style={{ color:'white',fontWeight: "bold" }}>
+              <label htmlFor="inputConfirmPassword" className="form-label" style={{ color: 'white', fontWeight: "bold" }}>
                 Confirm Password
               </label>
               <input
                 name="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Enter confirm password"
-                className={`form-control ${errors.confirmPassword ? "is-invalid" : ""}`}
+                className="form-control"
                 id="inputConfirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 style={{
                   width: "96%",
                   height: "40px",
-                  border: errors.confirmPassword ? "1px solid red" : "1px solid #ccc",
+                  border: "1px solid #ccc",
                   borderRadius: "5px",
                   padding: "0 10px",
                   marginTop: "20px",
@@ -223,14 +207,16 @@ const Register = () => {
                   cursor: "pointer",
                 }}
               >
-                {showConfirmPassword ? <EyeOff /> : <Eye />}
+                {showConfirmPassword ?  <Eye />  : <EyeOff />}
               </span>
-              {errors.confirmPassword && (
-               <div className="invalid-feedback" style={{ color: "red" }}>
-                  {errors.confirmPassword}
-                </div>
-              )}
             </div>
+            {Object.keys(errors).length > 0 && (
+              <div style={{ color: "red", marginBottom: "20px" }}>
+                {Object.values(errors).map((error, index) => (
+                  <p key={index}>{error}</p>
+                ))}
+              </div>
+            )}
             <button
               type="submit"
               className="btn btn-primary mt-3"
@@ -250,7 +236,7 @@ const Register = () => {
             >
               Register
             </button>
-            <div style={{ marginTop: "20px", textAlign: "center",color:'white' }}>
+            <div style={{ marginTop: "20px", textAlign: "center", color: 'white' }}>
               <p>
                 Already have an account?
                 <button

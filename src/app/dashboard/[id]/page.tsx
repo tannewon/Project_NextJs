@@ -47,7 +47,7 @@ export default function DashboardDetailPage({
   const handleDelete = async () => {
     try {
       await deletePost(id);
-      router.push("/dashboard"); // Navigate back to the dashboard page
+      router.push("/dashboard/product"); // Navigate back to the dashboard page
       alert("Delete success");
     } catch (error) {
       console.error("Failed to delete post:", error);
@@ -55,46 +55,65 @@ export default function DashboardDetailPage({
   };
 
   const handleBack = () => {
-    router.push("/dashboard/product"); // Navigate back to the dashboard page
+    router.push("/dashboard/product"); // Navigate back to the product page
   };
 
   if (!post) {
-    return <div></div>;
+    return <div>Loading...</div>;
   }
 
   return (
-    <div>
+    <div style={{ padding: "10px 50px 350px", margin: 0 }}>
       <button
         onClick={handleBack}
         style={{
           backgroundColor: "white",
-          border: "none",
+          border: "1px solid #ccc",
           width: "50px",
           height: "50px",
           cursor: "pointer",
           borderRadius: "50%",
-          boxSizing: "border-box",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginBottom: "20px",
         }}
       >
         <IoMdArrowBack style={{ width: "20px", height: "20px" }} />
       </button>
-      <br />
-      <div style={{ marginTop: "20px" }}>
+      <div style={{ marginTop: "10px" }}>
         <div
           style={{ display: "flex", fontWeight: "bold", marginBottom: "10px" }}
         >
-          <div style={{ flex: "1" }}>Image</div>
-          <div style={{ flex: "2" }}>Name</div>
-          <div style={{ flex: "1" }}>Price</div>
-          <div style={{ flex: "4" }}>Description</div>
-          <div style={{ flex: "1.5" }}>Actions</div>
+          <div style={{ fontWeight: "bold", padding: "10px" }}>Image</div>
+          <div
+            style={{ fontWeight: "bold", padding: "10px", marginLeft: "60px" }}
+          >
+            Name
+          </div>
+          <div
+            style={{ fontWeight: "bold", padding: "10px", marginLeft: "190px" }}
+          >
+            Price
+          </div>
+          <div
+            style={{ fontWeight: "bold", padding: "10px", marginLeft: "70px" }}
+          >
+            Description
+          </div>
+          <div
+            style={{ fontWeight: "bold", padding: "10px", marginLeft: "380px" }}
+          >
+            Actions
+          </div>
         </div>
-        <hr></hr>
+        <hr />
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            marginBottom: "10px",
+            padding: "10px 0",
+            borderBottom: "1px solid #ccc",
           }}
         >
           <div style={{ flex: "1" }}>
@@ -109,12 +128,15 @@ export default function DashboardDetailPage({
               }}
             />
           </div>
-          <div style={{ flex: "2" }}>{post.name}</div>
+          <div style={{ flex: "2", padding: "0 10px" }}>{post.name}</div>
           <div style={{ flex: "1", color: "red" }}>{post.price}$</div>
-          <div style={{ flex: "4" }}>{post.description}</div>
-          {/* <div style={{ flex: "4" }}>{post.category}</div> */}
+          <div style={{ flex: "4", padding: "0 10px" }}>{post.description}</div>
           <div
-            style={{ justifyContent: "space-between", marginRight: "100px" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
           >
             <Link href={`/dashboard/edit?id=${id}`}>
               <CiEdit
@@ -122,21 +144,21 @@ export default function DashboardDetailPage({
                   width: "30px",
                   height: "30px",
                   color: "orange",
-                  marginLeft: "50px",
+                  cursor: "pointer",
                 }}
               />
             </Link>
             <button
               onClick={handleDelete}
               style={{
-                color: "red",
+                background: "none",
                 border: "none",
-
                 cursor: "pointer",
+                padding: "0 10px",
               }}
             >
               <MdDeleteForever
-                style={{ width: "30px", height: "30px", marginLeft: "10px" }}
+                style={{ width: "30px", height: "30px", color: "red" }}
               />
             </button>
           </div>

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -17,7 +17,9 @@ const EditProfile = () => {
     avatar: user?.avatar || "",
   });
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string>(formData.avatar || "");
+  const [avatarPreview, setAvatarPreview] = useState<string>(
+    formData.avatar || ""
+  );
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,33 +70,33 @@ const EditProfile = () => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop: handleDrop });
 
   if (!user) {
-    return <div></div>;
+    return <div>Loading...</div>;
   }
 
   return (
-    <main style={{ marginTop:'150px' }}>
-      <div
-        style={{
-          marginTop: "50px",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+    <main
+      style={{
+        padding: "40px",
+        backgroundColor: "#f4f4f9",
+        minHeight: "100vh",
+        marginTop: "100px",
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <div
           style={{
-            textAlign: "center",
-            padding: "20px",
-            backgroundColor: "orange",
+            padding: "30px",
+            backgroundColor: "#ffff",
             borderRadius: "8px",
-            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             maxWidth: "600px",
             width: "100%",
           }}
         >
           <h2
             style={{
-              marginBottom: "20px",
-              fontSize: "24px",
+              marginBottom: "30px",
+              fontSize: "28px",
               fontWeight: "bold",
               color: "#333",
               textAlign: "center",
@@ -103,19 +105,8 @@ const EditProfile = () => {
             Edit Profile
           </h2>
           <form onSubmit={handleSubmit}>
-            <div
-              style={{
-                marginBottom: "15px",
-                fontSize: "18px",
-                color: "#555",
-              }}
-            >
-              <label
-                style={{ fontWeight: "bold", color: "#333" }}
-                htmlFor="name"
-              >
-                Name:
-              </label>
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ fontSize: "18px", color: "#333",fontWeight: "bold" }}>Name:</label>
               <input
                 type="text"
                 id="name"
@@ -123,22 +114,18 @@ const EditProfile = () => {
                 value={formData.name}
                 onChange={handleChange}
                 style={{
-                  marginLeft: "10px",
-                  padding: "5px",
+                  display: "block",
+                  width: "96%",
+                  padding: "10px",
+                  marginTop: "8px",
                   borderRadius: "4px",
-                  border: "1px solid #ccc",
+                  border: "1px solid #ddd",
                 }}
               />
             </div>
-            <div
-              style={{
-                marginBottom: "15px",
-                fontSize: "18px",
-                color: "#555",
-              }}
-            >
+            <div style={{ marginBottom: "20px" }}>
               <label
-                style={{ fontWeight: "bold", color: "#333" }}
+                style={{ fontSize: "18px", color: "#333",fontWeight: "bold" }}
                 htmlFor="email"
               >
                 Email:
@@ -150,45 +137,42 @@ const EditProfile = () => {
                 value={formData.email}
                 onChange={handleChange}
                 style={{
-                  marginLeft: "10px",
-                  padding: "5px",
+                  display: "block",
+                  width: "96%",
+                  padding: "10px",
+                  marginTop: "8px",
                   borderRadius: "4px",
-                  border: "1px solid #ccc",
+                  border: "1px solid #ddd",
                 }}
               />
             </div>
             <div
               {...getRootProps()}
               style={{
-                border: "1px dashed #ccc",
-                width:"200px",
-                marginLeft:'200px'
-
+                border: "2px dashed #ddd",
+                padding: "20px",
+                borderRadius: "4px",
+                backgroundColor: "#f9f9f9",
+                cursor: "pointer",
+                marginBottom: "20px",
+                textAlign: "center",
               }}
             >
               <input {...getInputProps()} />
-              <p>Upload avatar here</p>
+              <p style={{ margin: 0, color: "#555" }}>Upload avatar here</p>
               {avatarFile && (
-                <div
-                  style={{
-                    marginTop: "10px",
-                  }}
-                >
+                <div style={{ marginTop: "10px" }}>
                   <strong>Selected file:</strong> {avatarFile.name}
                 </div>
               )}
               {avatarPreview && (
-                <div
-                  style={{
-                    marginTop: "10px",
-                  }}
-                >
+                <div style={{ marginTop: "10px" }}>
                   <img
                     src={avatarPreview}
                     alt="Avatar Preview"
                     style={{
-                      width: "100px",
-                      height: "100px",
+                      width: "120px",
+                      height: "120px",
                       borderRadius: "50%",
                       objectFit: "cover",
                     }}
@@ -199,13 +183,15 @@ const EditProfile = () => {
             <button
               type="submit"
               style={{
-                marginTop:'20px',
-                padding: "10px 20px",
-                backgroundColor: "green",
-                color: "white",
+                padding: "12px 24px",
+                backgroundColor: "#28a745",
+                color: "#fff",
                 border: "none",
                 borderRadius: "4px",
                 cursor: "pointer",
+                fontSize: "16px",
+                marginLeft:'20px',
+                marginRight: "380px",
               }}
             >
               Save
@@ -214,13 +200,13 @@ const EditProfile = () => {
               type="button"
               onClick={() => router.push("/profile")}
               style={{
-                padding: "10px 20px",
-                marginLeft: "90px",
-                backgroundColor: "red",
-                color: "white",
+                padding: "12px 24px",
+                backgroundColor: "#dc3545",
+                color: "#fff",
                 border: "none",
                 borderRadius: "4px",
                 cursor: "pointer",
+                fontSize: "16px",
               }}
             >
               Cancel

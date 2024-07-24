@@ -213,7 +213,7 @@ export default function AddProductPage() {
             padding: "10px 20px",
             cursor: "pointer",
             borderRadius: "4px",
-            marginLeft:'160px'
+            marginLeft:'300px'
           }}
         >
           {isUploading ? "Uploading..." : "Save"}

@@ -1,8 +1,7 @@
-"use client";
+ "use client"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { USER_API_URL } from "@/lib/util";
 import axios from "axios";
 import Link from "next/link";
 
@@ -12,16 +11,15 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      let userData = localStorage.getItem("user") || Cookies.get(USER_API_URL);
+      let userData = localStorage.getItem("user") || Cookies.get("user");
       if (userData) {
         setUser(JSON.parse(userData));
       } else {
-        // If no user data in localStorage or cookies, fetch from API
         try {
           const response = await axios.get("/api/user"); // Adjust the endpoint as necessary
           setUser(response.data);
           localStorage.setItem("user", JSON.stringify(response.data));
-          Cookies.set(USER_API_URL, JSON.stringify(response.data));
+          Cookies.set("user", JSON.stringify(response.data));
         } catch (error) {
           console.error("Failed to fetch user data", error);
           router.push("/login");
@@ -37,7 +35,7 @@ const Profile = () => {
   }
 
   return (
-    <main style={{ marginTop:'150px' }}>
+    <main style={{ marginTop: '150px' }}>
       <div
         style={{
           marginTop: "50px",

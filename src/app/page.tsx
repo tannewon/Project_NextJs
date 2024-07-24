@@ -135,7 +135,7 @@ export default function Home() {
         <Image
           src={home}
           alt="Home"
-          style={{ width: "100%", height: "auto", marginBottom: "50px" }}
+          style={{ width: "100%", height: "auto", marginTop:'90px' }}
         />
       </div>
       <div style={{ textAlign: "center", padding: "20px" }}>
@@ -153,12 +153,16 @@ export default function Home() {
           <Image
             src={anh1}
             alt="Product 1"
-            style={{ width: "80%", height: "auto" }}
+            width={700}
+            height={400}
+            // style={{ width: "80%", height: "auto" }}
           />
           <Image
             src={anh2}
             alt="Product 2"
-            style={{ width: "80%", height: "auto" }}
+            width={700}
+            height={400}
+            // style={{ width: "80%", height: "auto" }}
           />
         </div>
       </div>
@@ -168,8 +172,8 @@ export default function Home() {
             color: "#fff",
             backgroundColor: "#e67e22",
             width: "fit-content",
-            padding: "20px 40px",
-            margin: "50px auto",
+            padding: "15px 30px",
+            margin: "0px auto",
             borderRadius: "8px",
             textAlign: "center",
           }}

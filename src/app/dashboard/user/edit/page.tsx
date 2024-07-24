@@ -289,7 +289,7 @@ const EditUserPage = () => {
               width: "20%",
               boxSizing: "border-box",
               fontSize: "15px",
-              marginLeft: "160px",
+              marginLeft: "310px",
             }}
           >
             Update

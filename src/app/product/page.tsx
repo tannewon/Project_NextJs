@@ -112,7 +112,7 @@ const DataComponent = () => {
             </p>
             <div>
                 {[...Array(5)].map((_, index) => (
-                  <IoStar key={index} style={{ margin: "0 2px" ,color:'#FF9900'}} />
+                  <IoStar key={index} style={{ margin: "0 2px" ,color:'#FF9900',width:'20px',height:'20px'}} />
                 ))}
               </div>
             <p style={{ color: "#666", marginBottom: "10px" }}>
@@ -158,7 +158,7 @@ export default function DashboardPage() {
         <Image
           src={home}
           alt="Home"
-          style={{ width:'100%',height:'auto' }}
+          style={{ width:'100%',height:'auto',marginTop:'90px ' }}
         />
       </div>
       <h1
@@ -166,7 +166,7 @@ export default function DashboardPage() {
           color: "#fff",
           backgroundColor: "#e67e22",
           width: "fit-content",
-          padding: "20px 40px",
+          padding: "15px 30px",
           margin: "50px auto",
           borderRadius: "8px",
           textAlign: "center",

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
@@ -9,10 +9,37 @@ import {
   FcSoundRecordingCopyright,
 } from "react-icons/fc";
 import Cookies from "js-cookie";
+import axios from "axios";
+import { USER_API_URL } from "@/lib/util";
+import { IoLogOut } from "react-icons/io5";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [user, setUser] = useState<{ name: string; avatar: string } | null>(
+    null
+  );
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      let userData = localStorage.getItem("user") || Cookies.get(USER_API_URL);
+      if (userData) {
+        setUser(JSON.parse(userData));
+      } else {
+        try {
+          const response = await axios.get("/api/user"); // Adjust the endpoint as necessary
+          setUser(response.data);
+          localStorage.setItem("user", JSON.stringify(response.data));
+          Cookies.set(USER_API_URL, JSON.stringify(response.data));
+        } catch (error) {
+          console.error("Failed to fetch user data", error);
+          router.push("/login");
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [router]);
 
   const handleLogout = () => {
     Cookies.remove("user");
@@ -27,16 +54,25 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh", flexDirection: "column",marginTop:'100px' }}>
-      <header
+    <div
+      style={{
+        display: 'grid',
+        height: "100vh",
+        flexDirection: "column",
+        marginTop: "95px",
+      }}
+    >
+      <div
         style={{
           backgroundColor: "#333",
           color: "#fff",
           padding: "20px",
-          height: "80px",
+          height: "45px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          width:'100%',
+          marginLeft:'270px'
         }}
       >
         <form
@@ -46,10 +82,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             display: "flex",
             width: "100%",
             justifyContent: "center",
+            marginRight:'20px'
           }}
           onSubmit={handleSearch}
         >
-          <div style={{ position: "relative", width: "250px" }}>
+          <div style={{ position: "relative", width: "250px"}}>
             <button
               type="submit"
               style={{
@@ -64,16 +101,18 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 background: "transparent",
               }}
             >
-              <FaSearch style={{ color: "gray",width:'20px',height:'20px' }} />
+              <FaSearch
+                style={{ color: "gray", width: "20px", height: "20px" }}
+              />
             </button>
             <input
               type="text"
               name="search"
               placeholder="Search products"
               style={{
-                fontSize:'15px',
-                width: "200px",
-                height: "33px",
+                fontSize: "15px",
+                width: "170px",
+                height: "30px",
                 border: "none",
                 borderRadius: "15px",
                 paddingRight: "45px", // Space for the button
@@ -89,12 +128,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               flex: "1",
               textAlign: "center",
               margin: "0",
+              marginRight: "500px"
             }}
           >
             Dashboard
           </h1>
         </form>
-      </header>
+      </div>
 
       <div style={{ display: "flex", flex: 1, overflow: "auto" }}>
         <aside
@@ -106,14 +146,36 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            height: "100%",
+            height: "80%",
+            position: "fixed",
+            top: 95, 
+            bottom:100,
           }}
         >
           <div>
-            <h2 style={{ color: "#fff", marginLeft: "30px" }}>Dashboard</h2>
+            {user && (
+              <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                {user.avatar && (
+                  <img
+                    src={user.avatar}
+                    alt="Admin Avatar"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      marginBottom: "10px",
+                    }}
+                  />
+                )}
+                <div style={{ color: "#fff", fontSize: "16px" }}>
+                  {user.name}
+                </div>
+              </div>
+            )}
             <hr />
             <nav style={{ display: "block" }}>
-              <p style={{ marginTop: "20px" }}>
+              <p className="nav-item" style={{ marginTop: "20px", marginLeft: "50px" }}>
                 <Link href="/dashboard">
                   <FcHome />
                   <span
@@ -123,11 +185,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                       marginLeft: "10px",
                     }}
                   >
-                    Home
+                    Dashboard
                   </span>
                 </Link>
               </p>
-              <p style={{ marginTop: "20px" }}>
+              <p className="nav-item" style={{ marginTop: "20px", marginLeft: "50px" }}>
                 <Link href="/dashboard/product">
                   <FcSoundRecordingCopyright />
                   <span
@@ -141,7 +203,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                   </span>
                 </Link>
               </p>
-              <p style={{ marginTop: "20px" }}>
+              <p className="nav-item" style={{ marginTop: "20px", marginLeft: "50px" }}>
                 <Link href="/dashboard/user">
                   <FcBusinessman />
                   <span
@@ -156,22 +218,30 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 </Link>
               </p>
             </nav>
+            <button
+              onClick={handleLogout}
+              className="nav-item"
+              style={{
+                color: "#fff",
+                textDecoration: "none",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "17px",
+                marginLeft: "70px",
+                display: "flex",
+                alignItems: "center",
+                marginTop:'230px'
+              }}
+            >
+              <IoLogOut
+                style={{ width: "20px", height: "20px", marginRight: "8px" }}
+              />
+              <span>Logout</span>
+            </button>
           </div>
-          <button
-            onClick={handleLogout}
-            style={{
-              color: "#fff",
-              textDecoration: "none",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "17px",
-            }}
-          >
-            Logout
-          </button>
         </aside>
-        <main style={{ flex: 1, padding: "20px", overflowY: "auto" }}>
+        <main style={{ flex: 1, padding: "20px", overflowY: "auto",marginLeft:'270px' }}>
           {children}
         </main>
       </div>
@@ -230,6 +300,43 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           main {
             padding: 5px;
           }
+        }
+
+        @media (max-width: 320px) and (orientation: portrait) {
+          .searchForm {
+            flex-direction: column;
+          }
+
+          .searchForm input {
+            width: 100%;
+            margin-bottom: 10px;
+          }
+
+          .searchForm h1 {
+            margin-left: 0;
+            margin-top: 10px;
+          }
+
+          aside {
+            width: 100%;
+            height: auto;
+            padding: 10px;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          aside nav p {
+            margin-top: 10px;
+          }
+
+          main {
+            padding: 5px;
+            margin-left: 0;
+          }
+        }
+
+        .nav-item:hover {
+          color: red;
         }
       `}</style>
     </div>

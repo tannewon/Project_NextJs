@@ -305,8 +305,10 @@ const ChartComponent: React.FC = () => {
   ];
 
   return (
+    
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
       <div>
+        <h1 style={{ textAlign:'center',color:'orange' }}>Chart</h1>
         <div id="chartOne" className="-ml-5">
           <h2 className="text-xl font-bold mb-4">Line Chart</h2>
           <ReactApexChart
