@@ -141,8 +141,8 @@ export default function DashboardDetailPage({
             <Link href={`/dashboard/edit?id=${id}`}>
               <CiEdit
                 style={{
-                  width: "30px",
-                  height: "30px",
+                  width: "25px",
+                  height: "25px",
                   color: "orange",
                   cursor: "pointer",
                 }}
@@ -154,11 +154,11 @@ export default function DashboardDetailPage({
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                padding: "0 10px",
+                padding: "0 15px",
               }}
             >
               <MdDeleteForever
-                style={{ width: "30px", height: "30px", color: "red" }}
+                style={{ width: "25px", height: "25px", color: "red" }}
               />
             </button>
           </div>

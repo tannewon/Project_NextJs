@@ -51,43 +51,49 @@ const UserPage = () => {
   );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", padding: "10px 10px 350px" }}>
-      <div style={{ position: "relative", width: "250px",marginBottom:'30px' }}>
-            <button
-              type="submit"
-              style={{
-                position: "absolute",
-                right: "210px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: "30px",
-                height: "30px",
-                border: "none",
-                borderRadius: "15px",
-                background: "transparent",
-              }}
-            >
-              <FaSearch
-                style={{ color: "gray", width: "20px", height: "20px" }}
-              />
-            </button>
-            <input
-              type="text"
-              name="search"
-              placeholder="Search user"
-              style={{
-                fontSize: "15px",
-                width: "150px",
-                height: "30px",
-                border:'none',
-                borderRadius: "10px",
-                paddingRight: "45px", // Space for the button
-                paddingLeft: "45px", // Space for the text from the left border
-              }}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        padding: "10px 10px 350px",
+      }}
+    >
+      <div
+        style={{ position: "relative", width: "250px", marginBottom: "30px" }}
+      >
+        <button
+          type="submit"
+          style={{
+            position: "absolute",
+            right: "210px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: "30px",
+            height: "30px",
+            border: "none",
+            borderRadius: "15px",
+            background: "transparent",
+          }}
+        >
+          <FaSearch style={{ color: "gray", width: "20px", height: "20px" }} />
+        </button>
+        <input
+          type="text"
+          name="search"
+          placeholder="Search user"
+          style={{
+            fontSize: "15px",
+            width: "150px",
+            height: "30px",
+            border: "1px solid #ccc",
+            borderRadius: "10px",
+            paddingRight: "45px", // Space for the button
+            paddingLeft: "45px", // Space for the text from the left border
+          }}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
       <div
         style={{
           display: "grid",
@@ -99,10 +105,10 @@ const UserPage = () => {
           borderBottom: "2px solid orange",
         }}
       >
-        <div style={{ fontWeight: "bold", padding: "10px" }}>Name</div>
-        <div style={{ fontWeight: "bold", padding: "10px" }}>Email</div>
-        <div style={{ fontWeight: "bold", padding: "10px" }}>Avatar</div>
-        <div style={{ fontWeight: "bold", padding: "10px" }}>Actions</div>
+        <div style={{ fontWeight: "bold", padding: "18px" }}>Name</div>
+        <div style={{ fontWeight: "bold", padding: "18px" }}>Email</div>
+        <div style={{ fontWeight: "bold", padding: "18px" }}>Avatar</div>
+        <div style={{ fontWeight: "bold", padding: "18px" }}>Actions</div>
       </div>
 
       {filteredUsers.map((user) => (
@@ -119,9 +125,9 @@ const UserPage = () => {
             borderBottom: "1px solid #ccc",
           }}
         >
-          <div style={{ marginLeft: '10px' }}>{user.name}</div>
+          <div style={{ marginLeft: "20px" }}>{user.name}</div>
           <div>{user.email}</div>
-          <div style={{ display: "flex", marginLeft: '10px' }}>
+          <div style={{ display: "flex", marginLeft: "10px" }}>
             <Image
               src={user.avatar}
               alt={user.name}
@@ -133,12 +139,12 @@ const UserPage = () => {
               }}
             />
           </div>
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div style={{ display: "flex", gap: "15px",marginLeft:'10px' }}>
             <Link href={`/dashboard/user/edit/?id=${user.id}`} passHref>
               <CiEdit
                 style={{
-                  width: "30px",
-                  height: "30px",
+                  width: "25px",
+                  height: "25px",
                   color: "orange",
                   cursor: "pointer",
                 }}
@@ -153,7 +159,9 @@ const UserPage = () => {
               }}
               onClick={() => deleteUser(user.id)}
             >
-              <MdDeleteForever style={{ width: "30px", height: "30px", color: "red" }} />
+              <MdDeleteForever
+                style={{ width: "25px", height: "25px", color: "red" }}
+              />
             </button>
           </div>
         </div>

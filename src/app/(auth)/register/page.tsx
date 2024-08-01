@@ -173,7 +173,7 @@ const Register = () => {
                   cursor: "pointer",
                 }}
               >
-                {showPassword ? <Eye />  : <EyeOff />}
+                {showPassword ?  <EyeOff />  :  <Eye />}
               </span>
             </div>
             <div className="mb-3" style={{ marginTop: "20px", position: "relative" }}>
@@ -207,7 +207,7 @@ const Register = () => {
                   cursor: "pointer",
                 }}
               >
-                {showConfirmPassword ?  <Eye />  : <EyeOff />}
+                {showConfirmPassword ?   <EyeOff />  :  <Eye />}
               </span>
             </div>
             {Object.keys(errors).length > 0 && (

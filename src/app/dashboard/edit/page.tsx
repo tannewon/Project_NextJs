@@ -98,7 +98,7 @@ export default function EditProductPage() {
         <button
           style={{
             backgroundColor: "white",
-            border: "none",
+            border: "1px solid #ccc",
             width: "50px",
             height: "50px",
             cursor: "pointer",
@@ -117,7 +117,7 @@ export default function EditProductPage() {
           border: "1px solid orange",
           borderRadius: "10px",
           padding: "20px",
-          maxWidth: "400px",
+          maxWidth: "550px",
           margin: "0 auto",
           marginTop: "20px",
         }}
@@ -131,6 +131,7 @@ export default function EditProductPage() {
             required
             style={{
               width: "100%",
+              height:'40px',
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -149,6 +150,7 @@ export default function EditProductPage() {
             required
             style={{
               width: "100%",
+              height:'40px',
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -166,6 +168,7 @@ export default function EditProductPage() {
             required
             style={{
               width: "100%",
+              height:'80px',
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -183,6 +186,7 @@ export default function EditProductPage() {
             disabled={isUploading}
             style={{
               width: "100%",
+              height:'40px',
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -207,7 +211,7 @@ export default function EditProductPage() {
             backgroundColor: "orange",
             color: "white",
             border: "none",
-            marginLeft:'310px',
+            marginLeft:'370px',
             marginTop:'20px',
             padding: "10px 20px",
             cursor: "pointer",

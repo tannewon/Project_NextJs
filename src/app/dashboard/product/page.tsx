@@ -48,14 +48,24 @@ const DataComponent = () => {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "20px",
+        }}
+      >
         <Link href="/dashboard/add">
-          <div>
-            <FaCirclePlus style={{
-              color: "#0099FF",
-              width:'40px',
-              height:'40px'
-            }} />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <FaCirclePlus
+              style={{
+                color: "#0099FF",
+                width: "40px",
+                height: "40px",
+                marginRight: "10px", // Thêm khoảng cách giữa icon và chữ
+              }}
+            />
+            ADD Product
           </div>
         </Link>
       </div>
@@ -64,7 +74,7 @@ const DataComponent = () => {
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
           gap: "30px",
-          marginTop: '50px',
+          marginTop: "50px",
         }}
       >
         {filteredData.length > 0 ? (
@@ -112,7 +122,7 @@ const DataComponent = () => {
                   <p
                     style={{
                       fontSize: "1.1em",
-                      color: "#e67e22",
+                      color: "red",
                     }}
                   >
                     {item.price}$

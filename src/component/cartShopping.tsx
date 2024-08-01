@@ -1,12 +1,15 @@
+"use client"
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { useRouter } from 'next/navigation';
 
 interface CartItem {
   id: string;
   name: string;
   quantity: number;
   price: number;
+  image: string;
 }
 
 interface CartContextType {
@@ -18,6 +21,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("cartItems") || "[]");
@@ -69,15 +73,15 @@ const CartPage: React.FC = () => {
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
 
-  const handleBuyNow = () => {
-    alert("Buy Now button clicked! Implement purchase logic here.");
-    // Add your purchase logic here
+  const handleCheckout = () => {
+    setShowCart(false);
+    router.push('/payment');
   };
 
   return (
     <CartContext.Provider value={{ addToCart }}>
       <FaShoppingCart 
-        style={{ marginLeft: "20px", width: '25px', height: '25px' }}
+        style={{ marginLeft: "20px", width: '25px', height: '25px', cursor: 'pointer' }}
         onClick={handleToggleCart}
       />
       {getTotalItems() > 0 && (
@@ -94,21 +98,24 @@ const CartPage: React.FC = () => {
           {getTotalItems()}
         </span>
       )}
-      <div
-        style={{
-          position: "fixed",
-          top: "100px",
-          right: "10px",
-          background: "white",
-          color: "black",
-          height:'100%'
-        }}
-      >
-        {showCart && (
-          <>
-            {cartItems.length === 0 ? (
-              <p></p>
-            ) : (
+      {showCart && (
+        <div
+          style={{
+            position: "fixed",  
+            top: "90px",
+            right: "10px",
+            background: "white",
+            color: "black",
+            height:'none',
+            padding:'20px',
+            zIndex: 1000,
+            boxShadow: "0 0 10px rgba(0,0,0,0.2)"
+          }}
+        >
+          {cartItems.length === 0 ? (
+            <p>Your cart is empty.</p>
+          ) : (
+            <>
               <table
                 style={{
                   width: "100%",
@@ -118,12 +125,9 @@ const CartPage: React.FC = () => {
               >
                 <thead>
                   <tr style={{ borderBottom: "1px solid #ddd" }}>
-                    <th style={{ padding: "10px", textAlign: "left" }}>
-                      Name
-                    </th>
-                    <th style={{ padding: "10px", textAlign: "left" }}>
-                      Quantity
-                    </th>
+                    <th style={{ padding: "10px", textAlign: "left" }}>Image</th>
+                    <th style={{ padding: "10px", textAlign: "left" }}>Name</th>
+                    <th style={{ padding: "10px", textAlign: "left" }}>Quantity</th>
                     <th style={{ padding: "10px", textAlign: "left" }}>Price</th>
                     <th style={{ padding: "10px", textAlign: "left" }}>Delete</th>
                   </tr>
@@ -134,6 +138,9 @@ const CartPage: React.FC = () => {
                       key={item.id}
                       style={{ borderBottom: "1px solid #ddd" }}
                     >
+                      <td style={{ padding: "10px" }}>
+                        <img src={item.image} alt={item.name} style={{ width: "50px", height: "50px" }} />
+                      </td>
                       <td style={{ padding: "10px" }}>{item.name}</td>
                       <td style={{ padding: "10px" }}>
                         <button onClick={() => handleQuantityChange(item.id, -1)}>-</button>
@@ -160,32 +167,31 @@ const CartPage: React.FC = () => {
                   ))}
                 </tbody>
               </table>
-            )}
-            {cartItems.length > 0 && (
-              <>
-                <p>Total Price: ${getTotalPrice()}</p>
-                <button
-                  onClick={handleBuyNow}
-                  style={{
-                    marginTop: "20px",
-                    marginLeft: "130px",
-                    backgroundColor: "#3498db",
-                    color: "#fff",
-                    border: "none",
-                    padding: "10px 20px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    justifyItems: "center",
-                  }}
-                >
-                  checkout
-                </button>
-              </>
-            )}
-          </>
-        )}
-      </div>
-      </CartContext.Provider>
+              {cartItems.length > 0 && (
+                <>
+                  <p>Total Price: ${getTotalPrice()}</p>
+                  <button
+                    onClick={handleCheckout}
+                    style={{
+                      marginTop: "20px",
+                      backgroundColor: "#3498db",
+                      color: "#fff",
+                      border: "none",
+                      padding: "10px 20px",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      marginLeft:'170px'
+                    }}
+                  >
+                    Checkout
+                  </button>
+                </>
+              )}
+            </>
+          )}
+        </div>
+      )}
+    </CartContext.Provider>
   );
 };
 

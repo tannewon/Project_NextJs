@@ -96,7 +96,7 @@ export default function AddProductPage() {
       onClick={() => router.back()}
           style={{
             backgroundColor: "white",
-            border: "none",
+            border: "1px solid #ccc",
             width: "50px",
             height: "50px",
             cursor: "pointer",
@@ -114,7 +114,7 @@ export default function AddProductPage() {
           border: "1px solid orange",
           borderRadius: "10px",
           padding: "20px",
-          maxWidth: "400px",
+          maxWidth: "550px",
           margin: "0 auto",
           marginTop: "30px",
         }}
@@ -130,7 +130,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              
+              height:'40px',
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -149,7 +149,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              
+              height:'40px',
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -167,7 +167,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              
+              height:'80px',
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -186,7 +186,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              
+              height:'40px',
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -213,7 +213,7 @@ export default function AddProductPage() {
             padding: "10px 20px",
             cursor: "pointer",
             borderRadius: "4px",
-            marginLeft:'300px'
+            marginLeft:'370px'
           }}
         >
           {isUploading ? "Uploading..." : "Save"}

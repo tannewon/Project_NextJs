@@ -8,6 +8,7 @@ import { FaSearch } from "react-icons/fa";
 import { CartPage } from "./cartShopping";
 import { ModeToggle } from "./ModeToggle";
 import logo from "../../public/ninedev.png";
+<script src="https://js.stripe.com/v3/"></script>
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -71,6 +72,9 @@ const Navbar = () => {
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
+  };
+  const handleLinkClick = () => {
+    setShowDropdown(false);
   };
 
   return (
@@ -199,7 +203,7 @@ const Navbar = () => {
             />
           </div>
         </form>
-
+              
         {isLoggedIn ? (
           <>
             <CartPage />
@@ -228,10 +232,10 @@ const Navbar = () => {
                   zIndex: 1000,
                 }}>
                   <Link href="/profile">
-                    <p className="navLink" style={{ padding: "0px 16px", cursor: "pointer", margin: 0, fontWeight: 'bold' }}>Profile</p>
+                    <p  onClick={handleLinkClick} className="navLink" style={{ padding: "0px 16px", cursor: "pointer", margin: 0, fontWeight: 'bold' }}>Profile</p>
                   </Link>
                   <Link href="/product/favorite">
-                    <p className="navLink" style={{ padding: "0px 16px", cursor: "pointer", margin: 0, fontWeight: 'bold' }}>Favorite</p>
+                    <p onClick={handleLinkClick} className="navLink" style={{ padding: "0px 16px", cursor: "pointer", margin: 0, fontWeight: 'bold' }}>Favorite</p>
                   </Link>
                   <p
                     onClick={handleLogout}
@@ -301,7 +305,7 @@ const Navbar = () => {
         }
         .searchButton {
           transition: background-color 0.3s;
-        }
+        } 
         .searchButton:hover {
           background-color: rgba(255, 0, 0, 0.2);
         }

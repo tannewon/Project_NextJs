@@ -317,7 +317,7 @@ const ChartComponent: React.FC = () => {
             type="line"
             height={350}
             width={"100%"}
-          />
+          />  
         </div>
         <div id="chartTwo" className="-ml-5 mt-8">
           <h2 className="text-xl font-bold mb-4">Bar Chart</h2>

@@ -103,12 +103,12 @@ const EditUserPage = () => {
   if (!user) return <div> </div>;
 
   return (
-    <div>
+    <div >
       <button
         onClick={() => router.push("/dashboard/user")}
         style={{
           backgroundColor: "white",
-          border: "none",
+          border: "1px solid #ccc",
           width: "50px",
           height: "50px",
           cursor: "pointer",
@@ -128,7 +128,7 @@ const EditUserPage = () => {
           border: "1px solid orange",
           borderRadius: "10px",
           padding: "20px",
-          maxWidth: "400px",
+          maxWidth: "500px",
           margin: "0 auto",
           display: "flex",
           flexDirection: "column",
@@ -144,6 +144,7 @@ const EditUserPage = () => {
             required
             style={{
               width: "100%",
+              height:'40px',
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -161,6 +162,7 @@ const EditUserPage = () => {
             required
             style={{
               width: "100%",
+              height:'40px',
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -179,6 +181,7 @@ const EditUserPage = () => {
               required
               style={{
                 width: "100%",
+                height:'40px',
                 padding: "8px",
                 marginTop: "5px",
                 border: "1px solid orange",
@@ -210,6 +213,7 @@ const EditUserPage = () => {
               required
               style={{
                 width: "100%",
+                height:'40px',
                 padding: "8px",
                 marginTop: "5px",
                 border: "1px solid orange",
@@ -240,6 +244,7 @@ const EditUserPage = () => {
             required
             style={{
               width: "100%",
+              height:'40px',
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -256,6 +261,7 @@ const EditUserPage = () => {
             onChange={handleAvatarChange}
             style={{
               width: "100%",
+              height:'40px',
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -289,7 +295,7 @@ const EditUserPage = () => {
               width: "20%",
               boxSizing: "border-box",
               fontSize: "15px",
-              marginLeft: "310px",
+              marginLeft: "350px",
             }}
           >
             Update

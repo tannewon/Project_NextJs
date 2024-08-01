@@ -1,3 +1,4 @@
+// ModeToggle.js
 "use client";
 
 import * as React from "react";
@@ -8,8 +9,18 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  // Ensure this component is only rendered on the client side
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -20,14 +31,13 @@ export function ModeToggle() {
   };
 
   return (
-    <div style={{ marginLeft:'50px' }}>
+    <div style={{ marginLeft: '50px' }}>
       <IconButton
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <Sun className="" />
-        <Moon className="" />
+        {theme === "dark" ? <Moon /> : <Sun />}
       </IconButton>
       <Menu
         id="simple-menu"

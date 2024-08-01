@@ -57,24 +57,6 @@ export default function DashboardDetailPage({
     }
   };
 
-  const handleAddToFavorites = () => {
-    if (post) {
-      const favoriteItems = JSON.parse(
-        localStorage.getItem("favoriteItems") || "[]"
-      );
-      const existingItem = favoriteItems.find(
-        (item: any) => item.id === post.id
-      );
-
-      if (!existingItem) {
-        favoriteItems.push(post);
-        localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems));
-      }
-
-      alert("Added to favorites!");
-      router.push(`/product/favorite?id=${id}`);
-    }
-  };
 
   const handleQuantityChange = (delta: number) => {
     setQuantity((prevQuantity) => Math.max(1, prevQuantity + delta));
@@ -85,7 +67,7 @@ export default function DashboardDetailPage({
   };
 
   if (!post) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   const totalPrice = (post.price * quantity).toFixed(2);
@@ -98,7 +80,6 @@ export default function DashboardDetailPage({
         padding: "50px",
         marginTop: "100px",
         backgroundColor: "#f0f0f5",
-        minHeight: "100vh",
       }}
     >
       <div
@@ -221,7 +202,7 @@ export default function DashboardDetailPage({
                   justifyContent: "center",
                   border: "none",
                   cursor: "pointer",
-                  marginLeft: "180px",
+                  marginLeft: "160px",
                   borderRadius: "5px",
                   backgroundColor: "orange",
                   padding: "10px 20px",

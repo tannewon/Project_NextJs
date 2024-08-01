@@ -56,7 +56,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       style={{
-        display: 'grid',
+        display: "grid",
         height: "100vh",
         flexDirection: "column",
         marginTop: "95px",
@@ -71,8 +71,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          width:'100%',
-          marginLeft:'270px'
+          width: "100%",
+          marginLeft: "270px",
         }}
       >
         <form
@@ -82,11 +82,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             display: "flex",
             width: "100%",
             justifyContent: "center",
-            marginRight:'20px'
+            marginRight: "20px",
           }}
           onSubmit={handleSearch}
         >
-          <div style={{ position: "relative", width: "250px"}}>
+          <div style={{ position: "relative", width: "250px" }}>
             <button
               type="submit"
               style={{
@@ -128,7 +128,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               flex: "1",
               textAlign: "center",
               margin: "0",
-              marginRight: "500px"
+              marginRight: "500px",
             }}
           >
             Dashboard
@@ -148,8 +148,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             justifyContent: "space-between",
             height: "80%",
             position: "fixed",
-            top: 95, 
-            bottom:100,
+            top: 95,
+            bottom: 100,
           }}
         >
           <div>
@@ -175,7 +175,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             )}
             <hr />
             <nav style={{ display: "block" }}>
-              <p className="nav-item" style={{ marginTop: "20px", marginLeft: "50px" }}>
+              <p
+                className="nav-item"
+                style={{ marginTop: "20px", marginLeft: "50px" }}
+              >
                 <Link href="/dashboard">
                   <FcHome />
                   <span
@@ -189,7 +192,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                   </span>
                 </Link>
               </p>
-              <p className="nav-item" style={{ marginTop: "20px", marginLeft: "50px" }}>
+              <p
+                className="nav-item"
+                style={{ marginTop: "20px", marginLeft: "50px" }}
+              >
                 <Link href="/dashboard/product">
                   <FcSoundRecordingCopyright />
                   <span
@@ -203,7 +209,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                   </span>
                 </Link>
               </p>
-              <p className="nav-item" style={{ marginTop: "20px", marginLeft: "50px" }}>
+              <p
+                className="nav-item"
+                style={{ marginTop: "20px", marginLeft: "50px" }}
+              >
                 <Link href="/dashboard/user">
                   <FcBusinessman />
                   <span
@@ -231,7 +240,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 marginLeft: "70px",
                 display: "flex",
                 alignItems: "center",
-                marginTop:'230px'
+                marginTop: "230px",
               }}
             >
               <IoLogOut
@@ -241,67 +250,18 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             </button>
           </div>
         </aside>
-        <main style={{ flex: 1, padding: "20px", overflowY: "auto",marginLeft:'270px' }}>
+        <main
+          style={{
+            flex: 1,
+            padding: "20px",
+            overflowY: "auto",
+            marginLeft: "270px",
+          }}
+        >
           {children}
         </main>
       </div>
       <style jsx>{`
-        @media (max-width: 768px) {
-          header {
-            height: auto;
-            padding: 10px;
-          }
-
-          .searchForm {
-            flex-direction: column;
-          }
-
-          .searchForm input {
-            width: 100%;
-            margin-bottom: 10px;
-          }
-
-          .searchForm h1 {
-            margin-left: 0;
-            margin-top: 10px;
-          }
-
-          aside {
-            width: 100%;
-            height: auto;
-            padding: 10px;
-            flex-direction: row;
-            justify-content: space-around;
-          }
-
-          aside nav p {
-            margin-top: 0;
-          }
-
-          .dashboard-content {
-            flex-direction: column;
-          }
-
-          main {
-            padding: 10px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          aside {
-            flex-direction: column;
-            align-items: center;
-          }
-
-          aside nav p {
-            margin-top: 10px;
-          }
-
-          main {
-            padding: 5px;
-          }
-        }
-
         @media (max-width: 320px) and (orientation: portrait) {
           .searchForm {
             flex-direction: column;
@@ -335,9 +295,39 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           }
         }
 
-        .nav-item:hover {
-          color: red;
+        @media (max-width: 480px) {
+          .searchForm {
+            flex-direction: column;
+          }
+
+          .searchForm input {
+            width: 100%;
+            margin-bottom: 10px;
+          }
+
+          .searchForm h1 {
+            margin-left: 0;
+            margin-top: 10px;
+          }
+
+          aside {
+            width: 100%;
+            height: auto;
+            padding: 10px;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          aside nav p {
+            margin-top: 10px;
+          }
+
+          main {
+            padding: 10px;
+            margin-left: 0;
+          }
         }
+
       `}</style>
     </div>
   );

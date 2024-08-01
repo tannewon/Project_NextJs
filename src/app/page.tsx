@@ -3,8 +3,8 @@ import { AiFillAccountBook } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
 import home from "../../public/home2.jpg";
-import anh1 from "../../public/anh1.jpg";
-import anh2 from "../../public/anh2.jpg";
+import anh5 from "../../public/anh5.jpg";
+import anh6 from "../../public/anh6.jpg";
 import React, { useEffect, useState } from "react";
 import { Product } from "@/type/types";
 import { PRODUCT_API_URL } from "@/lib/util";
@@ -69,7 +69,7 @@ const DataComponent = () => {
       style={{
         display: "grid",
         gridTemplateColumns: "repeat(4, 1fr)",
-        gap: "20px",
+        gap: "30px",
         padding: "20px",
         backgroundColor: "#f5f5f5",
         marginTop: "100px",
@@ -100,8 +100,10 @@ const DataComponent = () => {
               >
                 {item.name}
               </h3>
-              <p style={{ fontSize: "1.1em", color: "red" }}>
-                {item.price}$
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <span style={{ fontSize: "1.1em", color: "red" }}>
+                  {item.price}$
+                </span>
                 <FcLike
                   style={{
                     width: "30px",
@@ -111,10 +113,15 @@ const DataComponent = () => {
                   }}
                   onClick={() => handleAddToFavorites(item)}
                 />
-              </p>
-              <div>
+              </div>
+
+              <div style={{ marginTop: "10px", }}>
                 {[...Array(5)].map((_, index) => (
-                  <IoStar key={index} style={{ margin: "0 2px" ,color:'#FF9900'}} />
+                  <IoStar
+                    key={index}
+                    style={{ margin: "0 2px", color: "#FF9900", width: "20px",
+                      height: "20px"}}
+                  />
                 ))}
               </div>
               <p style={{ color: "#666", marginBottom: "10px" }}>
@@ -131,14 +138,69 @@ const DataComponent = () => {
 export default function Home() {
   return (
     <div>
-      <div>
+      {/* Phần ảnh chính với chữ chạy */}
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "90vh",
+          marginTop: "90px",
+        }}
+      >
         <Image
           src={home}
           alt="Home"
-          style={{ width: "100%", height: "auto", marginTop:'90px' }}
+          layout="fill"
+          objectFit="cover"
+          style={{ position: "absolute", top: 0, left: 0 }}
         />
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            color: "white",
+            fontSize: "24px",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            width: "100%",
+          }}
+        >
+          <h1
+            style={{
+              textAlign: "center",
+              color: "orange",
+              fontFamily: "roboto",
+              fontSize: "100px",
+            }}
+          >
+            Shoes with Shop www.com{" "}
+          </h1>
+          <p style={{
+              textAlign: "center",
+            }}>Website:shose.w.w.w.com</p>
+          <div
+            style={{
+              display: "inline-block",
+              paddingLeft: "100%",
+              animation: "marquee 15s linear infinite",
+            }}
+          >
+            <h2>
+              The Evolution of Sneakers support, and durability. Brands like
+              Converse{" "}
+            </h2>
+            <h2>
+              Sneakers in the Fashion Industry support, and durability. Brands
+              like Converse{" "}
+            </h2>
+          </div>
+        </div>
       </div>
-      <div style={{ textAlign: "center", padding: "20px" }}>
+
+      {/* Phần nội dung chính */}
+      <div style={{ textAlign: "center", padding: "30px" }}>
         <h1 style={{ color: "orange", fontSize: "50px", marginBottom: "30px" }}>
           Sports Shoes
         </h1>
@@ -146,26 +208,85 @@ export default function Home() {
           style={{
             display: "flex",
             justifyContent: "center",
-            gap: "30px",
+            gap: "150px",
             marginBottom: "50px",
           }}
         >
           <Image
-            src={anh1}
+            src={anh5}
             alt="Product 1"
-            width={700}
-            height={400}
-            // style={{ width: "80%", height: "auto" }}
+            width={500}
+            height={500}
+            style={{ objectFit: "cover" }} // Đảm bảo ảnh không bị kéo dãn
           />
+          <div
+            style={{
+              width: "500px",
+              marginTop: "20px",
+              fontFamily: "roboto",
+              fontSize: "20px",
+            }}
+          >
+            <h1>The Evolution of Sneakers</h1>
+            <p>
+              The journey of sneakers from athletic wear to everyday fashion
+              essentials is a fascinating one. Originally designed for sports
+              and physical activities, sneakers were engineered to provide
+              comfort, support, and durability. Brands like Converse, Adidas,
+              and Nike began producing sneakers specifically for sports such as
+              basketball, running, and tennis in the early to mid-20th century.
+              However, it wasn't long before these shoes started making their
+              way into the casual wardrobes of people around the world.
+              <br />
+              By the 1980s, sneakers had become a significant part of youth
+              culture, heavily influenced by hip-hop and streetwear movements.
+            </p>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "150px",
+            marginBottom: "50px",
+          }}
+        >
+          <div
+            style={{
+              width: "500px",
+              marginTop: "20px",
+              fontFamily: "roboto",
+              fontSize: "20px",
+            }}
+          >
+            <h1>Sneakers in the Fashion Industry</h1>
+            <p>
+              The journey of sneakers from athletic wear to everyday fashion
+              essentials is a fascinating one. Originally designed for sports
+              and physical activities, sneakers were engineered to provide
+              comfort, support, and durability. Brands like Converse, Adidas,
+              and Nike began producing sneakers specifically for sports such as
+              basketball, running, and tennis in the early to mid-20th century.
+              However, it wasn't long before these shoes started making their
+              way into the casual wardrobes of people around the world.
+              <br />
+              By the 1980s, sneakers had become a significant part of youth
+              culture, heavily influenced by hip-hop and streetwear movements.
+              Icons like Run-D.M.C., with their famous endorsement of Adidas
+              Superstar sneakers
+            </p>
+          </div>
           <Image
-            src={anh2}
+            src={anh6}
             alt="Product 2"
-            width={700}
-            height={400}
-            // style={{ width: "80%", height: "auto" }}
+            width={500}
+            height={500}
+            style={{ objectFit: "cover" }} // Đảm bảo ảnh không bị kéo dãn
           />
         </div>
       </div>
+
+      {/* Phần liên kết đến sản phẩm */}
       <div>
         <h1
           style={{
@@ -184,13 +305,24 @@ export default function Home() {
         </h1>
         <DataComponent />
       </div>
+
       <style jsx>{`
-        @media (max-width: 1200px) {
+        @keyframes marquee {
+          from {
+            transform: translateX(100%);
+          }
+          to {
+            transform: translateX(-100%);
+          }
+        }
+
+        /* Responsive Styles for DataComponent */
+        @media (max-width: 1024px) {
           div[style*="grid-template-columns: repeat(4, 1fr);"] {
             grid-template-columns: repeat(3, 1fr);
           }
         }
-        @media (max-width: 900px) {
+        @media (max-width: 800px) {
           div[style*="grid-template-columns: repeat(4, 1fr);"] {
             grid-template-columns: repeat(2, 1fr);
           }
@@ -200,8 +332,9 @@ export default function Home() {
             grid-template-columns: 1fr;
           }
           h1[style*="color: orange; font-size: 50px;"] {
-            margin-left: 0;
+            margin: 0;
             text-align: center;
+            font-size: 30px;
           }
           div[style*="display: flex; justify-content: center;"] {
             flex-direction: column;
@@ -209,7 +342,53 @@ export default function Home() {
           }
           h1[style*="color: #fff; background-color: #e67e22;"] {
             padding: 10px 20px;
-            margin: 30px auto;
+            margin: 20px auto;
+            font-size: 20px;
+          }
+          img[style*="width: 100%; height: 200px;"] {
+            height: 150px;
+          }
+          .product-description {
+            font-size: 16px;
+          }
+        }
+        @media (max-width: 480px) {
+          h1[style*="color: orange; font-size: 50px;"] {
+            font-size: 25px;
+          }
+          div[style*="display: flex; justify-content: center;"] {
+            gap: 10px;
+          }
+          h1[style*="color: #fff; background-color: #e67e22;"] {
+            font-size: 18px;
+          }
+          img[style*="width: 100%; height: 200px;"] {
+            height: 100px;
+          }
+          .product-description {
+            font-size: 14px;
+          }
+        }
+        @media (max-width: 320px) {
+          h1[style*="color: orange; font-size: 50px;"] {
+            font-size: 20px;
+          }
+          div[style*="display: flex; justify-content: center;"] {
+            gap: 5px;
+          }
+          h1[style*="color: #fff; background-color: #e67e22;"] {
+            font-size: 16px;
+          }
+          img[style*="width: 100%; height: 200px;"] {
+            height: 80px;
+          }
+          .product-description {
+            font-size: 12px;
+          }
+        }
+        @media (min-width: 1025px) {
+          div[style*="grid-template-columns: repeat(4, 1fr);"] {
+            grid-template-columns: repeat(4, 1fr);
           }
         }
       `}</style>
