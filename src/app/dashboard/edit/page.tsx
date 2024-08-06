@@ -42,6 +42,7 @@ export default function EditProductPage() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
+  const [promotion, setPromotion] = useState(""); // Added promotion state
   const [image, setImage] = useState("");
   const [imagePreview, setImagePreview] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -73,6 +74,7 @@ export default function EditProductPage() {
           setName(data.name);
           setPrice(data.price);
           setDescription(data.description);
+          setPromotion(data.promotion); // Set promotion field
           setImage(data.image);
           setImagePreview(data.image);
         })
@@ -83,7 +85,7 @@ export default function EditProductPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updatePost(id!, { name, price, description, image });
+      await updatePost(id!, { name, price, description, promotion, image }); // Include promotion in update
       router.push("/dashboard/product");
     } catch (error) {
       console.error("Failed to update post data:", error);
@@ -93,7 +95,8 @@ export default function EditProductPage() {
   if (!post) return <div></div>;
 
   return (
-    <div>
+    <div style={{marginLeft:'30px'
+    }}>
       <Link href={`/dashboard/${id}`}>
         <button
           style={{
@@ -104,10 +107,9 @@ export default function EditProductPage() {
             cursor: "pointer",
             borderRadius: "50%",
             boxSizing: "border-box",
-
           }}
         >
-          <IoMdArrowBack style={{ width:'20px',height:'20px' }} />
+          <IoMdArrowBack style={{ width: "20px", height: "20px" }} />
         </button>
       </Link>
       <h2 style={{ color: "orange", textAlign: "center" }}>Edit Product</h2>
@@ -131,7 +133,7 @@ export default function EditProductPage() {
             required
             style={{
               width: "100%",
-              height:'40px',
+              height: "40px",
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -141,7 +143,7 @@ export default function EditProductPage() {
           />
         </label>
         <br />
-        <label style={{  display: "block" }}>
+        <label style={{ display: "block" }}>
           Price:
           <input
             type="text"
@@ -150,7 +152,7 @@ export default function EditProductPage() {
             required
             style={{
               width: "100%",
-              height:'40px',
+              height: "40px",
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -160,7 +162,26 @@ export default function EditProductPage() {
           />
         </label>
         <br />
-        <label style={{  display: "block" }}>
+        <label style={{ display: "block" }}>
+          Promotion:
+          <input
+            type="text"
+            value={promotion}
+            onChange={(e) => setPromotion(e.target.value)} // Handle promotion change
+            style={{
+              width: "100%",
+              height: "40px",
+              padding: "8px",
+              marginTop: "5px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
+          />
+        </label>
+
+        <br />
+        <label style={{ display: "block" }}>
           Description:
           <textarea
             value={description}
@@ -168,7 +189,7 @@ export default function EditProductPage() {
             required
             style={{
               width: "100%",
-              height:'80px',
+              height: "80px",
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -186,7 +207,7 @@ export default function EditProductPage() {
             disabled={isUploading}
             style={{
               width: "100%",
-              height:'40px',
+              height: "40px",
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -200,7 +221,7 @@ export default function EditProductPage() {
           <img
             src={imagePreview}
             alt="Image preview"
-            style={{ width: "100px", height: "100px",borderRadius:'10px' }}
+            style={{ width: "100px", height: "100px", borderRadius: "10px" }}
           />
         )}
         <br />
@@ -211,8 +232,8 @@ export default function EditProductPage() {
             backgroundColor: "orange",
             color: "white",
             border: "none",
-            marginLeft:'370px',
-            marginTop:'20px',
+            marginLeft: "370px",
+            marginTop: "20px",
             padding: "10px 20px",
             cursor: "pointer",
             borderRadius: "4px",

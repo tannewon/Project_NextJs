@@ -1,8 +1,8 @@
-"use client"
+"use client";
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 interface CartItem {
   id: string;
@@ -43,13 +43,15 @@ const CartPage: React.FC = () => {
   };
 
   const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+    return cartItems
+      .reduce((total, item) => total + item.price * item.quantity, 0)
+      .toFixed(2);
   };
 
   const addToCart = (item: CartItem) => {
     const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
     if (existingItem) {
-      const updatedCartItems = cartItems.map(cartItem =>
+      const updatedCartItems = cartItems.map((cartItem) =>
         cartItem.id === item.id
           ? { ...cartItem, quantity: cartItem.quantity + 1 }
           : cartItem
@@ -64,8 +66,8 @@ const CartPage: React.FC = () => {
   };
 
   const handleQuantityChange = (id: string, delta: number) => {
-    const updatedCartItems = cartItems.map(item => 
-      item.id === id 
+    const updatedCartItems = cartItems.map((item) =>
+      item.id === id
         ? { ...item, quantity: Math.max(1, item.quantity + delta) }
         : item
     );
@@ -75,13 +77,18 @@ const CartPage: React.FC = () => {
 
   const handleCheckout = () => {
     setShowCart(false);
-    router.push('/payment');
+    router.push("/payment");
   };
 
   return (
     <CartContext.Provider value={{ addToCart }}>
-      <FaShoppingCart 
-        style={{ marginLeft: "20px", width: '25px', height: '25px', cursor: 'pointer' }}
+      <FaShoppingCart
+        style={{
+          marginLeft: "20px",
+          width: "25px",
+          height: "25px",
+          cursor: "pointer",
+        }}
         onClick={handleToggleCart}
       />
       {getTotalItems() > 0 && (
@@ -95,98 +102,127 @@ const CartPage: React.FC = () => {
             fontSize: "14px",
           }}
         >
-          {getTotalItems()}
+          {getTotalItems() || 0}
         </span>
       )}
       {showCart && (
         <div
           style={{
-            position: "fixed",  
+            position: "fixed",
             top: "90px",
             right: "10px",
             background: "white",
             color: "black",
-            height:'none',
-            padding:'20px',
+            padding: "20px",
             zIndex: 1000,
-            boxShadow: "0 0 10px rgba(0,0,0,0.2)"
+            boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+            width: "400px",
+            maxHeight: "80vh",
+            overflowY: "auto",
           }}
         >
           {cartItems.length === 0 ? (
             <p>Your cart is empty.</p>
           ) : (
             <>
-              <table
-                style={{
-                  width: "100%",
-                  marginTop: "20px",
-                  borderCollapse: "collapse",
-                }}
-              >
-                <thead>
-                  <tr style={{ borderBottom: "1px solid #ddd" }}>
-                    <th style={{ padding: "10px", textAlign: "left" }}>Image</th>
-                    <th style={{ padding: "10px", textAlign: "left" }}>Name</th>
-                    <th style={{ padding: "10px", textAlign: "left" }}>Quantity</th>
-                    <th style={{ padding: "10px", textAlign: "left" }}>Price</th>
-                    <th style={{ padding: "10px", textAlign: "left" }}>Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartItems.map((item) => (
-                    <tr
-                      key={item.id}
-                      style={{ borderBottom: "1px solid #ddd" }}
-                    >
-                      <td style={{ padding: "10px" }}>
-                        <img src={item.image} alt={item.name} style={{ width: "50px", height: "50px" }} />
-                      </td>
-                      <td style={{ padding: "10px" }}>{item.name}</td>
-                      <td style={{ padding: "10px" }}>
-                        <button onClick={() => handleQuantityChange(item.id, -1)}>-</button>
-                        <span style={{ margin: "0 10px" }}>{item.quantity}</span>
-                        <button onClick={() => handleQuantityChange(item.id, 1)}>+</button>
-                      </td>
-                      <td style={{ padding: "10px" }}>{(item.price * item.quantity).toFixed(2)}$</td>
-                      <td style={{ padding: "10px" }}>
-                        <button
-                          onClick={() => handleDeleteItem(item.id)}
-                          style={{
-                            backgroundColor: "#e74c3c",
-                            color: "#fff",
-                            border: "none",
-                            padding: "8px 12px",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <MdDelete />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {cartItems.length > 0 && (
-                <>
-                  <p>Total Price: ${getTotalPrice()}</p>
-                  <button
-                    onClick={handleCheckout}
+              {cartItems.map((item) => (
+                <div
+                  key={item.id}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    borderBottom: "1px solid #ddd",
+                    padding: "15px 0",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                    marginBottom: "10px",
+                    backgroundColor: "#f9f9f9",
+                  }}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name}
                     style={{
-                      marginTop: "20px",
-                      backgroundColor: "#3498db",
+                      width: "80px",
+                      height: "80px",
+                      marginRight: "15px",
+                      borderRadius: "8px",
+                    }}
+                  />
+                  <div style={{ flex: 1 }}>
+                    <p style={{ margin: "0 0 5px 0", fontWeight: "bold" }}>
+                      {item.name}
+                    </p>
+                    <p style={{ margin: "0 0 5px 0" }}>
+                      Quantity: {item.quantity}
+                    </p>
+                    <p style={{ margin: "0" }}>
+                      Total: ${(item.price * item.quantity).toFixed(2)}
+                    </p>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => handleQuantityChange(item.id, -1)}
+                      style={{
+                        backgroundColor: "#ddd",
+                        border: "none",
+                        padding: "5px 10px",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        marginRight: "5px",
+                      }}
+                    >
+                      -
+                    </button>
+                    <button
+                      onClick={() => handleQuantityChange(item.id, 1)}
+                      style={{
+                        backgroundColor: "#ddd",
+                        border: "none",
+                        padding: "5px 10px",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => handleDeleteItem(item.id)}
+                    style={{
+                      backgroundColor: "#e74c3c",
                       color: "#fff",
                       border: "none",
-                      padding: "10px 20px",
+                      padding: "6px 10px",
                       borderRadius: "4px",
                       cursor: "pointer",
-                      marginLeft:'170px'
+                      marginLeft: "10px",
                     }}
                   >
-                    Checkout
+                    <MdDelete />
                   </button>
-                </>
-              )}
+                </div>
+              ))}
+              <div style={{ marginTop: "10px" }}>
+                <p style={{ margin: "0 0 10px 0", fontWeight: "bold" }}>
+                  Total Price: ${getTotalPrice()}
+                </p>
+                <button
+                  onClick={handleCheckout}
+                  style={{
+                    backgroundColor: "#3498db",
+                    color: "#fff",
+                    border: "none",
+                    padding: "12px 20px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    width: "30%",
+                    marginLeft: "150px",
+                  }}
+                >
+                  Checkout
+                </button>
+              </div>
             </>
           )}
         </div>

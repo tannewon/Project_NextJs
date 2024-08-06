@@ -91,7 +91,7 @@ export default function AddProductPage() {
   };
 
   return (
-    <div>
+    <div style={{ marginLeft:'30px' }}>
       <button
       onClick={() => router.back()}
           style={{

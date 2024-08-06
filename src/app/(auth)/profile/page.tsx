@@ -112,7 +112,7 @@ const Profile = () => {
             </h1>
             <Link href="/profile/edit">
               <CiEdit
-                style={{ width: "35px", height: "35px", color: "blue",marginTop:'10px' }}
+                style={{ width: "30px", height: "30px", color: "blue",marginTop:'10px' }}
               />
             </Link>
           </div>

@@ -180,7 +180,7 @@ const EditProfile = () => {
               flex: "1",
               border: "2px dashed #ddd",
               padding: "20px",
-              borderRadius: "4px",
+              borderRadius: "100px",
               backgroundColor: "#f9f9f9",
               cursor: "pointer",
               textAlign: "center",
@@ -194,7 +194,7 @@ const EditProfile = () => {
               </div>
             )}
             {avatarPreview && (
-              <div style={{ marginTop: "10px" }}>
+              <div style={{ marginTop: "10px"}}>
                 <img
                   src={avatarPreview}
                   alt="Avatar Preview"

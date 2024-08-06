@@ -12,6 +12,8 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { USER_API_URL } from "@/lib/util";
 import { IoLogOut } from "react-icons/io5";
+import logoadmin from "../../../public/logoadmin.png";
+import Image from "next/image";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -59,7 +61,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         display: "grid",
         height: "100vh",
         flexDirection: "column",
-        marginTop: "95px",
+        marginTop: "90px",
+        padding: "none",
       }}
     >
       <div
@@ -69,20 +72,31 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           padding: "20px",
           height: "45px",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          alignItems: "center", // Căn chỉnh các phần tử theo chiều dọc
+          position: "fixed",
+          top: "0",
+          left: "0",
           width: "100%",
-          marginLeft: "270px",
+          zIndex: "1000",
         }}
       >
+        <Image
+          src={logoadmin}
+          alt="Home"
+          width={100}
+          height={70}
+          style={{
+            marginLeft: "70px", // Thay đổi margin nếu cần
+          }}
+        />
         <form
           className="searchForm"
           style={{
-            alignItems: "center",
             display: "flex",
-            width: "100%",
-            justifyContent: "center",
-            marginRight: "20px",
+            alignItems: "center",
+            flexGrow: 1,
+            marginLeft: "100px", // Căn chỉnh khoảng cách bên trái của form
+            marginRight: "20px", // Căn chỉnh khoảng cách bên phải của form
           }}
           onSubmit={handleSearch}
         >
@@ -110,13 +124,14 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               name="search"
               placeholder="Search products"
               style={{
-                fontSize: "15px",
-                width: "170px",
+                fontFamily: "roboto",
+                fontSize: "17px",
+                width: "70%",
                 height: "30px",
                 border: "none",
                 borderRadius: "15px",
                 paddingRight: "45px", // Space for the button
-                paddingLeft: "45px", // Space for the text from the left border
+                paddingLeft: "50px", // Adjusted for proper padding
               }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -125,10 +140,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           <h1
             style={{
               color: "orange",
-              flex: "1",
-              textAlign: "center",
-              margin: "0",
-              marginRight: "500px",
+              marginLeft: "300px",
+              fontFamily: "roboto",
+              fontSize: "30px", // Đẩy chữ Dashboard sang bên phải
             }}
           >
             Dashboard
@@ -146,10 +160,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            height: "80%",
+            height: "100vh", // Thay đổi từ 80% thành 100vh để sidebar phủ hết chiều cao màn hình
             position: "fixed",
-            top: 95,
-            bottom: 100,
+            top: 85, // Đặt sát viền trên cùng
+            bottom: 0, // Đặt sát viền dưới cùng
+            left: 0, // Đặt sát viền bên trái
           }}
         >
           <div>
@@ -186,6 +201,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                       color: "#fff",
                       textDecoration: "none",
                       marginLeft: "10px",
+                      fontFamily: "roboto",
+                      fontSize: "18px",
                     }}
                   >
                     Dashboard
@@ -203,6 +220,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                       color: "#fff",
                       textDecoration: "none",
                       marginLeft: "10px",
+                      fontFamily: "roboto",
+                      fontSize: "18px",
                     }}
                   >
                     Product
@@ -220,6 +239,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                       color: "#fff",
                       textDecoration: "none",
                       marginLeft: "10px",
+                      fontFamily: "roboto",
+                      fontSize: "18px",
                     }}
                   >
                     User
@@ -240,13 +261,15 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 marginLeft: "70px",
                 display: "flex",
                 alignItems: "center",
-                marginTop: "230px",
+                marginTop: "auto", // Đẩy button Logout xuống dưới cùng
               }}
             >
               <IoLogOut
                 style={{ width: "20px", height: "20px", marginRight: "8px" }}
               />
-              <span>Logout</span>
+              <span style={{ fontFamily: "roboto", fontSize: "18px" }}>
+                Logout
+              </span>
             </button>
           </div>
         </aside>
@@ -255,12 +278,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             flex: 1,
             padding: "20px",
             overflowY: "auto",
-            marginLeft: "270px",
+            marginLeft: "230px", // Điều chỉnh để tạo khoảng cách cho sidebar
           }}
         >
           {children}
         </main>
       </div>
+
       <style jsx>{`
         @media (max-width: 320px) and (orientation: portrait) {
           .searchForm {
@@ -327,7 +351,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             margin-left: 0;
           }
         }
-
       `}</style>
     </div>
   );

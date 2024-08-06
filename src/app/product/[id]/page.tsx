@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
@@ -52,11 +51,9 @@ export default function DashboardDetailPage({
       }
 
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
-      alert("Added to cart!");
-      router.push("/product");
+      // router.push("/product");
     }
   };
-
 
   const handleQuantityChange = (delta: number) => {
     setQuantity((prevQuantity) => Math.max(1, prevQuantity + delta));
@@ -70,7 +67,9 @@ export default function DashboardDetailPage({
     return <div></div>;
   }
 
-  const totalPrice = (post.price * quantity).toFixed(2);
+  // Ensure price values are numbers
+  const originalPrice = Number(post.price);
+  const promotionPrice = Number(post.promotion);
 
   return (
     <div
@@ -97,8 +96,21 @@ export default function DashboardDetailPage({
           style={{
             flex: "1",
             marginRight: "20px",
+            position: "relative",
           }}
         >
+          <span
+            style={{
+              padding: "25px",
+              backgroundColor: "red",
+              position: "absolute",
+              right: "0px",
+              top: "0px",
+              color: "white",
+            }}
+          >
+            -10%
+          </span>
           <Image
             src={post.image}
             alt={post.name}
@@ -131,20 +143,41 @@ export default function DashboardDetailPage({
             >
               {post.name}
             </h1>
-            <p
+            <div
               style={{
-                color: "#e74c3c",
-                fontSize: "1.5em",
-                marginBottom: "20px",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px", // Small gap between the prices
               }}
             >
-              ${totalPrice}
-            </p>
+              <p
+                style={{
+                  color: "#e74c3c",
+                  fontSize: "1.5em",
+                  marginBottom: "10px",
+                  textDecoration: "line-through",
+                }}
+              >
+                ${originalPrice.toFixed(2)}
+              </p>
+              {promotionPrice > 0 && (
+                <p
+                  style={{
+                    color: "#27ae60",
+                    fontSize: "1.5em",
+                    marginBottom: "10px", // Align vertically with the original price
+                  }}
+                >
+                  ${promotionPrice.toFixed(2)}
+                </p>
+              )}
+            </div>
+
             <div>
               {[...Array(5)].map((_, index) => (
                 <IoStar
                   key={index}
-                  style={{ margin: "0 2px", color: "#FF9900" }}
+                  style={{ margin: "0 2px", color: "#FF9900", width:'20px',height:'20px' }}
                 />
               ))}
             </div>

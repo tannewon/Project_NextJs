@@ -47,7 +47,7 @@ const DataComponent = () => {
   }
 
   return (
-    <div>
+    <div style={{ marginLeft:'30px' }}>
       <div
         style={{
           display: "flex",
@@ -62,7 +62,8 @@ const DataComponent = () => {
                 color: "#0099FF",
                 width: "40px",
                 height: "40px",
-                marginRight: "10px", // Thêm khoảng cách giữa icon và chữ
+                marginRight: "10px",
+                fontFamily: "roboto", // Thêm khoảng cách giữa icon và chữ
               }}
             />
             ADD Product
@@ -112,25 +113,49 @@ const DataComponent = () => {
                 >
                   <h3
                     style={{
-                      fontSize: "1.2em",
+                      fontSize: "25px",
                       margin: "0 0 10px",
                       color: "#333",
+                      fontFamily: "roboto",
+                  
                     }}
                   >
                     {item.name}
                   </h3>
-                  <p
+                  <div
                     style={{
-                      fontSize: "1.1em",
-                      color: "red",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
                     }}
                   >
-                    {item.price}$
-                  </p>
+                    {item.promotion ? (
+                      <>
+                        <span
+                          style={{
+                            fontSize: "1.1em",
+                            color: "#666",
+                            textDecoration: "line-through",
+                          }}
+                        >
+                          {item.price}$
+                        </span>
+                        <span style={{ fontSize: "1.1em", color: "red" }}>
+                          {item.promotion}$
+                        </span>
+                      </>
+                    ) : (
+                      <span style={{ fontSize: "1.1em", color: "red" }}>
+                        {item.price}$
+                      </span>
+                    )}
+                  </div>
                   <p
                     style={{
                       color: "#666",
                       marginBottom: "10px",
+                      fontFamily: "roboto",
+                      fontSize:'18px'
                     }}
                   >
                     {item.description}

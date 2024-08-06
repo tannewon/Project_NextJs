@@ -103,7 +103,7 @@ const EditUserPage = () => {
   if (!user) return <div> </div>;
 
   return (
-    <div >
+    <div style={{ marginLeft:'30px'}} >
       <button
         onClick={() => router.push("/dashboard/user")}
         style={{

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const NotFound = () => {
   return (
-    <div className='not-found'>
+    <div className='not-found' style={{ marginTop:'100px' }}>
       <h1>Opps...</h1>
       <h2>This page cannot be found :(((</h2>
       <p>Go back to the <Link href='/'>HomePage</Link></p>

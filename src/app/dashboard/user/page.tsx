@@ -56,6 +56,7 @@ const UserPage = () => {
         display: "flex",
         flexDirection: "column",
         padding: "10px 10px 350px",
+        marginLeft:'30px'
       }}
     >
       <div

@@ -6,9 +6,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Product } from "@/type/types";
 import { PRODUCT_API_URL } from "@/lib/util";
 import { FcLike } from "react-icons/fc";
-import home from "../../../public/home2.jpg";
 import Image from "next/image";
 import { IoStar } from "react-icons/io5";
+import home from "../../../public/home2.jpg";
+import nen1 from "../../../public/nen3.jpg";
+import nen2 from "../../../public/nen2.jpg";
+
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -17,7 +20,7 @@ const fetchData = async () => {
   }
   return res.json();
 };
-
+const images = [home, nen1, nen2]; // Danh sách các ảnh
 const DataComponent = () => {
   const [data, setData] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -60,7 +63,7 @@ const DataComponent = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (error) {
@@ -68,53 +71,101 @@ const DataComponent = () => {
   }
 
   return (
-    <div
-      style={{
-        marginTop: "100px",
-        backgroundColor: "#f5f5f5",
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
-        gap: "20px",
-        padding: "20px",
-      }}
-    >
-      {data.map((item) => (
-        <div
-          key={item.id}
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            backgroundColor: "#fff",
-            overflow: "hidden",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-            transition: "transform 0.2s",
-          }}
-        >
-          <Link href={`/product/${item.id}`}>
-            <img
-              src={item.image}
-              alt={item.name}
-              style={{ width: "100%", height: "280px", objectFit: "cover" }}
-            />
+    <div>
+      <h2
+        style={{
+          color: "#fff",
+          backgroundColor: "#e67e22",
+          width: "fit-content",
+          padding: "15px 30px",
+          margin: "50px auto",
+          borderRadius: "8px",
+          textAlign: "center",
+          fontFamily: "roboto",
+        }}
+      >
+        All PRODUCTS
+      </h2>
+      <div
+        style={{
+          backgroundColor: "#f5f5f5",
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "20px",
+          padding: "20px",
+        }}
+      >
+        {data.map((item) => (
+          <div
+            key={item.id}
+            style={{
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              backgroundColor: "#fff",
+              overflow: "hidden",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+              transition: "transform 0.2s",
+              position: "relative",
+            }}
+          >
+            <Link href={`/product/${item.id}`}>
+              <span
+                style={{
+                  padding: " 10px",
+                  backgroundColor: "red",
+                  position: "absolute",
+                  right: "0px",
+                  top: "0px",
+                  color: "white",
+                }}
+              >
+                -10%
+              </span>
+              <img
+                src={item.image}
+                alt={item.name}
+                style={{ width: "100%", height: "280px", objectFit: "cover" }}
+              />
+            </Link>
             <div style={{ padding: "16px" }}>
               <h3
                 style={{
-                  fontSize: "1.2em",
                   margin: "0 0 10px",
                   color: "#333",
+                  fontFamily: "roboto",
+                  fontSize: "25px",
                 }}
               >
                 {item.name}
               </h3>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <span style={{ fontSize: "1.1em", color: "red" }}>
-                  {item.price}$
-                </span>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                {item.promotion ? (
+                  <>
+                    <span
+                      style={{
+                        fontSize: "1.1em",
+                        color: "#666",
+                        textDecoration: "line-through",
+                      }}
+                    >
+                      {item.price}$
+                    </span>
+                    <span style={{ fontSize: "1.1em", color: "red" }}>
+                      {item.promotion}$
+                    </span>
+                  </>
+                ) : (
+                  <span style={{ fontSize: "1.1em", color: "red" }}>
+                    {item.price}$
+                  </span>
+                )}
                 <FcLike
                   style={{
                     width: "30px",
                     height: "30px",
-                    marginLeft: "200px",
+                    marginLeft: "auto",
                     cursor: "pointer",
                   }}
                   onClick={() => handleAddToFavorites(item)}
@@ -125,41 +176,52 @@ const DataComponent = () => {
                 {[...Array(5)].map((_, index) => (
                   <IoStar
                     key={index}
-                    style={{ margin: "0 2px", color: "#FF9900",width: "20px",
-                      height: "20px" }}
+                    style={{
+                      margin: "0 2px",
+                      color: "#FF9900",
+                      width: "20px",
+                      height: "20px",
+                    }}
                   />
                 ))}
               </div>
-              <p style={{ color: "#666", marginBottom: "10px" }}>
+              <p
+                style={{
+                  color: "#666",
+                  marginBottom: "10px",
+                  fontFamily: "roboto",
+                  fontSize: "18px",
+                }}
+              >
                 {item.description}
               </p>
             </div>
-          </Link>
-        </div>
-      ))}
-      <style jsx>{`
-        @media (max-width: 1200px) {
-          div[style*="grid-template-columns: repeat(4, 1fr)"] {
-            grid-template-columns: repeat(3, 1fr) !important;
+          </div>
+        ))}
+        <style jsx>{`
+          @media (max-width: 1200px) {
+            div[style*="grid-template-columns: repeat(4, 1fr)"] {
+              grid-template-columns: repeat(3, 1fr) !important;
+            }
           }
-        }
 
-        @media (max-width: 900px) {
-          div[style*="grid-template-columns: repeat(4, 1fr)"] {
-            grid-template-columns: repeat(2, 1fr) !important;
+          @media (max-width: 900px) {
+            div[style*="grid-template-columns: repeat(4, 1fr)"] {
+              grid-template-columns: repeat(2, 1fr) !important;
+            }
           }
-        }
 
-        @media (max-width: 600px) {
-          div[style*="grid-template-columns: repeat(4, 1fr)"] {
-            grid-template-columns: 1fr !important;
+          @media (max-width: 600px) {
+            div[style*="grid-template-columns: repeat(4, 1fr)"] {
+              grid-template-columns: 1fr !important;
+            }
+            h1 {
+              padding: 10px 20px !important;
+              margin: 30px auto !important;
+            }
           }
-          h1 {
-            padding: 10px 20px !important;
-            margin: 30px auto !important;
-          }
-        }
-      `}</style>
+        `}</style>
+      </div>
     </div>
   );
 };
@@ -175,13 +237,43 @@ export default function DashboardPage() {
           marginTop: "90px",
         }}
       >
-        <Image
-          src={home}
-          alt="Home"
-          layout="fill"
-          objectFit="cover"
-          style={{ position: "absolute", top: 0, left: 0 }}
-        />
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "90vh",
+            marginTop: "90px",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              width: `${images.length * 100}%`,
+              height: "100%",
+              animation: "slide 15s linear infinite",
+            }}
+          >
+            {images.concat(images).map((image, index) => (
+              <div
+                key={index}
+                style={{
+                  flexShrink: 0,
+                  width: `${100 / images.length}%`,
+                  height: "100%",
+                  position: "relative",
+                }}
+              >
+                <Image
+                  src={image}
+                  alt={`Home ${index}`}
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
         <div
           style={{
             position: "absolute",
@@ -200,7 +292,7 @@ export default function DashboardPage() {
               textAlign: "center",
               color: "orange",
               fontFamily: "roboto",
-              fontSize: "100px",
+              fontSize: "70px",
             }}
           >
             Shoes with products{" "}
@@ -217,36 +309,32 @@ export default function DashboardPage() {
               display: "inline-block",
               paddingLeft: "100%",
               animation: "marquee 15s linear infinite",
+              fontFamily: "roboto",
+              fontSize: "30px"
             }}
           >
-            <h2>
+            <h4>
               The Evolution of Sneakers support, and durability. Brands like
               Converse{" "}
-            </h2>
-            <h2>
+            </h4>
+            <h4>
               Sneakers in the Fashion Industry support, and durability. Brands
               like Converse, Adidas{" "}
-            </h2>
+            </h4>
           </div>
         </div>
       </div>
-
-      <h1
-        style={{
-          color: "#fff",
-          backgroundColor: "#e67e22",
-          width: "fit-content",
-          padding: "15px 30px",
-          margin: "50px auto",
-          borderRadius: "8px",
-          textAlign: "center",
-        }}
-      >
-        All PRODUCTS
-      </h1>
       <DataComponent />
 
       <style jsx>{`
+       @keyframes slide {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-100%);
+          }
+        }
         @keyframes marquee {
           from {
             transform: translateX(100%);
@@ -271,17 +359,6 @@ export default function DashboardPage() {
         @media (max-width: 600px) {
           div[style*="grid-template-columns: repeat(4, 1fr)"] {
             grid-template-columns: 1fr !important;
-          }
-          h1[style*="color: orange; font-size: 50px;"] {
-            font-size: 30px;
-          }
-          h1[style*="color: #fff; background-color: #e67e22;"] {
-            padding: 10px 20px;
-            margin: 20px auto;
-            font-size: 20px;
-          }
-          img[style*="width: 100%; height: auto;"] {
-            height: auto;
           }
         }
       `}</style>

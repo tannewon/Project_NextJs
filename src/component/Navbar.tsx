@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
-import { CartPage } from "./cartShopping";
 import { ModeToggle } from "./ModeToggle";
-import logo from "../../public/ninedev.png";
-<script src="https://js.stripe.com/v3/"></script>
+import logoa from "../../public/logoadmin.png";
+import { usePathname } from 'next/navigation';
+import { CartPage } from "./cartShopping";
+
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,6 +18,8 @@ const Navbar = () => {
   const [userAvatar, setUserAvatar] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const isDashboard = pathname.includes('dashboard');
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -76,7 +79,10 @@ const Navbar = () => {
   const handleLinkClick = () => {
     setShowDropdown(false);
   };
-
+  if 
+  (isDashboard) {
+    return null;
+  }
   return (
     <nav
       style={{
@@ -97,7 +103,7 @@ const Navbar = () => {
     >
       <div>
         <Image
-          src={logo}
+          src={logoa}
           alt="Home"
           width={100}
           height={70}
@@ -207,6 +213,7 @@ const Navbar = () => {
         {isLoggedIn ? (
           <>
             <CartPage />
+          
             <div style={{ position: 'relative' }}>
               <Image
                 src={userAvatar || '/default-avatar.png'}
@@ -246,7 +253,7 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            <ModeToggle />
+            {/* <ModeToggle /> */}
           </>
         ) : (
           <>

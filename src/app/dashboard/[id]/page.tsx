@@ -7,7 +7,16 @@ import { MdDeleteForever } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { IoMdArrowBack } from "react-icons/io";
 
-async function getPost(id: string) {
+interface Post {
+  id: string;
+  name: string;
+  image: string;
+  price: string;
+  description: string;
+  promotion: string; // Thêm trường promotion
+}
+
+async function getPost(id: string): Promise<Post> {
   const res = await fetch(`${PRODUCT_API_URL}/${id}`);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -28,7 +37,7 @@ export default function DashboardDetailPage({
 }: {
   params: { id: string };
 }) {
-  const [post, setPost] = useState<any>(null);
+  const [post, setPost] = useState<Post | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -59,7 +68,7 @@ export default function DashboardDetailPage({
   };
 
   if (!post) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   return (
@@ -87,27 +96,32 @@ export default function DashboardDetailPage({
         >
           <div style={{ fontWeight: "bold", padding: "10px" }}>Image</div>
           <div
-            style={{ fontWeight: "bold", padding: "10px", marginLeft: "60px" }}
+            style={{ fontWeight: "bold", padding: "10px", marginLeft: "110px", }}
           >
             Name
           </div>
           <div
-            style={{ fontWeight: "bold", padding: "10px", marginLeft: "190px" }}
+            style={{ fontWeight: "bold", padding: "10px", marginLeft: "120px" }}
           >
             Price
           </div>
           <div
-            style={{ fontWeight: "bold", padding: "10px", marginLeft: "70px" }}
+            style={{ fontWeight: "bold", padding: "10px", marginLeft: "90px" }}
+          >
+            Promotion
+          </div>
+          <div
+            style={{ fontWeight: "bold", padding: "10px", marginLeft: "130px" }}
           >
             Description
           </div>
           <div
-            style={{ fontWeight: "bold", padding: "10px", marginLeft: "380px" }}
+            style={{ fontWeight: "bold", padding: "10px", marginLeft: "190px" }}
           >
             Actions
           </div>
         </div>
-        <hr />
+        <hr style={{backgroundColor:'orange'}}/>
         <div
           style={{
             display: "flex",
@@ -128,9 +142,10 @@ export default function DashboardDetailPage({
               }}
             />
           </div>
-          <div style={{ flex: "2", padding: "0 10px" }}>{post.name}</div>
+          <div style={{ flex: "1", padding: "0 20px" }}>{post.name}</div>
           <div style={{ flex: "1", color: "red" }}>{post.price}$</div>
-          <div style={{ flex: "4", padding: "0 10px" }}>{post.description}</div>
+          <div style={{ flex: "1", padding: "0 10px" }}>{post.promotion}</div>
+          <div style={{ flex: "2", padding: "0 10px" }}>{post.description}$</div>
           <div
             style={{
               display: "flex",
