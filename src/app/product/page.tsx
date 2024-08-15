@@ -8,10 +8,12 @@ import { PRODUCT_API_URL } from "@/lib/util";
 import { FcLike } from "react-icons/fc";
 import Image from "next/image";
 import { IoStar } from "react-icons/io5";
-import home from "../../../public/home2.jpg";
 import nen1 from "../../../public/nen3.jpg";
 import nen2 from "../../../public/nen2.jpg";
-
+import nike from "../../../public/Nike.png";
+import adias from "../../../public/adidas.png";
+import puma from "../../../public/pumalogo.png";
+import person from "../../../public/person.png";
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -20,7 +22,7 @@ const fetchData = async () => {
   }
   return res.json();
 };
-const images = [home, nen1, nen2]; // Danh sách các ảnh
+const images = [nen1, nen2]; // Danh sách các ảnh
 const DataComponent = () => {
   const [data, setData] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -72,20 +74,22 @@ const DataComponent = () => {
 
   return (
     <div>
-      <h2
+      <h1
         style={{
           color: "#fff",
           backgroundColor: "#e67e22",
           width: "fit-content",
-          padding: "15px 30px",
           margin: "50px auto",
           borderRadius: "8px",
           textAlign: "center",
-          fontFamily: "roboto",
+          
+          background: "linear-gradient(to right, orange, red, gray)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
         }}
       >
-        All PRODUCTS
-      </h2>
+        All PRODUCTS OF MY SHOP
+      </h1>
       <div
         style={{
           backgroundColor: "#f5f5f5",
@@ -130,10 +134,14 @@ const DataComponent = () => {
             <div style={{ padding: "16px" }}>
               <h3
                 style={{
+                  width:'200px',
                   margin: "0 0 10px",
                   color: "#333",
-                  fontFamily: "roboto",
+                  
                   fontSize: "25px",
+                  background: "linear-gradient(to right, red, orange)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                 }}
               >
                 {item.name}
@@ -189,7 +197,7 @@ const DataComponent = () => {
                 style={{
                   color: "#666",
                   marginBottom: "10px",
-                  fontFamily: "roboto",
+                  
                   fontSize: "18px",
                 }}
               >
@@ -221,6 +229,51 @@ const DataComponent = () => {
             }
           }
         `}</style>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "100px",
+          marginTop: "50px",
+        }}
+      >
+        <div>
+          <Image
+            style={{ borderRadius: "20px" }}
+            src={nike}
+            alt="Home"
+            width={250}
+            height={150}
+          />
+        </div>
+        <div>
+          <Image
+            style={{ borderRadius: "20px" }}
+            src={adias}
+            alt="Home"
+            width={250}
+            height={150}
+          />
+        </div>
+        <div>
+          <Image
+            style={{ borderRadius: "20px" }}
+            src={person}
+            alt="Home"
+            width={250}
+            height={150}
+          />
+        </div>
+        <div>
+          <Image
+            style={{ borderRadius: "20px" }}
+            src={puma}
+            alt="Home"
+            width={250}
+            height={150}
+          />
+        </div>
       </div>
     </div>
   );
@@ -260,7 +313,7 @@ export default function DashboardPage() {
                 style={{
                   flexShrink: 0,
                   width: `${100 / images.length}%`,
-                  height: "100%",
+                  height: "90%",
                   position: "relative",
                 }}
               >
@@ -291,8 +344,11 @@ export default function DashboardPage() {
             style={{
               textAlign: "center",
               color: "orange",
-              fontFamily: "roboto",
+              
               fontSize: "70px",
+              background: "linear-gradient(to right, orange, red, white)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
             }}
           >
             Shoes with products{" "}
@@ -300,6 +356,9 @@ export default function DashboardPage() {
           <p
             style={{
               textAlign: "center",
+              background: "linear-gradient(to right, orange, white)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
             }}
           >
             Website:shose.w.w.w.com
@@ -309,8 +368,8 @@ export default function DashboardPage() {
               display: "inline-block",
               paddingLeft: "100%",
               animation: "marquee 15s linear infinite",
-              fontFamily: "roboto",
-              fontSize: "30px"
+              
+              fontSize: "30px",
             }}
           >
             <h4>
@@ -327,7 +386,7 @@ export default function DashboardPage() {
       <DataComponent />
 
       <style jsx>{`
-       @keyframes slide {
+        @keyframes slide {
           0% {
             transform: translateX(0);
           }

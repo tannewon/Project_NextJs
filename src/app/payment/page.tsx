@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { loadStripe } from "@stripe/stripe-js";
+import Link from "next/link";
+
 
 const PaymentPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
@@ -12,36 +13,7 @@ const PaymentPage: React.FC = () => {
     setCartItems(items);
   }, []);
 
-  const handleCheckout = async () => {
-    try {
-      console.log("Cart items:", cartItems); // Log to check cart items
-
-      const response = await fetch("https://buy.stripe.com/test_00g7v64lTd9EfVS9AB", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cartItems }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Response data:", data);
-
-      const stripe = await loadStripe(
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
-      );
-      if (!stripe) {
-        throw new Error("Stripe could not be loaded");
-      }
-      await stripe.redirectToCheckout({ sessionId: data.sessionId });
-    } catch (error) {
-      console.error("Error during fetch:", error);
-    }
-  };
+  
 
   const getTotalPrice = () => {
     return cartItems
@@ -71,9 +43,13 @@ const PaymentPage: React.FC = () => {
       >
         <h2
           style={{
+            width:'150px',
             fontSize: "24px",
             marginBottom: "20px",
             color: "#333",
+            background: "linear-gradient(to right, red, orange)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
           }}
         >
           Your Cart
@@ -137,7 +113,7 @@ const PaymentPage: React.FC = () => {
           style={{
             fontSize: "20px",
             fontWeight: "bold",
-            color: "#333",
+            color: "red",
             textAlign: "right",
           }}
         >
@@ -155,28 +131,35 @@ const PaymentPage: React.FC = () => {
       >
         <h2
           style={{
+            width:'150px',
             fontSize: "24px",
             marginBottom: "20px",
             color: "#333",
+            background: "linear-gradient(to right, red, orange)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          
           }}
         >
           Checkout
         </h2>
+        <Link href="https://sandbox.vnpayment.vn/tryitnow/Home/CreateOrder">
         <button
-          onClick={handleCheckout}
           style={{
             marginTop: "20px",
-            backgroundColor: "#3498db",
+            background: "linear-gradient(to right, orange, red, gray)", 
             color: "#fff",
             border: "none",
             padding: "15px 20px",
             borderRadius: "4px",
             fontSize: "18px",
             cursor: "pointer",
+            
           }}
         >
-          Proceed to Checkout
+          Online payment 
         </button>
+        </Link>
       </div>
     </div>
   );

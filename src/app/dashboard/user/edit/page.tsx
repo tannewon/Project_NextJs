@@ -31,8 +31,8 @@ const uploadImage = async (file: File) => {
   formData.append("folder", FOLDER_NAME);
   formData.append("file", file);
   const res = await fetch(api, { method: "POST", body: formData });
+  if (!res.ok) throw new Error("Failed to upload image");
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error?.message || "Failed to upload image");
   return data.secure_url;
 };
 
@@ -46,12 +46,29 @@ const EditUserPage = () => {
   const [role, setRole] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("");
   const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null); // State for error messages
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for toggling confirm password visibility
+  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+
+  useEffect(() => {
+    if (id) {
+      fetchUser(id)
+        .then((data) => {
+          setUser(data);
+          setName(data.name || "");
+          setEmail(data.email || "");
+          setAvatar(data.avatar || "");
+          setAvatarPreview(data.avatar || "");
+          setPassword(data.password || "");
+          setConfirmPassword(data.confirmPassword || "");
+          setRole(data.role || "");
+        })
+        .catch((error) => setError("Failed to fetch user data"));
+    }
+  }, [id]);
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -69,23 +86,6 @@ const EditUserPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (id) {
-      fetchUser(id as string)
-        .then((data) => {
-          setUser(data);
-          setName(data.name);
-          setEmail(data.email);
-          setAvatar(data.avatar);
-          setAvatarPreview(data.avatar);
-          setPassword(data.password || "");
-          setConfirmPassword(data.confirmPassword || "");
-          setRole(data.role || "");
-        })
-        .catch((error) => setError("Failed to fetch user data"));
-    }
-  }, [id]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -100,10 +100,10 @@ const EditUserPage = () => {
     }
   };
 
-  if (!user) return <div> </div>;
+  if (!user) return <div></div>;
 
   return (
-    <div style={{ marginLeft:'30px'}} >
+    <div style={{ marginLeft: "30px",marginTop:'30px' }}>
       <button
         onClick={() => router.push("/dashboard/user")}
         style={{
@@ -115,6 +115,7 @@ const EditUserPage = () => {
           borderRadius: "50%",
           boxSizing: "border-box",
         }}
+        className="back"
       >
         <IoMdArrowBack style={{ width: "20px", height: "20px" }} />
       </button>
@@ -144,7 +145,7 @@ const EditUserPage = () => {
             required
             style={{
               width: "100%",
-              height:'40px',
+              height: "40px",
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -162,7 +163,7 @@ const EditUserPage = () => {
             required
             style={{
               width: "100%",
-              height:'40px',
+              height: "40px",
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -181,7 +182,7 @@ const EditUserPage = () => {
               required
               style={{
                 width: "100%",
-                height:'40px',
+                height: "40px",
                 padding: "8px",
                 marginTop: "5px",
                 border: "1px solid orange",
@@ -213,7 +214,7 @@ const EditUserPage = () => {
               required
               style={{
                 width: "100%",
-                height:'40px',
+                height: "40px",
                 padding: "8px",
                 marginTop: "5px",
                 border: "1px solid orange",
@@ -244,7 +245,7 @@ const EditUserPage = () => {
             required
             style={{
               width: "100%",
-              height:'40px',
+              height: "40px",
               padding: "8px",
               marginTop: "5px",
               border: "1px solid orange",
@@ -253,78 +254,50 @@ const EditUserPage = () => {
             }}
           />
         </label>
-        <label style={{ display: "block" }}>
+        <label style={{ display: "block", marginTop: "10px" }}>
           Avatar:
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleAvatarChange}
-            style={{
-              width: "100%",
-              height:'40px',
-              padding: "8px",
-              marginTop: "5px",
-              border: "1px solid orange",
-              borderRadius: "4px",
-              boxSizing: "border-box",
-            }}
-          />
-          {avatarPreview && (
-            <Image
-              src={avatarPreview}
-              alt="Avatar Preview"
-              width={100} // Set appropriate width
-              height={100}
-              style={{
-                borderRadius: "50%",
-                marginTop: "10px",
-              }}
+          <div style={{ marginTop: "5px" }}>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarChange}
+              style={{ display: "block" }}
             />
-          )}
+            {avatarPreview && (
+              <Image
+                src={avatarPreview}
+                alt="Avatar Preview"
+                width={100}
+                height={100}
+                style={{ marginTop: "10px", borderRadius: "50%" }}
+              />
+            )}
+          </div>
         </label>
-        <div>
-          <button
-            type="submit"
-            style={{
-              backgroundColor: "orange",
-              color: "white",
-              border: "none",
-              padding: "10px 20px",
-              cursor: "pointer",
-              borderRadius: "4px",
-              width: "20%",
-              boxSizing: "border-box",
-              fontSize: "15px",
-              marginLeft: "350px",
-            }}
-          >
-            Update
-          </button>
-        </div>
+
+        <button
+          type="submit"
+          disabled={isUploading}
+          style={{
+            backgroundColor: "orange",
+            color: "white",
+            border: "none",
+            padding: "10px 20px",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "16px",
+            marginTop: "10px",
+            width: "100px",
+            marginLeft: "400px",
+          }}
+        >
+          {isUploading ? "Updating..." : "Update"}
+        </button>
       </form>
       <style jsx>{`
-        @media (max-width: 768px) {
-          form {
-            width: 100%;
-            padding: 15px;
-          }
 
-          button {
-            width: 100%;
-          }
-
-          h2 {
-            font-size: 1.5em;
-          }
-
-          label {
-            font-size: 1em;
-          }
-
-          img {
-            width: 100%;
-            height: auto;
-          }
+        .back:hover {
+          color: red;
         }
       `}</style>
     </div>

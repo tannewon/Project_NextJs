@@ -56,11 +56,25 @@ const UserPage = () => {
         display: "flex",
         flexDirection: "column",
         padding: "10px 10px 350px",
-        marginLeft:'30px'
+        marginLeft: "40px",
+        marginTop: "30px",
+        position: "relative", // Để căn giữa nội dung
       }}
     >
+      <h1
+        style={{
+          position: "absolute",
+          left: "50%",
+          transform: "translateX(-50%)",
+          background: "linear-gradient(to right, red, orange)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        User
+      </h1>
       <div
-        style={{ position: "relative", width: "250px", marginBottom: "30px" }}
+        style={{ position: "relative", width: "250px", marginBottom: "30px",marginTop: "60px" }}
       >
         <button
           type="submit"
@@ -140,7 +154,7 @@ const UserPage = () => {
               }}
             />
           </div>
-          <div style={{ display: "flex", gap: "15px",marginLeft:'10px' }}>
+          <div style={{ display: "flex", gap: "15px", marginLeft: "10px" }}>
             <Link href={`/dashboard/user/edit/?id=${user.id}`} passHref>
               <CiEdit
                 style={{

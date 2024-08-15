@@ -7,9 +7,8 @@ import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
 import { ModeToggle } from "./ModeToggle";
 import logoa from "../../public/logoadmin.png";
-import { usePathname } from 'next/navigation';
-import { CartPage } from "./cartShopping";
-
+import { usePathname } from "next/navigation";
+import { CartPage } from "../component/cartShopping";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,7 +18,7 @@ const Navbar = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const isDashboard = pathname.includes('dashboard');
+  const isDashboard = pathname.includes("dashboard");
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -28,10 +27,12 @@ const Navbar = () => {
         try {
           const user = JSON.parse(userCookie);
           setIsLoggedIn(true);
-          setIsAdmin(user.role === 'admin');
-          setUserAvatar(user.role === 'admin' 
-            ? 'https://example.com/admin-avatar.jpg' // Replace with actual admin avatar URL
-            : user.avatar || 'https://res.cloudinary.com/dyfs9b4uj/image/upload/v1721632594/bo791ggfbtugthfb48pn.jpg' // Use user.avatar if available
+          setIsAdmin(user.role === "admin");
+          setUserAvatar(
+            user.role === "admin"
+              ? "https://example.com/admin-avatar.jpg" // Replace with actual admin avatar URL
+              : user.avatar ||
+                  "https://res.cloudinary.com/dyfs9b4uj/image/upload/v1721632594/bo791ggfbtugthfb48pn.jpg" // Use user.avatar if available
           );
         } catch (error) {
           console.error("Error parsing user cookie:", error);
@@ -58,7 +59,7 @@ const Navbar = () => {
     localStorage.removeItem("products");
     localStorage.removeItem("currentUser");
     localStorage.removeItem("cartItems");
-    
+
     Cookies.remove("user");
     setIsLoggedIn(false);
     setUserAvatar(null);
@@ -76,48 +77,46 @@ const Navbar = () => {
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
+
   const handleLinkClick = () => {
     setShowDropdown(false);
   };
-  if 
-  (isDashboard) {
+
+  if (isDashboard) {
     return null;
   }
+
   return (
-    <nav
+    <header
       style={{
         position: "fixed",
         top: 0,
         left: 0,
         right: 0,
         zIndex: 1000,
-        margin: "0 auto",
         display: "flex",
-        backgroundColor: "orange",
+        flexDirection: "row",
+        background: "linear-gradient(to right, orange, #FF4040, orange)",
         color: "white",
         width: "100%",
         height: "90px",
         justifyContent: "space-between",
         padding: "0 20px",
+        boxSizing: "border-box",
       }}
     >
       <div>
-        <Image
-          src={logoa}
-          alt="Home"
-          width={100}
-          height={70}
-          style={{
-            width: "100%",
-            height: "70px",
-            padding: "10px",
-            borderRadius: "20px",
-          }}
-        />
+        <Image src={logoa} alt="Home" width={100} height={70} />
       </div>
       <div
         className="navLinks"
-        style={{ display: "flex", alignItems: "center", marginRight: "100px" }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexWrap: "wrap",
+          marginRight: "100px",
+          gap: "30px",
+        }}
       >
         <Link href="/" passHref>
           <p
@@ -125,9 +124,9 @@ const Navbar = () => {
             style={{
               color: "white",
               fontWeight: "bold",
-              fontFamily: "Roboto",
-              fontSize: "18px",
-              marginLeft: "80px",
+
+              fontSize: "17px",
+              margin: "0 15px",
             }}
           >
             Home
@@ -139,46 +138,46 @@ const Navbar = () => {
             style={{
               color: "white",
               fontWeight: "bold",
-              fontFamily: "Roboto",
-              fontSize: "18px",
-              marginLeft: "80px",
+
+              fontSize: "17px",
+              margin: "0 15px",
             }}
           >
             Product
           </p>
         </Link>
-          <Link href="/dashboard" passHref>
-            <p
-              className="navLink"
-              style={{
-                color: "white",
-                fontWeight: "bold",
-                fontFamily: "Roboto",
-                fontSize: "18px",
-                marginLeft: "80px",
-              }}
-            >
-              Management
-            </p>
-          </Link>
+        <Link href="/dashboard" passHref>
+          <p
+            className="navLink"
+            style={{
+              color: "white",
+              fontWeight: "bold",
+ 
+              fontSize: "17px",
+              margin: "0 15px",
+            }}
+          >
+            Management
+          </p>
+        </Link>
         <form
           className="searchForm"
           style={{
             display: "flex",
             alignItems: "center",
-            fontFamily: "Roboto",
-            fontSize: "18px",
-            marginLeft: "100px",
-            marginRight: '50px'
+
+            fontSize: "17px",
+            margin: "10px 20px",
+            flex: 1,
           }}
           onSubmit={handleSearch}
         >
-          <div style={{ position: "relative", width: "250px" }}>
+          <div style={{ position: "relative", width: "100%" }}>
             <button
               type="submit"
               style={{
                 position: "absolute",
-                right: "210px",
+                right: "245px",
                 top: "50%",
                 transform: "translateY(-50%)",
                 width: "35px",
@@ -188,65 +187,101 @@ const Navbar = () => {
                 background: "transparent",
               }}
             >
-              <FaSearch style={{ color: "gray", width: '20px', height: '20px' }} />
+              <FaSearch
+                style={{ color: "gray", width: "20px", height: "20px" }}
+              />
             </button>
             <input
               type="text"
               name="search"
               placeholder="Search products"
               style={{
-                fontSize: '15px',
-                width: "150px",
+                fontSize: "15px",
+                width: "200px",
                 height: "33px",
                 border: "none",
-                fontFamily: "Roboto",
+
                 borderRadius: "15px",
                 paddingRight: "45px", // Space for the button
-                paddingLeft: "45px", // Space for the text from the left border
+                paddingLeft: "35px",
               }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </form>
-              
         {isLoggedIn ? (
           <>
             <CartPage />
-          
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: "relative" }}>
               <Image
-                src={userAvatar || '/default-avatar.png'}
+                src={userAvatar || "/default-avatar.png"}
                 alt="Avatar"
-                width={50}
-                height={50}
+                width={70}
+                height={60}
                 style={{
                   borderRadius: "50%",
                   cursor: "pointer",
-                  marginLeft: "50px",
+                  marginLeft: "20px",
                 }}
                 onClick={toggleDropdown}
               />
               {showDropdown && (
-                <div style={{
-                  position: "absolute",
-                  top: "50px",
-                  left: 20,
-                  backgroundColor: "#ffff",
-                  color: "black",
-                  borderRadius: "5px",
-                  padding: "10px",
-                  zIndex: 1000,
-                }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "60px",
+                    left: 5,
+                    background: "linear-gradient(to right, orange, #FF4040, orange)",
+
+                    color: "black",
+                    borderRadius: "5px",
+                    padding: "10px",
+                    zIndex: 1000,
+                  }}
+                >
                   <Link href="/profile">
-                    <p  onClick={handleLinkClick} className="navLink" style={{ padding: "0px 16px", cursor: "pointer", margin: 0, fontWeight: 'bold' }}>Profile</p>
+                    <p
+                      onClick={handleLinkClick}
+                      className="navLink"
+                      style={{
+                        padding: "10px",
+                        cursor: "pointer",
+                        margin: 0,
+                        fontWeight: "bold",
+                        fontFamily: "roboto",
+                        color:'white'
+                      }}
+                    >
+                      Profile
+                    </p>
                   </Link>
                   <Link href="/product/favorite">
-                    <p onClick={handleLinkClick} className="navLink" style={{ padding: "0px 16px", cursor: "pointer", margin: 0, fontWeight: 'bold' }}>Favorite</p>
+                    <p
+                      onClick={handleLinkClick}
+                      className="navLink"
+                      style={{
+                        padding: "10px",
+                        cursor: "pointer",
+                        margin: 0,
+                        fontWeight: "bold",
+                        fontFamily: "roboto",
+                        color:'white'
+
+                      }}
+                    >
+                      Favorite
+                    </p>
                   </Link>
                   <p
                     onClick={handleLogout}
-                    style={{ padding: "15px 16px", cursor: "pointer", margin: 0, fontWeight: 'bold' }}
+                    style={{
+                      padding: "10px",
+                      cursor: "pointer",
+                      margin: 0,
+                      fontWeight: "bold",
+                      fontFamily: "roboto",
+                    }}
                   >
                     Logout
                   </p>
@@ -263,14 +298,13 @@ const Navbar = () => {
                 style={{
                   color: "white",
                   fontWeight: "bold",
-                  marginLeft: "50px",
-                  fontFamily: "Roboto",
-                  fontSize: "18px",
+                  marginLeft: "40px",
+                  fontSize: "17px",
                   textDecoration: "none",
                   padding: "5px 10px",
                   borderRadius: "15px",
-                  backgroundColor: "#FF6633",
-                  border: "1px solid",
+                  backgroundColor: "#FF6633", // Example background color
+                  border: "1px solid transparent", // Border to show focus
                 }}
               >
                 Login
@@ -282,14 +316,14 @@ const Navbar = () => {
                 style={{
                   color: "white",
                   fontWeight: "bold",
-                  marginLeft: "20px",
-                  fontFamily: "Roboto",
-                  fontSize: "18px",
+                  marginLeft: "10px",
+
+                  fontSize: "17px",
                   textDecoration: "none",
                   padding: "5px 10px",
                   borderRadius: "15px",
-                  backgroundColor: "#FF6633",
-                  border: "1px solid",
+                  backgroundColor: "#FF6633", // Example background color
+                  border: "1px solid transparent", // Border to show focus
                 }}
               >
                 Register
@@ -298,7 +332,6 @@ const Navbar = () => {
           </>
         )}
       </div>
-
       <style jsx>{`
         nav {
           padding: 0 20px;
@@ -307,12 +340,12 @@ const Navbar = () => {
           transition: color 0.3s, background-color 0.3s;
         }
         .navLink:hover {
-          color: red !important;
+          color: #BBBBBB !important;
           color: #ff6633;
         }
         .searchButton {
           transition: background-color 0.3s;
-        } 
+        }
         .searchButton:hover {
           background-color: rgba(255, 0, 0, 0.2);
         }
@@ -326,7 +359,7 @@ const Navbar = () => {
           }
         }
       `}</style>
-    </nav>
+    </header>
   );
 };
 

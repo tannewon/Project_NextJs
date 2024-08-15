@@ -2,17 +2,21 @@
 import { AiFillAccountBook } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
-import home from "../../public/home2.jpg";
 import anh5 from "../../public/anh5.jpg";
 import anh6 from "../../public/anh6.jpg";
 import nen1 from "../../public/nen3.jpg";
 import nen2 from "../../public/nen2.jpg";
+import nike from "../../public/Nike.png";
+import adias from "../../public/adidas.png";
+import puma from "../../public/pumalogo.png";
+import person from "../../public/person.png";
 import React, { useEffect, useState } from "react";
 import { Product } from "@/type/types";
 import { PRODUCT_API_URL } from "@/lib/util";
 import { FcLike } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { IoStar } from "react-icons/io5";
+
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -21,7 +25,7 @@ const fetchData = async () => {
   }
   return res.json();
 };
-const images = [home, nen1, nen2]; // Danh sách các ảnh
+const images = [nen1, nen2]; // Danh sách các ảnh
 
 const DataComponent = () => {
   const [data, setData] = useState<Product[]>([]);
@@ -40,6 +44,7 @@ const DataComponent = () => {
         setLoading(false);
       });
   }, []);
+  
 
   const handleAddToFavorites = (item: Product) => {
     const savedProductIds = JSON.parse(
@@ -69,25 +74,27 @@ const DataComponent = () => {
 
   return (
     <div style={{}}>
-      <h2
-        style={{
-          color: "#fff",
-          backgroundColor: "#e67e22",
-          width: "fit-content",
-          padding: "10px 20px",
-          margin: "0px auto",
-          borderRadius: "8px",
-          textAlign: "center",
-          marginTop: "50px",
-          marginBottom: "20px",
-        }}
-      >
-        <Link href="/product">
-          <div style={{ fontFamily: "roboto", color: "white" }}>
-            All Product
-          </div>
-        </Link>
-      </h2>
+      <Link href="/product">
+        <h1
+          className="text"
+          style={{
+            color: "white",
+            width: "fit-content",
+            margin: "0px auto",
+            borderRadius: "8px",
+            textAlign: "center",
+            marginTop: "50px",
+            marginBottom: "20px",
+
+            background: "linear-gradient(to right, orange, red, gray)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            fontSize: "40px",
+          }}
+        >
+          All Product
+        </h1>
+      </Link>
       <div
         style={{
           display: "grid",
@@ -130,13 +137,17 @@ const DataComponent = () => {
               />
             </Link>
 
-            <div style={{ padding: "16px" }}>
+            <div style={{ padding: "16px", height: "155px" }}>
               <h3
                 style={{
+                  width: "200px",
                   margin: "0 0 10px",
                   color: "#333",
-                  fontFamily: "roboto",
+
                   fontSize: "25px",
+                  background: "linear-gradient(to right, red, orange)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                 }}
               >
                 {item.name}
@@ -192,7 +203,7 @@ const DataComponent = () => {
                 style={{
                   color: "#666",
                   marginBottom: "10px",
-                  fontFamily: "roboto",
+
                   fontSize: "18px",
                 }}
               >
@@ -205,7 +216,6 @@ const DataComponent = () => {
     </div>
   );
 };
-
 export default function Home() {
   return (
     <div>
@@ -241,7 +251,7 @@ export default function Home() {
                 style={{
                   flexShrink: 0,
                   width: `${100 / images.length}%`,
-                  height: "100%",
+                  height: "90%",
                   position: "relative",
                 }}
               >
@@ -271,36 +281,42 @@ export default function Home() {
           <h1
             style={{
               textAlign: "center",
-              color: "orange",
-              fontFamily: "roboto",
+              background: "linear-gradient(to right, orange, red, white)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+
               fontSize: "70px",
+              margin: 0,
             }}
           >
-            Shoes with Shop www.com{" "}
+            Shoes with Shop www.com
           </h1>
           <p
             style={{
               textAlign: "center",
+              background: "linear-gradient(to right, orange, white)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
             }}
           >
-            Website:shose.w.w.w.com
+            Website: shose.w.w.w.com
           </p>
           <div
             style={{
               display: "inline-block",
               paddingLeft: "100%",
               animation: "marquee 15s linear infinite",
-              fontFamily: "roboto",
+
               fontSize: "30px",
             }}
           >
             <h4>
               The Evolution of Sneakers support, and durability. Brands like
-              Converse{" "}
+              Converse
             </h4>
             <h4>
               Sneakers in the Fashion Industry support, and durability. Brands
-              like Converse{" "}
+              like Converse
             </h4>
           </div>
         </div>
@@ -310,22 +326,20 @@ export default function Home() {
       <div
         style={{
           textAlign: "center",
-          padding: "10px",
-          backgroundColor: "orange",
-          width: "1350px",
-          height: "800px",
+          background: "linear-gradient(to right, orange, #FF4040, orange)",
+          width: "90%", // Thay đổi từ px sang phần trăm
+          height: "auto", // Thay đổi từ px sang auto
           margin: "10px auto",
           borderRadius: "20px",
           border: "5px solid white",
-          marginTop: "50px",
+          marginTop: "20px",
         }}
       >
         <h1
           style={{
             color: "white",
-            fontSize: "50px",
-            marginBottom: "30px",
-            fontFamily: "Roboto",
+            fontSize: "4rem", // Thay đổi từ px sang rem
+            marginBottom: "2rem", // Thay đổi từ px sang rem
           }}
         >
           Sports Shoes
@@ -334,40 +348,40 @@ export default function Home() {
           style={{
             display: "flex",
             justifyContent: "center",
-            gap: "100px",
-            marginTop: "50px",
+            gap: "9rem", // Thay đổi từ px sang rem
+            marginTop: "2rem", // Thay đổi từ px sang rem
             position: "relative",
+            flexWrap: "wrap", // Allow items to wrap in smaller screens
           }}
         >
           <Link href="/shoes-sport">
             <div
               style={{
                 position: "relative",
-                width: "550px",
-                height: "400px",
+                width: "100%", // Thay đổi từ px sang phần trăm
+                height: "auto", // Thay đổi từ px sang auto
                 cursor: "pointer",
+                margin: "10px"
               }}
-              className="link-container"
             >
               <Image
                 src={anh5}
                 alt="Shoes Sport"
-                layout="fill"
                 objectFit="cover"
-                style={{ borderRadius: "10px" }}
+                style={{ borderRadius: "10px", width:'330px',height:'400px' }}
               />
               <div
                 style={{
                   position: "absolute",
-                  bottom: "100px",
+                  bottom: "20px", // Thay đổi từ px sang rem
                   left: "10px",
                   color: "white",
                   backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  padding: "5px 10px",
+                  padding: "0.5rem 1rem", // Thay đổi từ px sang rem
                   borderRadius: "5px",
-                  fontSize: "20px",
-                  fontFamily: "roboto",
+                  fontSize: "1.25rem", // Thay đổi từ px sang rem
                 }}
+                className="text"
               >
                 Shoes Sport
               </div>
@@ -378,31 +392,30 @@ export default function Home() {
             <div
               style={{
                 position: "relative",
-                width: "550px",
-                height: "400px",
+                width: "100%", // Thay đổi từ px sang phần trăm
+                height: "auto", // Thay đổi từ px sang auto
                 cursor: "pointer",
+                margin: "10px",
               }}
-              className="link-container"
             >
               <Image
                 src={anh6}
-                alt="Shoes Casual"
-                layout="fill"
+                alt="Shoes Casual"                                          
                 objectFit="cover"
-                style={{ borderRadius: "10px" }}
+                style={{ borderRadius: "10px",width:'330px',height:'400px' }}
               />
               <div
                 style={{
                   position: "absolute",
-                  bottom: "100px",
+                  bottom: "20px", // Thay đổi từ px sang rem
                   left: "10px",
                   color: "white",
                   backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  padding: "5px 10px",
+                  padding: "0.5rem 1rem", // Thay đổi từ px sang rem
                   borderRadius: "5px",
-                  fontSize: "20px",
-                  fontFamily: "roboto",
+                  fontSize: "1.25rem", // Thay đổi từ px sang rem
                 }}
+                className="text"
               >
                 Shoes Casual
               </div>
@@ -412,16 +425,17 @@ export default function Home() {
         <div
           style={{
             display: "flex",
-            gap: "50px",
+            gap: "2rem", // Thay đổi từ px sang rem
             justifyContent: "center",
+            flexWrap: "wrap", // Allow items to wrap in smaller screens
           }}
         >
           <div
             style={{
-              width: "600px",
-              marginTop: "20px",
-              fontFamily: "Roboto",
-              fontSize: "20px",
+              width: "100%", // Thay đổi từ px sang phần trăm
+              maxWidth: "600px", // Giới hạn chiều rộng tối đa
+              marginTop: "2rem", // Thay đổi từ px sang rem
+              fontSize: "1.25rem", // Thay đổi từ px sang rem
               color: "white",
             }}
           >
@@ -429,16 +443,15 @@ export default function Home() {
             <p>
               The journey of sneakers from athletic wear to everyday fashion
               essentials is a fascinating one. Originally designed for sports
-              and physical activities, sneakers were engineered to provide
-              comfort
+              and physical activities
             </p>
           </div>
           <div
             style={{
-              width: "600px",
-              marginTop: "20px",
-              fontFamily: "Roboto",
-              fontSize: "20px",
+              width: "100%", // Thay đổi từ px sang phần trăm
+              maxWidth: "600px", // Giới hạn chiều rộng tối đa
+              marginTop: "2rem", // Thay đổi từ px sang rem
+              fontSize: "1.25rem", // Thay đổi từ px sang rem
               color: "white",
             }}
           >
@@ -446,10 +459,64 @@ export default function Home() {
             <p>
               The journey of sneakers from athletic wear to everyday fashion
               essentials is a fascinating one. Originally designed for sports
-              and physical activities, sneakers were engineered to provide
-              comfort
+              and physical activities
             </p>
           </div>
+        </div>
+      </div>
+
+      <h2
+        style={{
+          marginTop: "40px",
+          marginLeft: "160px",
+        }}
+      >
+        Brand
+      </h2>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "130px",
+          marginTop: "50px",
+          flexWrap: "wrap", // Allow items to wrap in smaller screens
+        }}
+      >
+        <div>
+          <Image
+            style={{ borderRadius: "20px" }}
+            src={nike}
+            alt="Nike"
+            width={200}
+            height={150}
+          />
+        </div>
+        <div>
+          <Image
+            style={{ borderRadius: "20px" }}
+            src={adias}
+            alt="Adidas"
+            width={200}
+            height={150}
+          />
+        </div>
+        <div>
+          <Image
+            style={{ borderRadius: "20px" }}
+            src={person}
+            alt="Person"
+            width={200}
+            height={150}
+          />
+        </div>
+        <div>
+          <Image
+            style={{ borderRadius: "20px" }}
+            src={puma}
+            alt="Puma"
+            width={200}
+            height={150}
+          />
         </div>
       </div>
 
@@ -459,6 +526,13 @@ export default function Home() {
       </div>
 
       <style jsx>{`
+        .font:hover {
+          color: red !important;
+        }
+        .text:hover {
+          color: red !important;
+        }
+
         .link-container:hover {
           background-color: rgba(0, 0, 255, 0.3); /* Màu xanh nhạt khi hover */
         }
@@ -480,12 +554,6 @@ export default function Home() {
           }
         }
 
-        @media (min-width: 768px) {
-          /* Điều chỉnh thời gian animation tùy thuộc vào số lượng ảnh và tốc độ di chuyển */
-          .slide-animation {
-            animation: slide 9s linear infinite;
-          }
-        }
         @keyframes marquee {
           from {
             transform: translateX(100%);
@@ -495,79 +563,68 @@ export default function Home() {
           }
         }
 
-        /* Responsive Styles for DataComponent */
+        /* Responsive Styles */
         @media (max-width: 1024px) {
-          div[style*="grid-template-columns: repeat(4, 1fr);"] {
-            grid-template-columns: repeat(3, 1fr);
+          div[style*="width: 1350px;"] {
+            width: 100%;
+          }
+
+          div[style*="width: 550px;"] {
+            width: 100%;
+            height: auto;
           }
         }
-        @media (max-width: 800px) {
-          div[style*="grid-template-columns: repeat(4, 1fr);"] {
-            grid-template-columns: repeat(2, 1fr);
+
+        @media (max-width: 768px) {
+          div[style*="width: 1350px;"] {
+            width: 100%;
           }
-        }
-        @media (max-width: 600px) {
-          div[style*="grid-template-columns: repeat(4, 1fr);"] {
-            grid-template-columns: 1fr;
+
+          div[style*="width: 550px;"] {
+            width: 100%;
+            height: auto;
           }
-          h1[style*="color: orange; font-size: 50px;"] {
-            margin: 0;
-            text-align: center;
+
+          h1 {
+            font-size: 40px;
+          }
+
+          h2 {
             font-size: 30px;
           }
-          div[style*="display: flex; justify-content: center;"] {
-            flex-direction: column;
-            gap: 20px;
-          }
-          h1[style*="color: #fff; background-color: #e67e22;"] {
-            padding: 10px 20px;
-            margin: 20px auto;
-            font-size: 20px;
-          }
-          img[style*="width: 100%; height: 200px;"] {
-            height: 150px;
-          }
-          .product-description {
-            font-size: 16px;
+
+          .link-container {
+            width: 100%;
+            height: auto;
+            margin: 10px 0;
           }
         }
+
         @media (max-width: 480px) {
-          h1[style*="color: orange; font-size: 50px;"] {
-            font-size: 25px;
+          h1 {
+            font-size: 30px;
           }
-          div[style*="display: flex; justify-content: center;"] {
-            gap: 10px;
-          }
-          h1[style*="color: #fff; background-color: #e67e22;"] {
-            font-size: 18px;
-          }
-          img[style*="width: 100%; height: 200px;"] {
-            height: 100px;
-          }
-          .product-description {
-            font-size: 14px;
-          }
-        }
-        @media (max-width: 320px) {
-          h1[style*="color: orange; font-size: 50px;"] {
+
+          h2 {
             font-size: 20px;
           }
-          div[style*="display: flex; justify-content: center;"] {
-            gap: 5px;
+
+          div[style*="width: 1350px;"] {
+            width: 100%;
           }
-          h1[style*="color: #fff; background-color: #e67e22;"] {
+
+          .link-container {
+            width: 100%;
+            height: auto;
+            margin: 10px 0;
+          }
+
+          .text {
             font-size: 16px;
           }
-          img[style*="width: 100%; height: 200px;"] {
-            height: 80px;
-          }
-          .product-description {
-            font-size: 12px;
-          }
-        }
-        @media (min-width: 1025px) {
-          div[style*="grid-template-columns: repeat(4, 1fr);"] {
-            grid-template-columns: repeat(4, 1fr);
+
+          .font {
+            font-size: 14px;
           }
         }
       `}</style>

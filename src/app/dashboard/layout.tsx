@@ -56,27 +56,19 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <div
-      style={{
-        display: "grid",
-        height: "100vh",
-        flexDirection: "column",
-        marginTop: "90px",
-        padding: "none",
-      }}
-    >
-      <div
+    <div style={{ display: "flex", height: "100vh", flexDirection: "column" }}>
+      <header
         style={{
           backgroundColor: "#333",
           color: "#fff",
           padding: "20px",
           height: "45px",
           display: "flex",
-          alignItems: "center", // Căn chỉnh các phần tử theo chiều dọc
+          alignItems: "center",
           position: "fixed",
           top: "0",
           left: "0",
-          width: "100%",
+          width: "100%", // Adjust to account for the sidebar width
           zIndex: "1000",
         }}
       >
@@ -85,9 +77,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           alt="Home"
           width={100}
           height={70}
-          style={{
-            marginLeft: "70px", // Thay đổi margin nếu cần
-          }}
+          style={{ marginLeft: "70px" }}
         />
         <form
           className="searchForm"
@@ -95,8 +85,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             display: "flex",
             alignItems: "center",
             flexGrow: 1,
-            marginLeft: "100px", // Căn chỉnh khoảng cách bên trái của form
-            marginRight: "20px", // Căn chỉnh khoảng cách bên phải của form
+            marginLeft: "100px",
+            marginRight: "20px",
           }}
           onSubmit={handleSearch}
         >
@@ -124,14 +114,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               name="search"
               placeholder="Search products"
               style={{
-                fontFamily: "roboto",
                 fontSize: "17px",
                 width: "70%",
                 height: "30px",
                 border: "none",
                 borderRadius: "15px",
-                paddingRight: "45px", // Space for the button
-                paddingLeft: "50px", // Adjusted for proper padding
+                paddingRight: "45px",
+                paddingLeft: "50px",
               }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -141,30 +130,30 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             style={{
               color: "orange",
               marginLeft: "300px",
-              fontFamily: "roboto",
-              fontSize: "30px", // Đẩy chữ Dashboard sang bên phải
+              fontSize: "30px",
+              background: "linear-gradient(to right, red, orange)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
             }}
           >
             Dashboard
           </h1>
         </form>
-      </div>
+      </header>
 
-      <div style={{ display: "flex", flex: 1, overflow: "auto" }}>
+      <div style={{ display: "flex", flex: 1, marginTop: "45px" }}>
         <aside
           style={{
             width: "230px",
             backgroundColor: "#333",
             color: "#fff",
             padding: "20px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            height: "100vh", // Thay đổi từ 80% thành 100vh để sidebar phủ hết chiều cao màn hình
+            overflowY: "auto",
             position: "fixed",
-            top: 85, // Đặt sát viền trên cùng
-            bottom: 0, // Đặt sát viền dưới cùng
-            left: 0, // Đặt sát viền bên trái
+            top: "85px", // Starts right below the header
+            left: "0",
+            bottom: "0",
+            height: "calc(100vh - 45px)", // Adjust height based on the header
           }}
         >
           <div>
@@ -192,7 +181,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <nav style={{ display: "block" }}>
               <p
                 className="nav-item"
-                style={{ marginTop: "20px", marginLeft: "50px" }}
+                style={{ marginTop: "20px", marginLeft: "30px" }}
               >
                 <Link href="/dashboard">
                   <FcHome />
@@ -201,9 +190,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                       color: "#fff",
                       textDecoration: "none",
                       marginLeft: "10px",
-                      fontFamily: "roboto",
                       fontSize: "18px",
                     }}
+                    className="text"
                   >
                     Dashboard
                   </span>
@@ -211,7 +200,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               </p>
               <p
                 className="nav-item"
-                style={{ marginTop: "20px", marginLeft: "50px" }}
+                style={{ marginTop: "20px", marginLeft: "30px" }}
               >
                 <Link href="/dashboard/product">
                   <FcSoundRecordingCopyright />
@@ -220,9 +209,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                       color: "#fff",
                       textDecoration: "none",
                       marginLeft: "10px",
-                      fontFamily: "roboto",
                       fontSize: "18px",
                     }}
+                    className="text"
                   >
                     Product
                   </span>
@@ -230,7 +219,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               </p>
               <p
                 className="nav-item"
-                style={{ marginTop: "20px", marginLeft: "50px" }}
+                style={{ marginTop: "20px", marginLeft: "30px" }}
               >
                 <Link href="/dashboard/user">
                   <FcBusinessman />
@@ -239,9 +228,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                       color: "#fff",
                       textDecoration: "none",
                       marginLeft: "10px",
-                      fontFamily: "roboto",
                       fontSize: "18px",
                     }}
+                    className="text"
                   >
                     User
                   </span>
@@ -258,34 +247,33 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 border: "none",
                 cursor: "pointer",
                 fontSize: "17px",
-                marginLeft: "70px",
+                marginLeft: "50px",
                 display: "flex",
                 alignItems: "center",
-                marginTop: "auto", // Đẩy button Logout xuống dưới cùng
+                marginTop: "230px",
               }}
             >
               <IoLogOut
                 style={{ width: "20px", height: "20px", marginRight: "8px" }}
               />
-              <span style={{ fontFamily: "roboto", fontSize: "18px" }}>
+              <span style={{ fontSize: "18px" }} className="textlogout">
                 Logout
               </span>
             </button>
           </div>
         </aside>
-        <main
-          style={{
-            flex: 1,
-            padding: "20px",
-            overflowY: "auto",
-            marginLeft: "230px", // Điều chỉnh để tạo khoảng cách cho sidebar
-          }}
-        >
+        <main style={{ flex: 1, marginLeft: "230px", padding: "20px", overflowY: "auto" }}>
           {children}
         </main>
       </div>
 
       <style jsx>{`
+        .text:hover {
+          color: orange !important;
+        }
+        .textlogout:hover {
+          color: red !important;
+        }
         @media (max-width: 320px) and (orientation: portrait) {
           .searchForm {
             flex-direction: column;
@@ -347,7 +335,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           }
 
           main {
-            padding: 10px;
+            padding: 5px;
             margin-left: 0;
           }
         }

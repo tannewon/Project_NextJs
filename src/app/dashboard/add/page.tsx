@@ -8,7 +8,8 @@ import { IoMdArrowBack } from "react-icons/io";
 export default function AddProductPage() {
   const router = useRouter();
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("")
+  const [price, setPrice] = useState("");
+  const [promotionPrice, setPromotionPrice] = useState(""); // New state for promotion price
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [imagePreview, setImagePreview] = useState(""); // State for image preview
@@ -61,29 +62,25 @@ export default function AddProductPage() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const res = await fetch(
-        PRODUCT_API_URL,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            price,
-            description,
-            image,
-          
-          }),
-        }
-      );
+      const res = await fetch(PRODUCT_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          price,
+          promotionPrice, // Add promotionPrice to the body
+          description,
+          image,
+        }),
+      });
       if (res.ok) {
         router.push("/dashboard/product"); // Redirect back to dashboard after adding
       } else {
         const errorData = await res.json();
         throw new Error(errorData.message || "Failed to add product");
       }
-   
     } catch (error) {
       console.error("Error adding product:", error);
       alert("Failed to add product");
@@ -91,22 +88,22 @@ export default function AddProductPage() {
   };
 
   return (
-    <div style={{ marginLeft:'30px' }}>
+    <div style={{ marginLeft: "30px",marginTop:'30px' }}>
       <button
-      onClick={() => router.back()}
-          style={{
-            backgroundColor: "white",
-            border: "1px solid #ccc",
-            width: "50px",
-            height: "50px",
-            cursor: "pointer",
-            borderRadius: "50%",
-            boxSizing: "border-box",
-
-          }}
-        >
-          <IoMdArrowBack style={{ width:'20px',height:'20px' }} />
-        </button>
+        onClick={() => router.back()}
+        style={{
+          backgroundColor: "white",
+          border: "1px solid #ccc",
+          width: "50px",
+          height: "50px",
+          cursor: "pointer",
+          borderRadius: "50%",
+          boxSizing: "border-box",
+        }}
+        className="back"
+      >
+        <IoMdArrowBack style={{ width: "20px", height: "20px" }} />
+      </button>
       <h2 style={{ color: "orange", marginLeft: "480px" }}>Add New Product</h2>
       <form
         onSubmit={handleSubmit}
@@ -119,7 +116,7 @@ export default function AddProductPage() {
           marginTop: "30px",
         }}
       >
-        <label style={{  display: "block" }}>
+        <label style={{ display: "block" }}>
           Name:
           <input
             type="text"
@@ -130,7 +127,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              height:'40px',
+              height: "40px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -138,7 +135,7 @@ export default function AddProductPage() {
           />
         </label>
         <br />
-        <label style={{  display: "block" }}>
+        <label style={{ display: "block" }}>
           Price:
           <input
             type="text"
@@ -149,15 +146,33 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              height:'40px',
+              height: "40px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
             }}
           />
         </label>
-        <br/>
-        <label style={{  display: "block" }}>
+        <br />
+        <label style={{ display: "block" }}>
+          Promotion Price:
+          <input
+            type="text"
+            value={promotionPrice}
+            onChange={(e) => setPromotionPrice(e.target.value)}
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              height: "40px",
+              border: "1px solid orange",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
+          />
+        </label>
+        <br />
+        <label style={{ display: "block" }}>
           Description:
           <textarea
             value={description}
@@ -167,7 +182,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              height:'80px',
+              height: "80px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -175,7 +190,7 @@ export default function AddProductPage() {
           />
         </label>
         <br />
-        <label style={{  display: "block" }}>
+        <label style={{ display: "block" }}>
           Image:
           <input
             type="file"
@@ -186,7 +201,7 @@ export default function AddProductPage() {
               width: "100%",
               padding: "8px",
               marginTop: "5px",
-              height:'40px',
+              height: "40px",
               border: "1px solid orange",
               borderRadius: "4px",
               boxSizing: "border-box",
@@ -213,12 +228,21 @@ export default function AddProductPage() {
             padding: "10px 20px",
             cursor: "pointer",
             borderRadius: "4px",
-            marginLeft:'370px'
+            marginLeft: "430px",
           }}
         >
           {isUploading ? "Uploading..." : "Save"}
         </button>
       </form>
+      <style jsx>{`
+        .navLink:hover {
+          color: red !important;
+          color: #ff6633;
+        }
+        .back:hover {
+          color: red;
+        }
+      `}</style>
     </div>
   );
 }

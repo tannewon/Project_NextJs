@@ -95,8 +95,7 @@ export default function EditProductPage() {
   if (!post) return <div></div>;
 
   return (
-    <div style={{marginLeft:'30px'
-    }}>
+    <div style={{ marginLeft: "30px",marginTop:'30px' }}>
       <Link href={`/dashboard/${id}`}>
         <button
           style={{
@@ -108,6 +107,7 @@ export default function EditProductPage() {
             borderRadius: "50%",
             boxSizing: "border-box",
           }}
+          className="back"
         >
           <IoMdArrowBack style={{ width: "20px", height: "20px" }} />
         </button>
@@ -232,7 +232,7 @@ export default function EditProductPage() {
             backgroundColor: "orange",
             color: "white",
             border: "none",
-            marginLeft: "370px",
+            marginLeft: "420px",
             marginTop: "20px",
             padding: "10px 20px",
             cursor: "pointer",
@@ -245,6 +245,14 @@ export default function EditProductPage() {
         </button>
       </form>
       <style jsx>{`
+
+      
+
+    
+        .back:hover {
+        color: red;
+
+     
         @media (max-width: 768px) {
           form {
             width: 100%;

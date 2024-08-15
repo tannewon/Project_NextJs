@@ -43,28 +43,52 @@ const Profile = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        padding: "0 10px", // Add padding to avoid content touching edges on small screens
+        position: "relative", // Set relative position to create a positioning context
       }}
     >
+      <h1
+        style={{
+          width: "200px",
+          margin: "0 0 10px",
+          color: "#333",
+          fontSize: "35px",
+          background: "linear-gradient(to right, red, orange)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          marginBottom: "30px",
+          position: "absolute", // Position absolutely within the relative main container
+          top: "100px",
+          left: "10",
+          zIndex: "1", // Ensure the h1 is above other elements
+        }}
+      >
+        My Profile
+      </h1>
+
       <div
         style={{
           display: "flex",
           flexDirection: "row",
-          width: "80%", // Thu nhỏ chiều rộng tổng thể
-          maxWidth: "1000px", // Thu nhỏ kích thước tối đa
-          height: "70vh", // Thu nhỏ chiều cao
-          backgroundColor: "orange",
+          width: "100%",
+          maxWidth: "1000px",
+          height: "auto", // Make height auto to accommodate content height
+          background: "linear-gradient(to left, orange, red, orange )", // Gradient from left to right
           borderRadius: "8px",
           boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
           overflow: "hidden",
+          flexWrap: "wrap", // Allow wrapping on smaller screens
+          position: "relative", // Ensure that div also respects relative positioning
+          marginTop: "60px", // Adjust this margin to avoid overlapping with h1
         }}
       >
         <div
           style={{
-            flex: 1,
+            flex: "1 1 300px", // Flex-grow, flex-shrink, flex-basis for responsiveness
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            padding: "10px", // Giảm khoảng padding
+            padding: "10px",
           }}
         >
           {user.avatar && (
@@ -72,8 +96,8 @@ const Profile = () => {
               src={user.avatar}
               alt="Avatar"
               style={{
-                width: "80%", // Thu nhỏ kích thước ảnh
                 height: "70%",
+                maxWidth: "300px", // Add max-width to prevent it from getting too large
                 borderRadius: "50%",
                 objectFit: "cover",
               }}
@@ -82,14 +106,15 @@ const Profile = () => {
         </div>
         <form
           style={{
-            flex: 2,
-            padding: "30px", // Giảm khoảng padding
+            flex: "2 1 300px",
+            padding: "30px",
             border: "1px solid #ddd",
             borderRadius: "8px",
             maxWidth: "500px",
             height: "300px",
-            marginTop: "70px",
-            marginRight: "50px",
+            margin: "10px",
+            marginTop: "30px",
+            marginBottom: "30px  ",
           }}
         >
           <div
@@ -97,7 +122,7 @@ const Profile = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "10px", // Khoảng cách giữa tiêu đề và biểu tượng
+              gap: "10px",
             }}
           >
             <h1
@@ -106,24 +131,28 @@ const Profile = () => {
                 fontWeight: "bold",
                 color: "#333",
                 textAlign: "center",
+                fontSize: "24px", // Adjust font size for responsiveness
               }}
             >
               Hi! {user.name}
             </h1>
             <Link href="/profile/edit">
               <CiEdit
-                style={{ width: "30px", height: "30px", color: "blue",marginTop:'10px' }}
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  color: "blue",
+                  marginTop: "10px",
+                }}
               />
             </Link>
           </div>
 
           <div style={{ marginBottom: "10px" }}>
-            {" "}
-            {/* Giảm khoảng cách dưới mỗi ô nhập */}
             <label
               style={{
                 display: "block",
-                fontSize: "18px", // Thu nhỏ kích thước chữ nhãn
+                fontSize: "18px",
                 color: "white",
                 marginBottom: "10px",
                 fontWeight: "bold",
@@ -136,12 +165,11 @@ const Profile = () => {
               value={user.name}
               readOnly
               style={{
-                width: "95%",
-                height:'25px',
-                padding: "8px", // Giảm padding
+                width: "100%",
+                padding: "8px",
                 border: "1px solid #ddd",
                 borderRadius: "4px",
-                fontSize: "14px", // Thu nhỏ kích thước chữ
+                fontSize: "14px",
                 color: "#555",
               }}
             />
@@ -150,7 +178,7 @@ const Profile = () => {
             <label
               style={{
                 display: "block",
-                fontSize: "18px", // Thu nhỏ kích thước chữ nhãn
+                fontSize: "18px",
                 color: "white",
                 marginBottom: "10px",
                 fontWeight: "bold",
@@ -164,29 +192,41 @@ const Profile = () => {
               value={user.email}
               readOnly
               style={{
-                width: "95%",
-                height:'25px',
-                padding: "8px", // Giảm padding
+                width: "100%",
+                padding: "8px",
                 border: "1px solid #ddd",
                 borderRadius: "4px",
-                fontSize: "14px", // Thu nhỏ kích thước chữ
+                fontSize: "14px",
                 color: "#555",
               }}
             />
             <p
               style={{
-                marginBottom: "15px", // Giảm khoảng cách dưới tiêu đề// Thu nhỏ kích thước chữ tiêu đề
+                marginBottom: "15px",
                 color: "#333",
                 textAlign: "center",
                 marginTop: "30px",
               }}
             >
-              {" "}
-              All required user information can be save here.
+              All required user information can be saved here.
             </p>
           </div>
         </form>
       </div>
+      <style jsx>{`
+        @media (max-width: 768px) {
+          main {
+            padding: 0 5px;
+          }
+          div[style*="flex-direction: row"] {
+            flex-direction: column;
+          }
+          div[style*="flex: 1 1 300px"] {
+            flex: 1 1 100%;
+            max-width: 100%;
+          }
+        }
+      `}</style>
     </main>
   );
 };

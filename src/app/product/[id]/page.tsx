@@ -25,6 +25,8 @@ export default function DashboardDetailPage({
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState("red");
   const router = useRouter();
+  const [isHovered, setIsHovered] = useState(false);
+  const [selectedSize, setSelectedSize] = useState("M");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,12 +35,15 @@ export default function DashboardDetailPage({
         setPost(postData);
       } catch (error) {
         console.error("Failed to fetch post data:", error);
+        // Consider setting an error state and showing an error message
       }
     };
 
     fetchData();
   }, [id]);
-
+  const handleSizeChange = (size: string) => {
+    setSelectedSize(size);
+  };
   const handleAddToCart = () => {
     if (post) {
       const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
@@ -47,7 +52,12 @@ export default function DashboardDetailPage({
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        cartItems.push({ ...post, quantity, color: selectedColor });
+        cartItems.push({
+          ...post,
+          quantity,
+          size: selectedSize,
+          color: selectedColor,
+        });
       }
 
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -64,10 +74,9 @@ export default function DashboardDetailPage({
   };
 
   if (!post) {
-    return <div></div>;
+    return <div>Loading...</div>; // Show loading state or message
   }
 
-  // Ensure price values are numbers
   const originalPrice = Number(post.price);
   const promotionPrice = Number(post.promotion);
 
@@ -77,8 +86,8 @@ export default function DashboardDetailPage({
         display: "flex",
         justifyContent: "center",
         padding: "50px",
-        marginTop: "100px",
         backgroundColor: "#f0f0f5",
+        marginTop: "100px",
       }}
     >
       <div
@@ -88,24 +97,29 @@ export default function DashboardDetailPage({
           border: "1px solid #ddd",
           borderRadius: "12px",
           padding: "20px",
-          backgroundColor: "#fff",
+          background: "linear-gradient(to right, orange, white)",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          flexDirection: "row",
+          alignItems: "flex-start",
+          gap: "10px",
+          flexWrap: "wrap",
         }}
       >
         <div
           style={{
-            flex: "1",
-            marginRight: "20px",
             position: "relative",
+            marginRight: "20px",
+            width: "100%",
+            maxWidth: "600px",
           }}
         >
           <span
             style={{
-              padding: "25px",
+              padding: "10px",
               backgroundColor: "red",
               position: "absolute",
-              right: "0px",
-              top: "0px",
+              right: "0",
+              top: "0",
               color: "white",
             }}
           >
@@ -115,30 +129,37 @@ export default function DashboardDetailPage({
             src={post.image}
             alt={post.name}
             width={600}
-            height={500}
+            height={460}
             style={{
               borderRadius: "12px",
+              width: "100%",
+              height: "auto",
             }}
           />
         </div>
         <div
           style={{
             flex: "2",
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
           }}
         >
           <div
             style={{
-              backgroundColor: "#f8f8f8",
-              padding: "20px",
+              background: "linear-gradient(to left, orange, red)",
+              padding: "15px",
               borderRadius: "8px",
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
             <h1
               style={{
-                color: "#333",
-                fontSize: "2em",
-                marginBottom: "10px",
+                fontSize: "45px",
+                background: "linear-gradient(to right, white, #FFCC33)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                marginBottom: "0px",
               }}
             >
               {post.name}
@@ -147,14 +168,13 @@ export default function DashboardDetailPage({
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "5px", // Small gap between the prices
+                gap: "5px",
               }}
             >
               <p
                 style={{
-                  color: "#e74c3c",
+                  color: "white",
                   fontSize: "1.5em",
-                  marginBottom: "10px",
                   textDecoration: "line-through",
                 }}
               >
@@ -165,39 +185,51 @@ export default function DashboardDetailPage({
                   style={{
                     color: "#27ae60",
                     fontSize: "1.5em",
-                    marginBottom: "10px", // Align vertically with the original price
                   }}
                 >
                   ${promotionPrice.toFixed(2)}
                 </p>
               )}
             </div>
-
-            <div>
+            <div
+              style={{
+                margin: "10px 0",
+              }}
+            >
               {[...Array(5)].map((_, index) => (
                 <IoStar
                   key={index}
-                  style={{ margin: "0 2px", color: "#FF9900", width:'20px',height:'20px' }}
+                  style={{
+                    margin: "0 2px",
+                    color: "#FF9900",
+                    width: "20px",
+                    height: "20px",
+                  }}
                 />
               ))}
             </div>
-            <p
-              style={{
-                color: "#555",
-              }}
-            >
+            <p style={{ color: "white", fontSize: "18px" }}>
               {post.description}
             </p>
-
             <div style={{ marginTop: "40px" }}>
-              <label style={{ marginRight: "10px" }}>Quantity:</label>
+              <label
+                style={{
+                  marginRight: "10px",
+                  color: "white",
+                  fontSize: "18px",
+                }}
+              >
+                Quantity:
+              </label>
               <button
                 style={{ width: "30px", height: "30px" }}
                 onClick={() => handleQuantityChange(-1)}
               >
                 -
               </button>
-              <span style={{ margin: "0 10px" }}>{quantity}</span>
+              <span style={{ margin: "0 10px", color: "white" }}>
+                {quantity}
+              </span>
               <button
                 style={{ width: "30px", height: "30px" }}
                 onClick={() => handleQuantityChange(1)}
@@ -205,44 +237,95 @@ export default function DashboardDetailPage({
                 +
               </button>
             </div>
-
-            <div style={{ marginTop: "20px" }}>
-              <label style={{ marginRight: "10px" }}>Color:</label>
-              {["red", "blue", "yellow"].map((color) => (
-                <button
-                  key={color}
-                  onClick={() => handleColorChange(color)}
+            <div
+              style={{
+                display: "flex",
+                gap: "20px",
+                marginTop: "20px",
+                alignItems: "center",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <label
                   style={{
-                    backgroundColor: color,
-                    border:
-                      selectedColor === color ? "2px solid black" : "none",
-                    borderRadius: "50%",
-                    width: "30px",
-                    height: "30px",
-                    margin: "0 5px",
-                    cursor: "pointer",
+                    marginRight: "10px",
+                    color: "white",
+                    fontSize: "18px",
                   }}
-                />
-              ))}
+                >
+                  Size:
+                </label>
+                {["S", "M", "L", "XL"].map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => handleSizeChange(size)}
+                    style={{
+                      border:
+                        selectedSize === size ? "2px solid black" : "none",
+                      borderRadius: "5px",
+                      padding: "5px 10px",
+                      margin: "0 5px",
+                      cursor: "pointer",
+                      backgroundColor:
+                        selectedSize === size ? "gray" : "transparent",
+                      color: selectedSize === size ? "white" : "white",
+                      fontSize: "16px",
+                    }}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <label
+                  style={{
+                    marginRight: "10px",
+                    color: "white",
+                    fontSize: "18px",
+                  }}
+                >
+                  Color:
+                </label>
+                {["green", "blue", "yellow"].map((color) => (
+                  <button
+                    key={color}
+                    onClick={() => handleColorChange(color)}
+                    style={{
+                      backgroundColor: color,
+                      border:
+                        selectedColor === color ? "2px solid black" : "none",
+                      borderRadius: "50%",
+                      width: "30px",
+                      height: "30px",
+                      margin: "0 5px",
+                      cursor: "pointer",
+                    }}
+                  />
+                ))}
+              </div>
             </div>
 
             <div style={{ display: "flex", marginTop: "30px" }}>
               <button
                 onClick={handleAddToCart}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  border: "none",
+                  border: "1px solid white",
                   cursor: "pointer",
-                  marginLeft: "160px",
                   borderRadius: "5px",
-                  backgroundColor: "orange",
+                  backgroundColor: isHovered ? "red" : "orange",
                   padding: "10px 20px",
                   color: "white",
+                  fontSize: "18px",
+                  transition: "background-color 0.3s",
+                  marginBottom: "10px",
                 }}
               >
-                ADD Cart
+                Add Cart{" "}
                 <FaShoppingCart
                   style={{ width: "20px", height: "20px", marginLeft: "10px" }}
                 />
@@ -251,6 +334,78 @@ export default function DashboardDetailPage({
           </div>
         </div>
       </div>
+
+      {/* Media Queries */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          div {
+            padding: 10px;
+          }
+
+          div {
+            flex-direction: column;
+            padding: 10px;
+          }
+
+          div {
+            margin-right: 0;
+            width: 100%;
+            margin-bottom: 10px;
+          }
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+
+          div {
+            flex: 1;
+            padding: 10px;
+          }
+
+          h1 {
+            font-size: 2em;
+            width: auto;
+          }
+
+          div {
+            flex-direction: column;
+          }
+
+          div {
+            margin-top: 20px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          h1 {
+            font-size: 1.5em;
+          }
+
+          div {
+            font-size: 1em;
+          }
+
+          p {
+            font-size: 1em;
+          }
+
+          button {
+            width: 25px;
+            height: 25px;
+          }
+
+          button {
+            width: 25px;
+            height: 25px;
+          }
+
+          button {
+            font-size: 1em;
+            padding: 5px 10px;
+          }
+        }
+      `}</style>
     </div>
   );
 }

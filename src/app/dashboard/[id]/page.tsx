@@ -72,7 +72,7 @@ export default function DashboardDetailPage({
   }
 
   return (
-    <div style={{ padding: "10px 50px 350px", margin: 0 }}>
+    <div style={{ padding: "10px 50px 350px", margin: 0 ,marginTop:'30px'}} >
       <button
         onClick={handleBack}
         style={{
@@ -87,8 +87,9 @@ export default function DashboardDetailPage({
           justifyContent: "center",
           marginBottom: "20px",
         }}
+        className="back"
       >
-        <IoMdArrowBack style={{ width: "20px", height: "20px" }} />
+        <IoMdArrowBack style={{ width: "20px", height: "20px" }} className="back" />
       </button>
       <div style={{ marginTop: "10px" }}>
         <div
@@ -144,7 +145,7 @@ export default function DashboardDetailPage({
           </div>
           <div style={{ flex: "1", padding: "0 20px" }}>{post.name}</div>
           <div style={{ flex: "1", color: "red" }}>{post.price}$</div>
-          <div style={{ flex: "1", padding: "0 10px" }}>{post.promotion}</div>
+          <div style={{ flex: "1", padding: "0 10px" }}>{post.promotion}$</div>
           <div style={{ flex: "2", padding: "0 10px" }}>{post.description}$</div>
           <div
             style={{
@@ -179,6 +180,17 @@ export default function DashboardDetailPage({
           </div>
         </div>
       </div>
+      <style jsx>{`
+
+        .navLink:hover {
+          color: red !important;
+          color: #ff6633;
+        }
+        .back:hover {
+        color: red;
+
+      `}</style>
     </div>
+    
   );
 }

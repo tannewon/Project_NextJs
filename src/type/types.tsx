@@ -6,6 +6,7 @@ export type Product = {
     description: string;
     image: string;
     category: string;
+    
   };
   
   export type FormData = {

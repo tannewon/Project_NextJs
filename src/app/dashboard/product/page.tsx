@@ -47,28 +47,54 @@ const DataComponent = () => {
   }
 
   return (
-    <div style={{ marginLeft:'30px' }}>
+    <div style={{ marginLeft: "40px" }}>
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "20px",
+          position: "relative",
+          marginBottom: "10px",
         }}
       >
-        <Link href="/dashboard/add">
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <FaCirclePlus
-              style={{
-                color: "#0099FF",
-                width: "40px",
-                height: "40px",
-                marginRight: "10px",
-                fontFamily: "roboto", // Thêm khoảng cách giữa icon và chữ
-              }}
-            />
-            ADD Product
-          </div>
-        </Link>
+        <div>
+          <h1
+            style={{
+              position: "absolute",
+              left: "50%",
+              bottom:50,
+              transform: "translateX(-50%)",
+              background: "linear-gradient(to right, red, orange)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Product
+          </h1>
+          <Link href="/dashboard/add">
+            <div style={{ display: "flex", alignItems: "center",marginTop:'100px' }}>
+              <FaCirclePlus
+                style={{
+                  color: "#0099FF", // Màu mặc định của icon
+                  width: "40px",
+                  height: "40px",
+                  marginRight: "10px",
+                  transition: "color 0.3s ease",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "blue")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#0099FF")}
+              />
+              <p
+                style={{
+                  fontSize: "17px",
+                  fontWeight: "bold",
+                  background: "linear-gradient(to right, red, orange)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                ADD Product
+              </p>
+            </div>
+          </Link>
+        </div>
       </div>
       <div
         style={{
@@ -113,11 +139,14 @@ const DataComponent = () => {
                 >
                   <h3
                     style={{
-                      fontSize: "25px",
+                      width: "200px",
                       margin: "0 0 10px",
                       color: "#333",
-                      fontFamily: "roboto",
-                  
+
+                      fontSize: "25px",
+                      background: "linear-gradient(to right, red, orange)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
                     }}
                   >
                     {item.name}
@@ -154,8 +183,8 @@ const DataComponent = () => {
                     style={{
                       color: "#666",
                       marginBottom: "10px",
-                      fontFamily: "roboto",
-                      fontSize:'18px'
+
+                      fontSize: "18px",
                     }}
                   >
                     {item.description}
@@ -199,6 +228,9 @@ const DataComponent = () => {
             text-align: center;
             margin-bottom: 10px;
           }
+        }
+        .icon:hover {
+          color: red; // Màu khi hover
         }
       `}</style>
     </div>

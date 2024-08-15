@@ -5,6 +5,8 @@ import "../styles/global.css";
 import Footer from "@/component/Footer";
 import { ThemeProvider } from "@/component/ThemeProvider";
 
+
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

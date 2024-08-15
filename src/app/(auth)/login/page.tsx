@@ -5,34 +5,34 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { USER_API_URL } from "@/lib/util";
 import { Eye, EyeOff } from "lucide-react";
+import { MdMailOutline } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    if (name === "email") setEmailError(""); // Clear email error when user starts typing
+    if (name === "password") setPasswordError(""); // Clear password error when user starts typing
+  };
+
+  const handleCheckboxChange = () => {
+    setRememberMe(!rememberMe);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newErrors = { email: "", password: "" };
-    let hasErrors = false;
-
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-      hasErrors = true;
-    }
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-      hasErrors = true;
-    }
-    if (hasErrors) {
-      setErrors(newErrors);
+    if (!rememberMe) {
+      setError("You must agree to remember me to log in.");
       return;
     }
 
@@ -51,17 +51,14 @@ const Login = () => {
             router.push("/");
           }
         } else {
-          setErrors({ email: "", password: "Incorrect password" });
+          setPasswordError("Incorrect password.");
         }
       } else {
-        setErrors({ email: "Email not found", password: "" });
+        setEmailError("Email not found.");
       }
     } catch (error) {
       console.error("Login failed", error);
-      setErrors({
-        email: "Login failed. Please try again later.",
-        password: "Login failed. Please try again later.",
-      });
+      setError("An error occurred during login.");
     }
   };
 
@@ -74,152 +71,274 @@ const Login = () => {
   };
 
   return (
-    <main style={{ justifyItems: "center", marginTop: '150px' }}>
-      <div className="container mt-5">
-        <div
-          className="card p-4"
+    <main style={{ justifyItems: "center", marginTop: "150px" }}>
+      <div
+        className="card p-4"
+        style={{
+          border: "2px solid orange",
+          borderRadius: "10px",
+          maxWidth: "500px",
+          margin: "auto",
+        }}
+      >
+        <form
+          onSubmit={handleSubmit}
           style={{
-            border: "1px solid orange",
+            background: "linear-gradient(to right, orange, red, #FF9933)",
+            padding: "40px",
             borderRadius: "10px",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-            maxWidth: "500px",
-            margin: "auto",
           }}
         >
-          <form onSubmit={handleSubmit} style={{ padding: "40px", backgroundColor: '#FF6633', borderRadius: '10px' }}>
-            <h2 style={{ textAlign: "center", color: "black" }}>Login</h2>
-            <div className="mb-3 row">
-              <label htmlFor="staticEmail" className="col-sm-2 col-form-label" style={{ color: 'white', fontWeight: "bold" }}>
-                Email
-              </label>
-              <div className="col-sm-10">
-                <input
-                  name="email"
-                  placeholder="Enter email"
-                  type="email"
-                  className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                  value={formData.email}
-                  onChange={handleChange}
-                  style={{
-                    width: "96%",
-                    height: "40px",
-                    border: "1px solid #ccc",
-                    borderRadius: "5px",
-                    marginTop: "20px",
-                    padding: "0 10px",
-                  }}
-                />
-                {errors.email && (
-                  <div className="invalid-feedback">{errors.email}</div>
-                )}
-              </div>
-            </div>
-            <div className="mb-3 row" style={{ marginTop: "20px" }}>
-              <label htmlFor="inputPassword" className="col-sm-2 col-form-label" style={{ color: 'white', fontWeight: "bold" }}>
-                Password
-              </label>
-              <div className="col-sm-10" style={{ position: "relative" }}>
-                <input
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter password"
-                  className={`form-control ${errors.password ? "is-invalid" : ""}`}
-                  id="inputPassword"
-                  value={formData.password}
-                  onChange={handleChange}
-                  style={{
-                    width: "96%",
-                    height: "40px",
-                    border: "1px solid #ccc",
-                    borderRadius: "5px",
-                    marginTop: "20px",
-                    padding: "0 10px",
-                  }}
-                />
-                <span
-                  onClick={togglePasswordVisibility}
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "10px",
-                    marginTop: "10px",
-                    transform: "translateY(-50%)",
-                    cursor: "pointer",
-                  }}
-                >
-                  {showPassword ? <EyeOff />  :  <Eye />}
-                </span>
-                {errors.password && (
-                  <div className="invalid-feedback">{errors.password}</div>
-                )}
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="btn btn-primary mt-3"
+          {error && (
+            <div
               style={{
-                backgroundColor: "#FF8C00",
-                color: "white",
-                border: "none",
-                padding: "10px 20px",
-                cursor: "pointer",
+                backgroundColor: "#f8d7da",
+                color: "#721c24",
+                padding: "10px",
                 borderRadius: "5px",
-                width: "100%",
-                height: "40px",
-                fontSize: "16px",
-                fontWeight: "bold",
-                marginTop: '40px'
+                marginBottom: "20px",
+                textAlign: "center",
               }}
             >
-              Login
-            </button>
-            <div style={{ textAlign: "center", color: 'white' }}>
-              <p>
-                Don’t have an account?
-                <button
-                  type="button"
-                  onClick={handleRegisterRedirect}
+              {error}
+            </div>
+          )}
+          <div className="mb-3 row">
+            <label
+              htmlFor="staticEmail"
+              className="col-sm-2 col-form-label"
+              style={{ fontWeight: "bold", color: "black" }}
+            >
+              Email
+            </label>
+            <div style={{ position: "relative" }}>
+              <input
+                name="email"
+                placeholder="Enter email"
+                type="email"
+                className="form-control"
+                value={formData.email}
+                onChange={handleChange}
+                style={{
+                  width: "100%",
+                  height: "40px",
+                  border: `1px solid ${emailError ? "red" : "orange"}`,
+                  marginTop: "10px",
+                  borderRadius: "5px",
+                  padding: "0 40px 0 50px",
+                  boxSizing: "border-box",
+                }}
+              />
+              <MdMailOutline
+                style={{
+                  position: "absolute",
+                  top: "60%",
+                  left: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#888",
+                  width: "25px",
+                  height: "25px",
+                }}
+              />
+              {emailError && (
+                <div
                   style={{
-                    fontSize: "17px",
-                    background: "none",
-                    border: "none",
-                    color: "blue",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                    marginTop: '20px'
+                    color: "red",
+                    fontSize: "12px",
+                    position: "absolute",
+                    bottom: "-20px",
+                    left: "0",
                   }}
                 >
-                  Register
-                </button>
-              </p>
+                  {emailError}
+                </div>
+              )}
             </div>
-          </form>
-        </div>
+          </div>
+          <div className="mb-3 row" style={{ marginTop: "20px" }}>
+            <label
+              htmlFor="inputPassword"
+              className="col-sm-2 col-form-label"
+              style={{ fontWeight: "bold", color: "black" }}
+            >
+              Password
+            </label>
+            <div className="col-sm-10" style={{ position: "relative" }}>
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter password"
+                className="form-control"
+                id="inputPassword"
+                value={formData.password}
+                onChange={handleChange}
+                style={{
+                  width: "100%",
+                  height: "40px",
+                  border: `1px solid ${passwordError ? "red" : "orange"}`,
+                  marginTop: "10px",
+                  borderRadius: "5px",
+                  padding: "0 40px 0 50px",
+                  boxSizing: "border-box",
+                }}
+              />
+              <RiLockPasswordLine
+                style={{
+                  position: "absolute",
+                  top: "60%",
+                  left: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#888",
+                  width: "25px",
+                  height: "25px",
+                }}
+              />
+              <span
+                onClick={togglePasswordVisibility}
+                style={{
+                  position: "absolute",
+                  top: "65%",
+                  right: "10px",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </span>
+              {passwordError && (
+                <div
+                  style={{
+                    color: "red",
+                    fontSize: "12px",
+                    position: "absolute",
+                    bottom: "-20px",
+                    left: "0",
+                  }}
+                >
+                  {passwordError}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div
+            style={{
+              position: "relative",
+              textAlign: "center",
+              marginTop: "10px",
+            }}
+          >
+            <div className="mb-3 row" style={{ marginTop: "20px" }}>
+              <div
+                className="col-sm-10 offset-sm-2"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={handleCheckboxChange}
+                  id="rememberMe"
+                  style={{ marginRight: "10px" }}
+                />
+                <label
+                  htmlFor="rememberMe"
+                  style={{ fontSize: "16px", color: "black" }}
+                >
+                  Remember me
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary mt-3"
+            style={{
+              backgroundColor: "#FF8C00",
+              color: "white",
+              border: "1px solid gray",
+              padding: "10px 20px",
+              cursor: "pointer",
+              borderRadius: "5px",
+              width: "100%",
+              height: "40px",
+              fontSize: "16px",
+              fontWeight: "bold",
+              marginTop: "20px",
+            }}
+          >
+            Login
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary mt-3"
+            style={{
+              backgroundColor: "white",
+              border: "1px solid orange",
+              padding: "10px 20px",
+              cursor: "pointer",
+              borderRadius: "5px",
+              width: "100%",
+              height: "40px",
+              fontSize: "16px",
+              fontWeight: "bold",
+              marginTop: "20px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+              color: "black",
+            }}
+          >
+            <FcGoogle size={20} /> Login with Google
+          </button>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "30px",
+            }}
+          >
+            <hr
+              style={{ flex: 1, border: "1px solid #ccc", margin: "0 10px" }}
+            />
+            <span style={{ whiteSpace: "nowrap", color: "black" }}>OR</span>
+            <hr
+              style={{ flex: 1, border: "1px solid #ccc", margin: "0 10px" }}
+            />
+          </div>
+          <p
+            className="mt-3"
+            style={{
+              textAlign: "center",
+              fontSize: "16px",
+              color: "black",
+            }}
+          >
+            Don't have an account?{" "}
+            <button
+              onClick={handleRegisterRedirect}
+              style={{
+                background: "none",
+                border: "none",
+                color: "blue",
+                textDecoration: "underline",
+                cursor: "pointer",
+                fontSize: "15px",
+              }}
+            >
+              Register
+            </button>
+          </p>
+        </form>
       </div>
       <style jsx>{`
         @media (max-width: 600px) {
           .card {
-            padding: 20px !important;
+            width: 90%;
+            margin: auto;
           }
-          .form-control {
-            width: 100% !important;
-          }
-        }
-        @media (max-width: 480px) {
-          .card {
-            padding: 10px !important;
-          }
-          .form-control {
-            width: 100% !important;
-          }
-        }
-        .is-invalid {
-          border-color: red !important;
-        }
-        .invalid-feedback {
-          color: red;
-          font-size: 0.875rem;
-          margin-top: 0.25rem;
         }
       `}</style>
     </main>

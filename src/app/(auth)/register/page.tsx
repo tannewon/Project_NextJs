@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { USER_API_URL } from "@/lib/util";
 import { Eye, EyeOff } from "lucide-react";
+import { IoPersonOutline } from "react-icons/io5";
+import { MdMailOutline } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +22,9 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
@@ -84,25 +89,33 @@ const Register = () => {
   };
 
   return (
-    <main style={{ justifyContent: "center", marginTop: '150px' }}>
-      <div className="container">
-        <div
-          className="card"
+    <main style={{ justifyItems: "center", marginTop: "150px" }}>
+      <div
+        className="card p-4"
+        style={{
+          border: "2px solid orange",
+          borderRadius: "10px",
+          maxWidth: "500px",
+          margin: "auto",
+        }}
+      >
+        <form
+          onSubmit={handleSubmit}
           style={{
-            border: "1px solid orange",
+            background: "linear-gradient(to right, orange, red, #FF9933)",
+            padding: "40px",
             borderRadius: "10px",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-            width: "100%",
-            maxWidth: "500px",
-            margin: "auto",
           }}
         >
-          <form onSubmit={handleSubmit} style={{ padding: "40px", backgroundColor: '#FF6633', borderRadius: '10px' }}>
-            <h2 style={{ textAlign: "center", color: "black" }}>Register</h2>
-            <div className="mb-3">
-              <label htmlFor="inputName" className="form-label" style={{ color: 'white', fontWeight: "bold" }}>
-                Name
-              </label>
+          <div className="mb-3 row">
+            <label
+              htmlFor="inputName"
+              className="col-sm-2 col-form-label"
+              style={{ fontWeight: "bold", color: "black" }}
+            >
+              Name
+            </label>
+            <div style={{ position: "relative" }}>
               <input
                 name="name"
                 type="text"
@@ -112,19 +125,50 @@ const Register = () => {
                 value={formData.name}
                 onChange={handleChange}
                 style={{
-                  width: "96%",
+                  width: "100%",
                   height: "40px",
-                  border: "1px solid #ccc",
+                  border: errors.name ? "2px solid red" : "1px solid orange",
                   borderRadius: "5px",
-                  padding: "0 10px",
-                  marginTop: "20px",
+                  padding: "0 50px",
+                  boxSizing: "border-box",
+                  marginTop: "10px",
                 }}
               />
+              <IoPersonOutline
+                style={{
+                  position: "absolute",
+                  top: "60%",
+                  left: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#888",
+                  width: "25px",
+                  height: "25px",
+                }}
+              />
+              {errors.name && (
+                <div
+                  style={{
+                    color: "red",
+                    fontSize: "12px",
+                    position: "absolute",
+                    bottom: "-20px",
+                    left: "0",
+                  }}
+                >
+                  {errors.name}
+                </div>
+              )}
             </div>
-            <div className="mb-3" style={{ marginTop: "20px" }}>
-              <label htmlFor="staticEmail" className="form-label" style={{ color: 'white', fontWeight: "bold" }}>
-                Email
-              </label>
+          </div>
+          <div className="mb-3 row" style={{ marginTop: "20px" }}>
+            <label
+              htmlFor="staticEmail"
+              className="col-sm-2 col-form-label"
+              style={{ fontWeight: "bold", color: "black" }}
+            >
+              Email
+            </label>
+            <div style={{ position: "relative" }}>
               <input
                 name="email"
                 placeholder="Enter email"
@@ -133,19 +177,50 @@ const Register = () => {
                 value={formData.email}
                 onChange={handleChange}
                 style={{
-                  width: "96%",
+                  width: "100%",
                   height: "40px",
-                  border: "1px solid #ccc",
+                  border: errors.email ? "2px solid red" : "1px solid orange",
                   borderRadius: "5px",
-                  padding: "0 10px",
-                  marginTop: "20px",
+                  padding: "0 50px",
+                  boxSizing: "border-box",
+                  marginTop: "10px",
                 }}
               />
+              <MdMailOutline
+                style={{
+                  position: "absolute",
+                  top: "60%",
+                  left: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#888",
+                  width: "25px",
+                  height: "25px",
+                }}
+              />
+              {errors.email && (
+                <div
+                  style={{
+                    color: "red",
+                    fontSize: "12px",
+                    position: "absolute",
+                    bottom: "-20px",
+                    left: "0",
+                  }}
+                >
+                  {errors.email}
+                </div>
+              )}
             </div>
-            <div className="mb-3" style={{ marginTop: "20px", position: "relative" }}>
-              <label htmlFor="inputPassword" className="form-label" style={{ color: 'white', fontWeight: "bold" }}>
-                Password
-              </label>
+          </div>
+          <div className="mb-3 row" style={{ marginTop: "20px" }}>
+            <label
+              htmlFor="inputPassword"
+              className="col-sm-2 col-form-label"
+              style={{ fontWeight: "bold", color: "black" }}
+            >
+              Password
+            </label>
+            <div style={{ position: "relative" }}>
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
@@ -155,131 +230,162 @@ const Register = () => {
                 value={formData.password}
                 onChange={handleChange}
                 style={{
-                  width: "96%",
+                  width: "100%",
                   height: "40px",
-                  border: "1px solid #ccc",
+                  border: errors.password ? "2px solid red" : "1px solid orange",
                   borderRadius: "5px",
-                  padding: "0 10px",
-                  marginTop: "20px",
+                  padding: "0 50px",
+                  boxSizing: "border-box",
+                  marginTop: "10px",
+                }}
+              />
+              <RiLockPasswordLine
+                style={{
+                  position: "absolute",
+                  top: "60%",
+                  left: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#888",
+                  width: "25px",
+                  height: "25px",
                 }}
               />
               <span
                 onClick={togglePasswordVisibility}
                 style={{
-                  position: 'absolute',
-                  top: "77%",
+                  position: "absolute",
+                  top: "60%",
                   right: "10px",
                   transform: "translateY(-50%)",
                   cursor: "pointer",
                 }}
               >
-                {showPassword ?  <EyeOff />  :  <Eye />}
+                {showPassword ? <EyeOff /> : <Eye />}
               </span>
+              {errors.password && (
+                <div
+                  style={{
+                    color: "red",
+                    fontSize: "12px",
+                    position: "absolute",
+                    bottom: "-20px",
+                    left: "0",
+                  }}
+                >
+                  {errors.password}
+                </div>
+              )}
             </div>
-            <div className="mb-3" style={{ marginTop: "20px", position: "relative" }}>
-              <label htmlFor="inputConfirmPassword" className="form-label" style={{ color: 'white', fontWeight: "bold" }}>
-                Confirm Password
-              </label>
+          </div>
+          <div className="mb-3 row" style={{ marginTop: "20px" }}>
+            <label
+              htmlFor="inputConfirmPassword"
+              className="col-sm-2 col-form-label"
+              style={{ fontWeight: "bold", color: "black" }}
+            >
+              Confirm Password
+            </label>
+            <div style={{ position: "relative" }}>
               <input
                 name="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
-                placeholder="Enter confirm password"
+                placeholder="Confirm password"
                 className="form-control"
                 id="inputConfirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 style={{
-                  width: "96%",
+                  width: "100%",
                   height: "40px",
-                  border: "1px solid #ccc",
+                  border: errors.confirmPassword
+                    ? "2px solid red"
+                    : "1px solid orange",
                   borderRadius: "5px",
-                  padding: "0 10px",
-                  marginTop: "20px",
+                  padding: "0 50px",
+                  boxSizing: "border-box",
+                  marginTop: "10px",
+                }}
+              />
+              <RiLockPasswordLine
+                style={{
+                  position: "absolute",
+                  top: "60%",
+                  left: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#888",
+                  width: "25px",
+                  height: "25px",
                 }}
               />
               <span
                 onClick={toggleConfirmPasswordVisibility}
                 style={{
                   position: "absolute",
-                  top: "77%",
+                  top: "60%",
                   right: "10px",
                   transform: "translateY(-50%)",
                   cursor: "pointer",
                 }}
               >
-                {showConfirmPassword ?   <EyeOff />  :  <Eye />}
+                {showConfirmPassword ? <EyeOff /> : <Eye />}
               </span>
-            </div>
-            {Object.keys(errors).length > 0 && (
-              <div style={{ color: "red", marginBottom: "20px" }}>
-                {Object.values(errors).map((error, index) => (
-                  <p key={index}>{error}</p>
-                ))}
-              </div>
-            )}
-            <button
-              type="submit"
-              className="btn btn-primary mt-3"
-              style={{
-                backgroundColor: "#FF8C00",
-                color: "white",
-                border: "none",
-                padding: "10px 20px",
-                cursor: "pointer",
-                borderRadius: "5px",
-                marginTop: "40px",
-                width: "100%",
-                height: "40px",
-                fontSize: "16px",
-                fontWeight: "bold",
-              }}
-            >
-              Register
-            </button>
-            <div style={{ marginTop: "20px", textAlign: "center", color: 'white' }}>
-              <p>
-                Already have an account?
-                <button
-                  type="button"
-                  onClick={handleLoginRedirect}
+              {errors.confirmPassword && (
+                <div
                   style={{
-                    background: "none",
-                    border: "none",
-                    color: "blue",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                    fontSize: "16px",
+                    color: "red",
+                    fontSize: "12px",
+                    position: "absolute",
+                    bottom: "-20px",
+                    left: "0",
                   }}
                 >
-                  Login
-                </button>{" "}
-              </p>
+                  {errors.confirmPassword}
+                </div>
+              )}
             </div>
-          </form>
-        </div>
+          </div>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            style={{
+              width: "100%",
+              marginTop: "30px",
+              height: "40px",
+              backgroundColor: "orange",
+              border: "1px solid gray",
+              fontWeight:"bold",
+              color:'white',
+              borderRadius:'5px',
+            fontSize:'15px'
+            }}
+          >
+            Register
+          </button>
+          <p
+            className="mt-3"
+            style={{
+              textAlign: "center",
+              fontSize: "16px",
+              color: "black",
+            }}
+          >
+            Already have an account?{" "}
+            <button
+              onClick={handleLoginRedirect}
+              style={{
+                background: "none",
+                border: "none",
+                color: "blue",
+                textDecoration: "underline",
+                cursor: "pointer",
+                fontSize: "15px",
+              }}
+            >
+              Login
+            </button>
+          </p>
+        </form>
       </div>
-      <style jsx>{`
-        @media (max-width: 600px) {
-          .card {
-            padding: 20px !important;
-          }
-          .form-control,
-          .form-select,
-          .btn {
-            width: 100% !important;
-          }
-        }
-        @media (max-width: 480px) {
-          .card {
-            padding: 10px !important;
-          }
-          .form-control,
-          .form-select,
-          .btn {
-            width: 100% !important;
-          }
-        }
-      `}</style>
     </main>
   );
 };

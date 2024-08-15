@@ -305,22 +305,51 @@ const ChartComponent: React.FC = () => {
   ];
 
   return (
-    
-    <div style={{ marginLeft:'30px' }}>
+    <div style={{ marginLeft: "40px",marginTop:'60px' }}>
       <div>
-        <h1 style={{ textAlign:'center',color:'orange' }}>Chart</h1>
+        <h1
+          style={{
+            textAlign: "center",
+            color: "orange",
+            background: "linear-gradient(to right, red, orange)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Chart
+        </h1>
         <div id="chartOne" className="-ml-5">
-          <h2 className="text-xl font-bold mb-4">Line Chart</h2>
+          <h2
+            className="text-xl font-bold mb-4 "
+            style={{
+              width: "150px",
+              background: "linear-gradient(to right, red, orange)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Line Chart
+          </h2>
           <ReactApexChart
             options={lineChartOptions}
             series={lineChartSeries}
             type="line"
             height={350}
             width={"100%"}
-          />  
+          />
         </div>
         <div id="chartTwo" className="-ml-5 mt-8">
-          <h2 className="text-xl font-bold mb-4">Bar Chart</h2>
+          <h2
+            className="text-xl font-bold mb-4"
+            style={{
+              width: "150px",
+              background: "linear-gradient(to right, red, orange)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Bar Chart
+          </h2>
           <ReactApexChart
             options={barChartOptions}
             series={barChartSeries}
