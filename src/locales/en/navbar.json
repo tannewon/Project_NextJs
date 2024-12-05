@@ -1,0 +1,12 @@
+{
+    "home":" Home",
+    "product":"Product",
+    "management":"Management",
+    "profile":"Profile",
+    "favorite":"Favorite",
+    "login":"Login",
+    "register":"Register",
+    "logout":"Logout",
+    "language":"English"
+    
+ }

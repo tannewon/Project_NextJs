@@ -16,7 +16,8 @@ import { PRODUCT_API_URL } from "@/lib/util";
 import { FcLike } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { IoStar } from "react-icons/io5";
-
+import { useTranslation } from "react-i18next";
+import "@/i18n/i18n";
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -26,12 +27,12 @@ const fetchData = async () => {
   return res.json();
 };
 const images = [nen1, nen2]; // Danh sách các ảnh
-
 const DataComponent = () => {
   const [data, setData] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
+  const { t } = useTranslation("home");
 
   useEffect(() => {
     fetchData()
@@ -44,7 +45,6 @@ const DataComponent = () => {
         setLoading(false);
       });
   }, []);
-  
 
   const handleAddToFavorites = (item: Product) => {
     const savedProductIds = JSON.parse(
@@ -71,30 +71,31 @@ const DataComponent = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+ 
 
   return (
     <div style={{}}>
-      <Link href="/product">
-        <h1
-          className="text"
-          style={{
-            color: "white",
-            width: "fit-content",
-            margin: "0px auto",
-            borderRadius: "8px",
-            textAlign: "center",
-            marginTop: "50px",
-            marginBottom: "20px",
+      <h1
+        className="text"
+        style={{
+          color: "white",
+          width: "fit-content",
+          margin: "0px auto",
+          borderRadius: "8px",
+          textAlign: "center",
+          marginTop: "50px",
+          marginBottom: "20px",
 
-            background: "linear-gradient(to right, orange, red, gray)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            fontSize: "40px",
-          }}
-        >
-          All Product
-        </h1>
-      </Link>
+          background: "linear-gradient(to right, orange, red, gray)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          fontSize: "40px",
+          textDecoration: "none",
+        }}
+      >
+        <Link href="/product"> {t('all product')} </Link>
+      </h1>
+
       <div
         style={{
           display: "grid",
@@ -212,11 +213,35 @@ const DataComponent = () => {
             </div>
           </div>
         ))}
+        <style jsx>{`
+          @media (max-width: 1200px) {
+            div[style*="grid-template-columns: repeat(4, 1fr)"] {
+              grid-template-columns: repeat(3, 1fr) !important;
+            }
+          }
+
+          @media (max-width: 900px) {
+            div[style*="grid-template-columns: repeat(4, 1fr)"] {
+              grid-template-columns: repeat(2, 1fr) !important;
+            }
+          }
+
+          @media (max-width: 600px) {
+            div[style*="grid-template-columns: repeat(4, 1fr)"] {
+              grid-template-columns: 1fr !important;
+            }
+            h1 {
+              padding: 10px 20px !important;
+              margin: 30px auto !important;
+            }
+          }
+        `}</style>
       </div>
     </div>
   );
 };
 export default function Home() {
+  const { t } = useTranslation('home');
   return (
     <div>
       {/* Phần ảnh chính với chữ chạy */}
@@ -289,7 +314,7 @@ export default function Home() {
               margin: 0,
             }}
           >
-            Shoes with Shop www.com
+            {t('shoes_h')}
           </h1>
           <p
             style={{
@@ -311,12 +336,10 @@ export default function Home() {
             }}
           >
             <h4>
-              The Evolution of Sneakers support, and durability. Brands like
-              Converse
+            {t('text1')}
             </h4>
             <h4>
-              Sneakers in the Fashion Industry support, and durability. Brands
-              like Converse
+            {t('text2')}
             </h4>
           </div>
         </div>
@@ -342,7 +365,7 @@ export default function Home() {
             marginBottom: "2rem", // Thay đổi từ px sang rem
           }}
         >
-          Sports Shoes
+          {t('sport shoes')}
         </h1>
         <div
           style={{
@@ -361,14 +384,18 @@ export default function Home() {
                 width: "100%", // Thay đổi từ px sang phần trăm
                 height: "auto", // Thay đổi từ px sang auto
                 cursor: "pointer",
-                margin: "10px"
+                margin: "10px",
               }}
             >
               <Image
                 src={anh5}
                 alt="Shoes Sport"
                 objectFit="cover"
-                style={{ borderRadius: "10px", width:'330px',height:'400px' }}
+                style={{
+                  borderRadius: "10px",
+                  width: "330px",
+                  height: "400px",
+                }}
               />
               <div
                 style={{
@@ -383,7 +410,7 @@ export default function Home() {
                 }}
                 className="text"
               >
-                Shoes Sport
+                {t('shoes sport')}
               </div>
             </div>
           </Link>
@@ -400,9 +427,13 @@ export default function Home() {
             >
               <Image
                 src={anh6}
-                alt="Shoes Casual"                                          
+                alt="Shoes Casual"
                 objectFit="cover"
-                style={{ borderRadius: "10px",width:'330px',height:'400px' }}
+                style={{
+                  borderRadius: "10px",
+                  width: "330px",
+                  height: "400px",
+                }}
               />
               <div
                 style={{
@@ -417,7 +448,7 @@ export default function Home() {
                 }}
                 className="text"
               >
-                Shoes Casual
+                {t('shoes casual')}
               </div>
             </div>
           </Link>
@@ -439,11 +470,9 @@ export default function Home() {
               color: "white",
             }}
           >
-            <h1>The Evolution of Sneakers</h1>
+            <h1>{t('title1')}</h1>
             <p>
-              The journey of sneakers from athletic wear to everyday fashion
-              essentials is a fascinating one. Originally designed for sports
-              and physical activities
+            {t('title2')}
             </p>
           </div>
           <div
@@ -455,11 +484,9 @@ export default function Home() {
               color: "white",
             }}
           >
-            <h1>The Evolution of Sneakers</h1>
+            <h1>{t('title3')}</h1>
             <p>
-              The journey of sneakers from athletic wear to everyday fashion
-              essentials is a fascinating one. Originally designed for sports
-              and physical activities
+            {t('title4')}
             </p>
           </div>
         </div>
@@ -545,6 +572,7 @@ export default function Home() {
             0.5
           ); /* Màu xanh đậm hơn khi nhấn */
         }
+
         @keyframes slide {
           0% {
             transform: translateX(0);
@@ -597,6 +625,8 @@ export default function Home() {
             width: 100%;
             height: auto;
             margin: 10px 0;
+            display: flex;
+            flex-direction: column; /* Sắp xếp các mục trong giỏ hàng theo cột */
           }
         }
 

@@ -1,10 +1,10 @@
 // RootLayout.js
 import Navbar from "@/component/Navbar";
 import { Inter } from "next/font/google";
-import "../styles/global.css";
+// import "../styles/global.css";
 import Footer from "@/component/Footer";
 import { ThemeProvider } from "@/component/ThemeProvider";
-
+// import '../i18n/i18n';
 
 
 const inter = Inter({ subsets: ["latin"] });

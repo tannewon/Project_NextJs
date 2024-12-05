@@ -79,17 +79,17 @@ const EditProfile = () => {
         backgroundColor: "#f4f4f9",
         minHeight: "100vh",
         marginTop: "100px",
-        boxSizing: "border-box",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <div
         style={{
           display: "flex",
           justifyContent: "center",
-          flexDirection: "column",
           alignItems: "center",
-          padding: "0 20px",
-          boxSizing: "border-box",
+          width: "100%",
         }}
       >
         <div
@@ -100,11 +100,12 @@ const EditProfile = () => {
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             maxWidth: "700px",
             width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            position: "relative",
             boxSizing: "border-box",
+            position: "relative",
+            display: "flex", // Căn giữa theo chiều ngang
+            justifyContent: "center", // Căn giữa theo chiều ngang
+            alignItems: "center", // Căn giữa theo chiều dọc
+            flexDirection: "column", // Giúp các phần tử bên trong div xếp theo cột
           }}
         >
           <IoMdArrowBack
@@ -112,10 +113,10 @@ const EditProfile = () => {
             style={{
               backgroundColor: "#EEEEEE",
               color: "black",
-              padding: "13px 13px",
+              padding: "10px",
               borderRadius: "50%",
               cursor: "pointer",
-              fontSize: "16px",
+              fontSize: "20px",
               position: "absolute",
               top: "20px",
               left: "20px",
@@ -134,7 +135,13 @@ const EditProfile = () => {
           </h2>
           <form
             onSubmit={handleSubmit}
-            style={{ width: "100%", maxWidth: "500px" }}
+            style={{
+              width: "100%",
+              maxWidth: "500px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
             <div style={{ marginBottom: "20px", width: "100%" }}>
               <label
@@ -155,6 +162,7 @@ const EditProfile = () => {
                   marginTop: "8px",
                   borderRadius: "4px",
                   border: "1px solid #ddd",
+                  boxSizing: "border-box",
                 }}
               />
             </div>
@@ -178,63 +186,66 @@ const EditProfile = () => {
                   marginTop: "8px",
                   borderRadius: "4px",
                   border: "1px solid #ddd",
+                  boxSizing: "border-box",
                 }}
               />
             </div>
+            <div
+              {...getRootProps()}
+              style={{
+                marginTop: "20px",
+                border: "2px dashed #ddd",
+                padding: "20px",
+                borderRadius: "8px",
+                cursor: "pointer",
+                textAlign: "center",
+                width: "100%",
+                boxSizing: "border-box",
+              }}
+            >
+              <input {...getInputProps()} />
+              <p style={{ margin: 0 }}>Upload avatar here</p>
+              {avatarFile && (
+                <div style={{ marginTop: "10px" }}>
+                  <strong>Selected file:</strong> {avatarFile.name}
+                </div>
+              )}
+              {avatarPreview && (
+                <div style={{ marginTop: "10px" }}>
+                  <img
+                    src={avatarPreview}
+                    alt="Avatar Preview"
+                    style={{
+                      maxWidth: "200px",
+                      height: "auto",
+                      objectFit: "cover",
+                      borderRadius: "50%",
+                      marginTop: "10px",
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+            <button
+              type="submit"
+              style={{
+                padding: "10px 20px",
+                backgroundColor: "#28a745",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                marginTop: "30px",
+                width: "50%",
+                maxWidth: "200px",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              Save
+            </button>
           </form>
-          <div
-            {...getRootProps()}
-            style={{
-              marginTop: "20px",
-              border: "2px dashed #ddd",
-              padding: "20px",
-              borderRadius: "8px",
-              cursor: "pointer",
-              textAlign: "center",
-              width: "80%",
-              boxSizing: "border-box",
-            }}
-          >
-            <input {...getInputProps()} />
-            <p style={{ margin: 0 }}>Upload avatar here</p>
-            {avatarFile && (
-              <div style={{ marginTop: "10px" }}>
-                <strong>Selected file:</strong> {avatarFile.name}
-              </div>
-            )}
-            {avatarPreview && (
-              <div style={{ marginTop: "10px" }}>
-                <img
-                  src={avatarPreview}
-                  alt="Avatar Preview"
-                  style={{
-                    // width: "50%",
-                    maxWidth: "200px",
-                    height: "auto",
-                    objectFit: "cover",
-                    borderRadius: "50%",
-                    marginTop: "10px",
-                  }}
-                />
-              </div>
-            )}
-          </div>
-          <button
-            type="submit"
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#28a745",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              marginTop: "30px",
-              width: "20%",
-              marginLeft:'400px'
-            }}
-          >
-            Save
-          </button>
         </div>
       </div>
     </main>

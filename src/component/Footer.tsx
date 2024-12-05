@@ -8,10 +8,14 @@ import {
 } from "react-icons/fa"; // Import các icon từ react-icons
 import Image from "next/image";
 import logo from "../../public/logoadmin.png"; // Import logo
+import { useTranslation } from "react-i18next";
+import'@/i18n/i18n';
 
 const Footer = () => {
   const pathname = usePathname();
   const isDashboard = pathname.includes("dashboard");
+  const { t } = useTranslation("footer");
+
 
   if (isDashboard) {
     return null;
@@ -40,7 +44,7 @@ const Footer = () => {
             </div>
             <div style={{ textAlign: "center" }}>
               <p style={{ color: "#d0d0d0" }}>
-                &copy; 2024 Your Company. All rights reserved.
+                &copy; {t('2024')}
               </p>
               <div style={{ marginTop: "10px" }}>
                 <a
@@ -72,7 +76,7 @@ const Footer = () => {
           </div>
           <div style={{ flex: "1" }}>
             <h3 style={{ fontSize: "18px", fontWeight: "bold", color: "#fff" }}>
-              Quick Links
+            {t('quick Links')}
             </h3>
             <ul style={{ marginTop: "10px", listStyle: "none", padding: "0" }}>
               <li>
@@ -85,7 +89,7 @@ const Footer = () => {
                     display: "block",
                   }}
                 >
-                  Home
+            {t('home')}  
                 </a>
               </li>
               <li>
@@ -98,7 +102,7 @@ const Footer = () => {
                     display: "block",
                   }}
                 >
-                  Product
+                  {t('product')}
                 </a>
               </li>
               <li>
@@ -111,27 +115,14 @@ const Footer = () => {
                     display: "block",
                   }}
                 >
-                  Management
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  style={{
-                    color: "#fff",
-                    textDecoration: "none",
-                    padding: "5px 0",
-                    display: "block",
-                  }}
-                >
-                  Contact
+                  {t('management')}
                 </a>
               </li>
             </ul>
           </div>
           <div style={{ flex: "1" }}>
             <h3 style={{ fontSize: "18px", fontWeight: "bold", color: "#fff" }}>
-              Contact Us
+            {t('contact us')}
             </h3>
             <ul style={{ marginTop: "10px", listStyle: "none", padding: "0" }}>
               <li style={{ color: "white" }}>101b le huu trac, phuoc my</li>

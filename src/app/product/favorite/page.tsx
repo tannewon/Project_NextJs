@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { PRODUCT_API_URL } from "@/lib/util";
-import { MdDeleteForever, MdStar } from "react-icons/md";
+import { MdDeleteForever } from "react-icons/md";
 import { FaRegImage } from "react-icons/fa";
 
 async function fetchProduct(id: string): Promise<Product> {
@@ -101,37 +101,135 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="favorites-container">
-      <h1 className="favorites-title">
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        padding: "20px",
+        marginTop: "100px",
+        marginBottom: "50px",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "28px",
+          color: "#333",
+          background: "linear-gradient(to right, red, orange)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          marginBottom: "20px",
+          textAlign: "center",
+        }}
+      >
         Your favorite products
       </h1>
-      <table className="favorites-table">
+      <table
+        style={{
+          borderCollapse: "collapse",
+          width: "80%",
+          backgroundColor: "#fff",
+          borderRadius: "12px",
+          overflow: "hidden",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        }}
+      >
         <thead>
           <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Action</th>
+            <th
+              style={{
+                padding: "12px",
+                textAlign: "left",
+                backgroundColor: "#ff8c00",
+                color: "white",
+              }}
+            >
+              Image
+            </th>
+            <th
+              style={{
+                padding: "12px",
+                textAlign: "left",
+                backgroundColor: "#ff8c00",
+                color: "white",
+              }}
+            >
+              Name
+            </th>
+            <th
+              style={{
+                padding: "12px",
+                textAlign: "left",
+                backgroundColor: "#ff8c00",
+                color: "white",
+              }}
+            >
+              Description
+            </th>
+            <th
+              style={{
+                padding: "12px",
+                textAlign: "left",
+                backgroundColor: "#ff8c00",
+                color: "white",
+              }}
+            >
+              Price
+            </th>
+            <th
+              style={{
+                padding: "12px",
+                textAlign: "left",
+                backgroundColor: "#ff8c00",
+                color: "white",
+              }}
+            >
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr key={product.id}>
+            <tr key={product.id} style={{ borderBottom: "1px solid #ddd" }}>
               <td>
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="product-image"
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    borderRadius: "50px",
+                    objectFit: "cover",
+                  }}
                 />
               </td>
-              <td>{product.name}</td>
-              <td>{product.description}</td>
-              <td>{product.price}$</td>
+              <td
+                style={{
+                  color: "#888",
+                }}
+              >
+                {product.name}
+              </td>
+              <td style={{
+                  color: "#888",
+                }}>{product.description}</td>
+              <td style={{
+                  color: "red",
+                }}>{product.price}$</td>
               <td>
                 <button
                   onClick={() => handleRemoveFavorite(product.id)}
-                  className="delete-button"
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: "0",
+                    color: "red",
+                    fontSize: "24px",
+                  }}
+                  onMouseOver={(e) => (e.currentTarget.style.color = "#ff4d4d")}
+                  onMouseOut={(e) => (e.currentTarget.style.color = "red")}
                 >
                   <MdDeleteForever />
                 </button>
@@ -140,81 +238,7 @@ export default function FavoritesPage() {
           ))}
         </tbody>
       </table>
-
       <style jsx>{`
-
-        .favorites-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
-          padding: 20px;
-          margin-top: 100px;
-        }
-        .favorites-title {
-          font-size: 28px;
-          color: #333;
-          background: linear-gradient(to right, red, orange);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          margin-bottom: 20px;
-          text-align: center;
-        }
-        .favorites-table {
-          border-collapse: collapse;
-          width: 80%;
-          background-color: #fff;
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .favorites-table th,
-        .favorites-table td {
-          padding: 12px;
-          text-align: left;
-        }
-        .favorites-table th {
-          background-color: #ff8c00;
-          color: white;
-        }
-        .favorites-table tr {
-          border-bottom: 1px solid #ddd;
-        }
-        .favorites-table img.product-image {
-          width: 80px;
-          height: 80px;
-          border-radius:50px;
-          object-fit: cover;
-        }
-        .favorites-table button {
-          background: none;
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          color: red;
-          font-size: 24px;
-        }
-        .favorites-table button:hover {
-          color: #ff4d4d;
-        }
-        .favorites-table td {
-          position: relative;
-        }
-        .favorites-table td::after {
-          content: "";
-          display: block;
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 2px;
-          background: linear-gradient(to right, #ff8c00, #ff4500);
-          transform: scaleX(0);
-          transition: transform 0.3s ease;
-        }
-        .favorites-table td:hover::after {
-          transform: scaleX(1);
-        }
         @media (max-width: 480px) {
           .favorites-container {
             padding: 10px;

@@ -1,21 +1,33 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
+
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-import { FaSearch } from "react-icons/fa";
+import { useRouter, usePathname } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { FaSearch, FaBars, FaTimes } from "react-icons/fa"; // Gộp chung các icon
 import { ModeToggle } from "./ModeToggle";
-import logoa from "../../public/logoadmin.png";
-import { usePathname } from "next/navigation";
 import { CartPage } from "../component/cartShopping";
+import logoa from "../../public/logoadmin.png";
+import { MdGTranslate } from "react-icons/md";
+import "@/i18n/i18n";
+import { useTranslation } from "react-i18next";
+import { locales } from "@/i18n/i18n";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showTranslation, setShowTranslation] = useState(false);
   const [userAvatar, setUserAvatar] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { i18n } = useTranslation();
+  const currentLanguage = locales[i18n.language as keyof typeof locales];
+  const { t } = useTranslation("navbar");
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+
   const router = useRouter();
   const pathname = usePathname();
   const isDashboard = pathname.includes("dashboard");
@@ -30,9 +42,9 @@ const Navbar = () => {
           setIsAdmin(user.role === "admin");
           setUserAvatar(
             user.role === "admin"
-              ? "https://example.com/admin-avatar.jpg" // Replace with actual admin avatar URL
+              ? "https://example.com/admin-avatar.jpg" // Đổi lại thành URL thực tế
               : user.avatar ||
-                  "https://res.cloudinary.com/dyfs9b4uj/image/upload/v1721632594/bo791ggfbtugthfb48pn.jpg" // Use user.avatar if available
+                  "https://res.cloudinary.com/dyfs9b4uj/image/upload/v1721632594/bo791ggfbtugthfb48pn.jpg"
           );
         } catch (error) {
           console.error("Error parsing user cookie:", error);
@@ -53,13 +65,10 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    // Clear user data
-    localStorage.removeItem("user");
-    localStorage.removeItem("productIds");
-    localStorage.removeItem("products");
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("cartItems");
-
+    // Xóa thông tin người dùng
+    ["user", "productIds", "products", "currentUser", "cartItems"].forEach(
+      (item) => localStorage.removeItem(item)
+    );
     Cookies.remove("user");
     setIsLoggedIn(false);
     setUserAvatar(null);
@@ -69,115 +78,118 @@ const Navbar = () => {
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (searchQuery.trim() !== "") {
+    if (searchQuery.trim()) {
       router.push(`/product?search=${encodeURIComponent(searchQuery)}`);
     }
   };
 
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
+  const toggleDropdown = () => setShowDropdown(!showDropdown);
+  const toggleTranslation = () => setShowTranslation(!showTranslation);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const changeLanguage = (lng: "en" | "vi") => {
+    i18n.changeLanguage(lng);
   };
 
-  const handleLinkClick = () => {
-    setShowDropdown(false);
-  };
-
-  if (isDashboard) {
-    return null;
-  }
+  if (isDashboard) return null;
 
   return (
-    <header
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1000,
-        display: "flex",
-        flexDirection: "row",
-        background: "linear-gradient(to right, orange, #FF4040, orange)",
-        color: "white",
-        width: "100%",
-        height: "90px",
-        justifyContent: "space-between",
-        padding: "0 20px",
-        boxSizing: "border-box",
-      }}
-    >
-      <div>
+    <header>
+      <div className="logo">
         <Image src={logoa} alt="Home" width={100} height={70} />
       </div>
-      <div
-        className="navLinks"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          flexWrap: "wrap",
-          marginRight: "100px",
-          gap: "30px",
-        }}
-      >
-        <Link href="/" passHref>
-          <p
-            className="navLink"
-            style={{
-              color: "white",
-              fontWeight: "bold",
 
-              fontSize: "17px",
-              margin: "0 15px",
-            }}
-          >
-            Home
-          </p>
-        </Link>
-        <Link href="/product" passHref>
-          <p
-            className="navLink"
-            style={{
-              color: "white",
-              fontWeight: "bold",
+      <div className="navLinks">
+        <nav style={{ marginRight: "50px" }}>
+          <div className="menu-icon" onClick={toggleMenu}>
+            {isMenuOpen ? <FaTimes size={20} /> : <FaBars size={30} />}
+          </div>
+          <ul className={`navLinks ${isMenuOpen ? "open" : ""}`}>
+            <li
+              onMouseEnter={() => setHoveredItem("home")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              <Link
+                href="/"
+                onClick={toggleMenu}
+                style={{
+                  color: hoveredItem === "home" ? "yellow" : "white", // Thay đổi màu khi hover
+                  fontWeight: "bold",
+                  fontSize: "17px",
+                  textDecoration: "none",
+                }}
+              >
+                {t("home")}
+              </Link>
+            </li>
+            <li
+              onMouseEnter={() => setHoveredItem("product")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              <Link
+                href="/product"
+                onClick={toggleMenu}
+                style={{
+                  color: hoveredItem === "product" ? "yellow" : "white",
+                  fontWeight: "bold",
+                  fontSize: "17px",
+                  margin: "0 15px",
+                  textDecoration: "none", // Thêm dòng này
+                }}
+              >
+                {t("product")}
+              </Link>
+            </li>
 
-              fontSize: "17px",
-              margin: "0 15px",
-            }}
-          >
-            Product
-          </p>
-        </Link>
-        <Link href="/dashboard" passHref>
-          <p
-            className="navLink"
-            style={{
-              color: "white",
-              fontWeight: "bold",
- 
-              fontSize: "17px",
-              margin: "0 15px",
-            }}
-          >
-            Management
-          </p>
-        </Link>
+            <li
+              onMouseEnter={() => setHoveredItem("management")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              <Link
+                href="/dashboard"
+                onClick={toggleMenu}
+                style={{
+                  color: hoveredItem === "management" ? "yellow" : "white",
+                  fontWeight: "bold",
+                  fontSize: "17px",
+                  margin: "0 15px",
+                  textDecoration: "none", // Thêm dòng này
+                }}
+              >
+                {t("management")}
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
         <form
           className="searchForm"
+          onSubmit={handleSearch}
           style={{
             display: "flex",
             alignItems: "center",
-
             fontSize: "17px",
             margin: "10px 20px",
             flex: 1,
+            marginRight: "50px",
           }}
-          onSubmit={handleSearch}
         >
-          <div style={{ position: "relative", width: "100%" }}>
+          <div
+            className="searchContainer"
+            style={{ position: "relative", width: "100%" }}
+          >
+            <input
+              type="text"
+              placeholder="Search products"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <button
               type="submit"
+              className="searchButton"
               style={{
                 position: "absolute",
-                right: "245px",
+                right: "165px",
                 top: "50%",
                 transform: "translateY(-50%)",
                 width: "35px",
@@ -191,171 +203,325 @@ const Navbar = () => {
                 style={{ color: "gray", width: "20px", height: "20px" }}
               />
             </button>
-            <input
-              type="text"
-              name="search"
-              placeholder="Search products"
-              style={{
-                fontSize: "15px",
-                width: "200px",
-                height: "33px",
-                border: "none",
-
-                borderRadius: "15px",
-                paddingRight: "45px", // Space for the button
-                paddingLeft: "35px",
-              }}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
           </div>
         </form>
+
         {isLoggedIn ? (
           <>
-            <CartPage />
-            <div style={{ position: "relative" }}>
-              <Image
-                src={userAvatar || "/default-avatar.png"}
-                alt="Avatar"
-                width={70}
-                height={60}
-                style={{
-                  borderRadius: "50%",
-                  cursor: "pointer",
-                  marginLeft: "20px",
-                }}
-                onClick={toggleDropdown}
-              />
+            <div style={{ marginRight: "50px" }}>
+              <CartPage />
+            </div>
+            <div
+              style={{ position: "relative", marginRight: "20px" }}
+              className="avatarDropdown"
+            >
+              <Link href="" onClick={toggleDropdown}>
+                <Image
+                  style={{ border: "2px solid white", borderRadius: "100%" }}
+                  src={userAvatar || "/default-avatar.png"}
+                  alt="Avatar"
+                  width={60}
+                  height={60}
+                  className="avatar"
+                />
+              </Link>
+
               {showDropdown && (
                 <div
+                  className="dropdownMenu"
                   style={{
                     position: "absolute",
-                    top: "60px",
-                    left: 5,
-                    background: "linear-gradient(to right, orange, #FF4040, orange)",
-
-                    color: "black",
-                    borderRadius: "5px",
-                    padding: "10px",
+                    left: 10, // Căn sang phải
+                    top: "70px", // Vị trí dưới avatar
+                    display: "flex",
+                    flexDirection: "column",
+                    backgroundColor: "#333",
+                    borderRadius: "8px",
+                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
                     zIndex: 1000,
+                    width: "80px",
                   }}
                 >
-                  <Link href="/profile">
-                    <p
-                      onClick={handleLinkClick}
-                      className="navLink"
-                      style={{
-                        padding: "10px",
-                        cursor: "pointer",
-                        margin: 0,
-                        fontWeight: "bold",
-                        fontFamily: "roboto",
-                        color:'white'
-                      }}
-                    >
-                      Profile
-                    </p>
-                  </Link>
-                  <Link href="/product/favorite">
-                    <p
-                      onClick={handleLinkClick}
-                      className="navLink"
-                      style={{
-                        padding: "10px",
-                        cursor: "pointer",
-                        margin: 0,
-                        fontWeight: "bold",
-                        fontFamily: "roboto",
-                        color:'white'
-
-                      }}
-                    >
-                      Favorite
-                    </p>
-                  </Link>
-                  <p
-                    onClick={handleLogout}
+                  <Link
+                    onMouseEnter={() => setHoveredItem("profile")}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    href="/profile"
+                    onClick={toggleDropdown}
                     style={{
                       padding: "10px",
                       cursor: "pointer",
                       margin: 0,
-                      fontWeight: "bold",
-                      fontFamily: "roboto",
+                      color: hoveredItem === "profile" ? "yellow" : "white",
+                      textDecoration: "none",
                     }}
                   >
-                    Logout
+                    {t("profile")}
+                  </Link>
+                  <Link
+                    onMouseEnter={() => setHoveredItem("favorite")}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    href="/product/favorite"
+                    onClick={toggleDropdown}
+                    style={{
+                      padding: "10px",
+                      cursor: "pointer",
+                      margin: 0,
+                      color: hoveredItem === "favorite" ? "yellow" : "white",
+                      textDecoration: "none",
+                    }}
+                  >
+                    {t("favorite")}
+                  </Link>
+                  <p
+                    onMouseEnter={() => setHoveredItem("logout")}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    style={{
+                      padding: "10px",
+                      cursor: "pointer",
+                      margin: 0,
+                      color: hoveredItem === "logout" ? "black" : "white",
+                      textDecoration: "none",
+                    }}
+                    onClick={handleLogout}
+                  >
+                    {t("logout")}
                   </p>
                 </div>
               )}
             </div>
-            {/* <ModeToggle /> */}
           </>
         ) : (
           <>
-            <Link href="/login" passHref>
-              <p
-                className="navLink"
-                style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  marginLeft: "40px",
-                  fontSize: "17px",
-                  textDecoration: "none",
-                  padding: "5px 10px",
-                  borderRadius: "15px",
-                  backgroundColor: "#FF6633", // Example background color
-                  border: "1px solid transparent", // Border to show focus
-                }}
-              >
-                Login
-              </p>
+            <Link
+              onMouseEnter={() => setHoveredItem("login")}
+              onMouseLeave={() => setHoveredItem(null)}
+              href="/login"
+              className="authLink"
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                marginLeft: "40px",
+                fontSize: "17px",
+                textDecoration: "none",
+                padding: "5px 10px",
+                borderRadius: "15px",
+                backgroundColor:
+                  hoveredItem === "login" ? "#FF9900" : "#FF6633",
+                border: "2px solid white",
+              }}
+            >
+              {t("login")}
             </Link>
-            <Link href="/register" passHref>
-              <p
-                className="navLink"
-                style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  marginLeft: "10px",
+            <Link
+              onMouseEnter={() => setHoveredItem("register")}
+              onMouseLeave={() => setHoveredItem(null)}
+              href="/register"
+              className="authLink"
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                marginLeft: "10px",
 
-                  fontSize: "17px",
-                  textDecoration: "none",
-                  padding: "5px 10px",
-                  borderRadius: "15px",
-                  backgroundColor: "#FF6633", // Example background color
-                  border: "1px solid transparent", // Border to show focus
-                }}
-              >
-                Register
-              </p>
+                fontSize: "17px",
+                textDecoration: "none",
+                padding: "5px 10px",
+                borderRadius: "15px",
+                backgroundColor:
+                  hoveredItem === "register" ? "#FF9900" : "#FF6633",
+                border: "2px solid white",
+              }}
+            >
+              {t("register")}
             </Link>
           </>
         )}
+        <button
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          style={{
+            color: "white",
+            fontWeight: "bold",
+            marginLeft: "15px",
+            fontSize: "17px",
+            textDecoration: "none",
+            padding: "5px 10px",
+            borderRadius: "15px",
+            backgroundColor: isHovered ? "#FF9900" : "#FF6633",
+            border: "2px solid white",
+          }}
+          className="avatarDropdown"
+          onClick={toggleTranslation}
+        >
+          <MdGTranslate style={{ fontWeight: "bold" }} />{" "}
+          <span style={{ fontWeight: "bold" }}> {t("language")}</span>
+          {showTranslation && (
+            <div
+              className="dropdownMenu"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100%",
+                textAlign: "center",
+                marginLeft:'30px'
+              }}
+            >
+              <p
+                className="lang"
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor: "pointer",
+
+                }}
+                onClick={() => changeLanguage("vi")}
+              >
+                Vietnamese
+              </p>
+              <p
+                className="lang"
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor: "pointer",
+
+                }}
+                onClick={() => changeLanguage("en")}
+              >
+                English
+              </p>
+            </div>
+          )}
+        </button>
+        <ModeToggle />
       </div>
+
       <style jsx>{`
-        nav {
+        header {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1000;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background: linear-gradient(to right, orange, #ff4040, orange);
           padding: 0 20px;
+          height: 90px;
+          color: white;
         }
-        .navLink {
-          transition: color 0.3s, background-color 0.3s;
+        .lang:hover {
+          color: yellow;
         }
-        .navLink:hover {
-          color: #BBBBBB !important;
-          color: #ff6633;
+
+        .logo {
+          display: flex;
+          align-items: center;
         }
+
+        .navLinks {
+          display: flex;
+          align-items: center;
+          margin-right: 100px;
+        }
+
+        .menu-icon {
+          display: none;
+          cursor: pointer;
+        }
+
+        .navLinks ul {
+          display: flex;
+          gap: 30px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .searchForm {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          margin: 10px 20px;
+        }
+
+        .searchContainer {
+          position: relative;
+          width: 100%;
+        }
+
         .searchButton {
-          transition: background-color 0.3s;
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
         }
-        .searchButton:hover {
-          background-color: rgba(255, 0, 0, 0.2);
+
+        input {
+          width: 150px;
+          padding: 8px 12px;
+          border-radius: 15px;
+          padding-left: 40px;
+          border: none;
         }
-        @media only screen and (max-width: 320px) {
-          nav {
-            padding: 0 10px;
+
+        .authLink {
+          background-color: #ff6633;
+          padding: 5px 10px;
+          border-radius: 15px;
+          font-weight: bold;
+          color: white;
+          text-decoration: none;
+        }
+
+        .avatar {
+          border-radius: 50%;
+          cursor: pointer;
+        }
+
+        .avatarDropdown {
+          position: relative;
+        }
+
+        .dropdownMenu {
+          position: absolute;
+          top: 60px;
+          left: 5px;
+          background: linear-gradient(to right, orange, #ff4040, orange);
+          color: white;
+          border-radius: 5px;
+          padding: 10px;
+        }
+
+        .dropdownMenu p,
+        .dropdownMenu a {
+          cursor: pointer;
+          margin: 0;
+          padding: 10px;
+          font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+          .menu-icon {
+            display: block;
           }
-          .searchForm {
+
+          .navLinks ul {
             flex-direction: column;
-            align-items: flex-start;
+            display: ${isMenuOpen ? "block" : "none"};
+            width: 100%;
+            position: absolute;
+            top: 90px;
+            left: 0;
+            background: linear-gradient(to right, orange, #ff4040, orange);
+            padding: 10px 0;
           }
         }
       `}</style>

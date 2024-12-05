@@ -86,7 +86,6 @@ export default function DashboardDetailPage({
         display: "flex",
         justifyContent: "center",
         padding: "50px",
-        backgroundColor: "#f0f0f5",
         marginTop: "100px",
       }}
     >
@@ -132,8 +131,7 @@ export default function DashboardDetailPage({
             height={460}
             style={{
               borderRadius: "12px",
-              width: "100%",
-              height: "auto",
+
             }}
           />
         </div>
@@ -305,7 +303,8 @@ export default function DashboardDetailPage({
               </div>
             </div>
 
-            <div style={{ display: "flex", marginTop: "30px" }}>
+            <div style={{ display: "flex", marginTop: "30px", 
+                  justifyContent: "center", }}>
               <button
                 onClick={handleAddToCart}
                 onMouseEnter={() => setIsHovered(true)}

@@ -14,6 +14,8 @@ import nike from "../../../public/Nike.png";
 import adias from "../../../public/adidas.png";
 import puma from "../../../public/pumalogo.png";
 import person from "../../../public/person.png";
+import { useTranslation } from "react-i18next";
+import'@/i18n/i18n';
 
 const fetchData = async () => {
   const res = await fetch(PRODUCT_API_URL);
@@ -30,6 +32,7 @@ const DataComponent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
+  const{ t } = useTranslation('product')
 
   useEffect(() => {
     fetchData()
@@ -88,11 +91,10 @@ const DataComponent = () => {
           WebkitTextFillColor: "transparent",
         }}
       >
-        All PRODUCTS OF MY SHOP
+        {t('all categories')}
       </h1>
       <div
         style={{
-          backgroundColor: "#f5f5f5",
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
           gap: "20px",
@@ -236,6 +238,7 @@ const DataComponent = () => {
           justifyContent: "center",
           gap: "100px",
           marginTop: "50px",
+          marginBottom:'50px',
         }}
       >
         <div>
@@ -280,6 +283,7 @@ const DataComponent = () => {
 };
 
 export default function DashboardPage() {
+  const { t } = useTranslation('product');
   return (
     <div>
       <div
@@ -351,7 +355,7 @@ export default function DashboardPage() {
               WebkitTextFillColor: "transparent",
             }}
           >
-            Shoes with products{" "}
+            {t('shoes_p')} {" "}
           </h1>
           <p
             style={{
@@ -373,12 +377,10 @@ export default function DashboardPage() {
             }}
           >
             <h4>
-              The Evolution of Sneakers support, and durability. Brands like
-              Converse{" "}
+              {t('text1')} {" "}
             </h4>
             <h4>
-              Sneakers in the Fashion Industry support, and durability. Brands
-              like Converse, Adidas{" "}
+            {t('text2')} {" "}
             </h4>
           </div>
         </div>

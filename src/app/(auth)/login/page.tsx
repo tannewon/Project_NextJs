@@ -71,7 +71,7 @@ const Login = () => {
   };
 
   return (
-    <main style={{ justifyItems: "center", marginTop: "150px" }}>
+    <main style={{ justifyItems: "center", marginTop: "150px",marginBottom:'50px' }}>
       <div
         className="card p-4"
         style={{
